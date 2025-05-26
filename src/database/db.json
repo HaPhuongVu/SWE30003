@@ -1,0 +1,57 @@
+{
+    "category":[
+        {"name": "Smartphones", "description": "Latest iPhone, Samsung, Google Pixel and premium Android devices with cutting edge features and innovative technology"},
+        {"name": "Laptops & Computers", "description": "MacBooks, gaming laptops, ultrabooks and professional workstations designed for every computing need"},
+        {"name": "Audio & Headphones", "description": "Premium headphones, wireless earbuds, speakers and professional audio equipment for audiophiles"},
+        {"name": "Wearable Technology", "description": "Smartwatches, fitness trackers, smart rings and advanced health monitoring devices"},
+        {"name": "Smart Home", "description": "IoT devices, smart speakers, security systems and comprehensive home automation solutions"},
+        {"name": "Accessories", "description": "Charges, cables, cases, power banks and all essential tech accessories for your devices"}
+    ],
+    "product": [
+        {
+            "name": "iPhone 15 Pro",
+            "description": "256GB, Space Black - Latest flagship with cutting edge features",
+            "image": "public/iphone_15_pro.jpg",
+            "category": "Smartphones",
+            "price": 1249
+        },
+        {
+            "name": "MacBook Pro 16”",
+            "description": "M3 Pro Chip - High performance computing solutions",
+            "image": "public/macbook_pro_16.jpg",
+            "category": "Laptops & Computers",
+            "price": 2499
+        },
+        {
+            "name": "Airpods Pro",
+            "description": "2nd Generation - Studio quality sound experience",
+            "image":"public/airpod_pro.jpg",
+            "category": "Audio & Headphones",
+            "price": 1349
+        },
+        {
+            "name": "Apple Watch Ultra",
+            "description": "Connected lifestyle technology for modern living ",
+            "image": "public/apple_watch.jpg",
+            "category": "Wearable Technology",
+            "price": 1249
+        },
+        {
+            "name": "4K Smart TV",
+            "description": "55” OLED Display - Premium viewing experience ",
+            "image": "public/smart_tv.jpg",
+            "category": "Smart Home",
+            "price": 1899
+        },
+        {
+            "name": "Gaming Console",
+            "description": "Next gen gaming with immerse graphic",
+            "image": "public/gaming_console.jpg",
+            "category": "Accessories",
+            "price": 599
+        }
+    ],
+    "account": [
+        {"email": "admin@gmail.com", "password": "admin123"}
+    ]
+}
