@@ -14,7 +14,6 @@ abstract class Account {
   }
 
   hashPassword(password: string): string {
-    // Simple hash function
     return password;
   }
 

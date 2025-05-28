@@ -6,7 +6,7 @@ import SearchBar from './search-bar';
 import { useNavigate } from 'react-router';
 
 function NavBar() {
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary" sticky='top'>

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Card, CardContent, CardFooter, CardHeader } from '../components/card'
 import Button from '../components/button'
