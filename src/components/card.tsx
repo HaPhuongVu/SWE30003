@@ -1,11 +1,11 @@
-import { forwardRef, type HTMLAttributes } from 'react';
+import { forwardRef, type HTMLAttributes, type ImgHTMLAttributes } from 'react';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {}
 
 const Card = forwardRef<HTMLDivElement, CardProps>(({ className = '', ...props }, ref) => (
     <div
     ref={ref}
-    className={`card shadow ${className}`}
+    className={`card shadow h-100 ${className}`}
     {...props}>
     </div>
 ));
@@ -19,6 +19,18 @@ const CardHeader = forwardRef<HTMLDivElement, CardProps>(({ className = '', ...p
 ));
 CardHeader.displayName = 'CardHeader';
 
+interface CardImageProps extends ImgHTMLAttributes<HTMLImageElement>{}
+const CardImage = forwardRef<HTMLImageElement, CardImageProps>(({className = '', src, alt, ...props}, ref) => (
+    <img
+    ref={ref}
+    src={src}
+    className={`card-img-top pt-2 ${className}`}
+    alt={alt}
+    {...props}
+    />
+))
+CardImage.displayName = 'CardImage'
+
 interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {}
 
 const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(({ className = '', ...props }, ref) => (
@@ -29,20 +41,11 @@ const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(({ className = 
 ));
 CardTitle.displayName = 'CardTitle';
 
-interface CardDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {}
-
-const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(({ className = '', ...props }, ref) => (
-    <p
-    ref={ref}
-    className={`card-text text-muted ${className}`}
-    {...props}></p>
-));
-CardDescription.displayName = 'CardDescription';
 
 const CardContent = forwardRef<HTMLDivElement, CardProps>(({ className = '', ...props }, ref) => (
     <div
     ref={ref}
-    className={`card-body ${className}`}
+    className={`card-body text-secondary ${className}`}
     {...props}></div>
 ));
 CardContent.displayName = 'CardContent';
@@ -55,4 +58,4 @@ const CardFooter = forwardRef<HTMLDivElement, CardProps>(({ className = '', ...p
 ));
 CardFooter.displayName = 'CardFooter';
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter };
+export { Card, CardHeader, CardImage, CardTitle, CardContent, CardFooter };

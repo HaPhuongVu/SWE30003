@@ -1,4 +1,3 @@
-import React from 'react'
 import { FormLayout, FormControl, FormGroup, FormLabel } from '../components/form'
 import { Container} from 'react-bootstrap'
 import Button from '../components/button'

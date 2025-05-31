@@ -2,7 +2,7 @@ import React, { type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'default' | 'destructive';
-    size?: 'default' | 'icon';
+    size?: 'default' | 'small';
     children: ReactNode;
     className?: string;
 }
@@ -16,13 +16,14 @@ const Button: React.FC<ButtonProps> = ({
     ...props
 }) => {
     const variantClass = {
-        default: 'bg-white text-dark btn-outline-secondary',
-        destructive: 'bg-dark text-white'
+        default: 'bg-white rounded-1 text-dark btn-outline-secondary',
+        destructive: 'bg-dark rounded-1 text-white'
     };
 
     const sizeClass = {
         default: 'py-2 px-3',
-        icon: 'p-2',
+        small: 'py-1 px-2',
+
     };
 
     return (

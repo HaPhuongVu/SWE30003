@@ -1,18 +1,22 @@
 import { Col, Container, Row } from 'react-bootstrap'
-import { Card, CardContent, CardFooter, CardHeader } from '../components/card'
+import { Card, CardContent, CardHeader } from '../components/card'
 import Button from '../components/button'
+import { useNavigate } from 'react-router'
 
 export default function HomeView() {
+  const navigate = useNavigate()
   return (
     <Container className='d-flex vh-100 justify-content-center align-items-center overflow-hidden'>
         <Row>
             <Col md={5}>
                 <Card className='border-0 shadow-none'>
                     <CardHeader className='h3'>Premium Electronics for Modern Living</CardHeader>
-                    <CardContent>Discover cutting edge technology and premium electronic products designed to enhance your digital lifestyle. Quality meets innovation in every product we curate. </CardContent>
-                    <CardFooter>
-                        <Button variant='destructive'>Explore Collection</Button>
-                    </CardFooter>
+                    <CardContent>
+                        Discover cutting edge technology and premium electronic products designed to enhance your digital lifestyle. Quality meets innovation in every product we curate.
+                        <div className='mt-3'>
+                            <Button variant='destructive' onClick={() => {navigate('/catalogue')}}>Explore Collection</Button>
+                        </div>
+                    </CardContent>
                 </Card>
             </Col>
             <Col className="ms-5 text-center" md={6}>

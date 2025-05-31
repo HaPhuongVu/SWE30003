@@ -9,15 +9,6 @@ abstract class Account {
     this.hashedPassword = hashedPassword;
   }
 
-  verifyPassword(password: string): boolean {
-    return this.hashedPassword === this.hashPassword(password);
-  }
-
-  hashPassword(password: string): string {
-    return password;
-  }
-
-  getRole() {}
 }
 
 export { Account };

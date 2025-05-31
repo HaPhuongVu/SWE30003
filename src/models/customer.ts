@@ -14,11 +14,7 @@ class Customer extends Account {
   constructor(id: string, username: string, hashedPassword: string, details: any) {
     super(id, username, hashedPassword);
     this.details = details;
-    this.shoppingCart = new Cart();
-  }
-
-  getRole(): string {
-    return 'customer';
+    this.shoppingCart = new Cart;
   }
 }
 
