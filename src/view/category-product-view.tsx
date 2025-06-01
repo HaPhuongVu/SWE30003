@@ -55,7 +55,10 @@ function CategoryProductView() {
                         </Button>
                         </Col>
                         <Col>
-                        <Button variant='destructive' className="w-100" onClick={() => addProductToCart(product.id)}>
+                        <Button
+                        variant='destructive'
+                        className="w-100"
+                        onClick={() => addProductToCart(product.id)}>
                             <ShoppingCart/> Add to Cart
                         </Button>
                         </Col>

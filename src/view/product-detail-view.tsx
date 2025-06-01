@@ -43,7 +43,7 @@ function ProductDetailView() {
             <div className="fs-5 mb-4">
               Quantity:
               <span className="ms-3">
-              <Button size="small"onClick={decreaseValue}>
+              <Button size="small" onClick={decreaseValue}>
                 <Minus/>
               </Button>
               <input className="w-25 mx-1 text-center small" value={value} readOnly></input>
@@ -62,7 +62,7 @@ function ProductDetailView() {
             <Button
             className="w-100"
             variant="destructive"
-            onClick={() => addProductToCart(productId!)}
+            onClick={() => addProductToCart(productId!, value)}
             >
              <Plus/> Add to Cart
             </Button>

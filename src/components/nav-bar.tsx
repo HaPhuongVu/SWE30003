@@ -6,10 +6,19 @@ import SearchBar from './search-bar';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import CartView from '../view/cart-view';
+import { USERNAME } from '../controller/account-controller';
+import { LogOut, UserRound } from 'lucide-react';
 
 function NavBar() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const logout = () => {
+    localStorage.removeItem('username')
+    localStorage.removeItem('userId')
+    navigate('/')
+    alert('Successfully log out!')
+    window.location.reload()
+  }
   return (
     <>
     <Navbar expand="lg" className="bg-body-tertiary" sticky='top'>
@@ -27,8 +36,15 @@ function NavBar() {
         </Navbar.Collapse>
         <Navbar.Collapse className="d-flex align-items-center gap-2 ms-auto w-25">
             <Button variant="destructive" onClick={() => setOpen(!open)}>Cart</Button>
+            {USERNAME ?
+            (<>
+            <Button onClick={()=> navigate('/account')}><UserRound/>{USERNAME}</Button>
+            <Button onClick={()=> logout()}><LogOut/></Button>
+            </>):(<>
             <Button onClick={()=> navigate('/login')}>Login</Button>
             <Button onClick={()=> navigate('/signup')}>Sign Up</Button>
+            </>)
+            }
         </Navbar.Collapse>
       </Container>
     </Navbar>

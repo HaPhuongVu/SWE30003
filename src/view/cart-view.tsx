@@ -5,12 +5,13 @@ import type { Cart } from "../models/cart"
 import Button from "../components/button"
 import { productAPI } from "../repository/product-repository"
 import { Trash } from "lucide-react"
-import { removeProductInCart } from "../controller/cart-controller"
+import { handleCheckout, removeProductInCart, totalCart } from "../controller/cart-controller"
+import { USERID } from "../controller/account-controller"
 
 function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
   const {data: cartItems, error, isLoading} = useQuery<Cart[], Error>({
     queryKey: ['cart'],
-    queryFn: cartAPI.getCart,
+    queryFn: () => cartAPI.getCart(),
     enabled: open
   })
  const productData = useQueries({
@@ -20,18 +21,12 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
   }))
  })
 
-  const totalCart = () => {
-    let total = 0;
-    productData?.forEach((product) => {
-      total += product.data?.price ?? 0;
-    });
-    return total.toFixed(2);
-  }
-
   if(isLoading) return <div>Loading...</div>
   if(error) throw error
   return (
-    <Modal show={open} onHide={onClose}>
+    <>
+    {!!USERID ? (
+     <Modal show={open} onHide={onClose}>
       <Modal.Header closeButton>
         <Modal.Title className="fw-bold fs-4">Shopping Cart</Modal.Title>
       </Modal.Header>
@@ -45,7 +40,7 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
               </Col>
               <Col className="col-4 fw-bold text-secondary">
                 <p>{product.data?.name}</p>
-                <p>${product.data?.price.toFixed(2)}</p>
+                <p>${product.data?.price.toFixed(2)} x {item?.quantity}</p>
               </Col>
               <Col className="col-4 text-end">
                 <Button onClick={() => removeProductInCart(item.id)}>
@@ -57,16 +52,25 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
         })}
         <Row className="mt-5 ms-4 fw-bold">
           <Col className="col-6">Total:</Col>
-          <Col className="col-6">${totalCart()}</Col>
+          <Col className="col-6">${totalCart(cartItems!, productData)}</Col>
           <Col className="col-6">Shipping</Col>
           <Col className="col-6">Free</Col>
         </Row>
       </Modal.Body>
       <Modal.Footer className="justify-content-center">
         <Button className='w-50' onClick={onClose}>Continue Shopping</Button>
-        <Button variant="destructive">Checkout</Button>
+        <Button variant="destructive" onClick={()=>handleCheckout(cartItems!, productData!)}>Checkout</Button>
       </Modal.Footer>
     </Modal>
+  ) : (
+    <Modal show={open} onHide={onClose}>
+      <Modal.Header closeButton>
+        <Modal.Title className="fw-bold fs-4">Shopping Cart</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>You need to login to view shopping cart</Modal.Body>
+    </Modal>
+  )}
+  </>
   )
 }
 

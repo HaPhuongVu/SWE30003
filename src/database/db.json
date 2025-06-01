@@ -95,19 +95,90 @@
   ],
   "account": [
     {
-      "id": "Admin",
       "email": "admin@gmail.com",
-      "password": "admin123"
+      "fullname": "Admin",
+      "username": "Admin",
+      "password": "admin123",
+      "phoneNo": "",
+      "address": "",
+      "id": "admin"
+    },
+    {
+      "fullname": "amie",
+      "email": "amie@gmail.com",
+      "username": "amie1212",
+      "password": "12345",
+      "address": "3 Launder Street",
+      "phoneNumber": "",
+      "id": "2915"
     }
   ],
   "cart": [
     {
-      "id": "fcfa",
-      "productId": "P02"
+      "id": "9d88",
+      "productId": "P06",
+      "userId": "admin",
+      "quantity": 1
     },
     {
-      "id": "9d88",
-      "productId": "P06"
+      "productId": "P02",
+      "userId": "admin",
+      "quantity": 3,
+      "id": "a412"
+    },
+    {
+      "productId": "P03",
+      "userId": "admin",
+      "quantity": 4,
+      "id": "9763"
+    }
+  ],
+  "order": [
+    {
+      "id": "f00c",
+      "orderDate": "02/06/2025",
+      "items": [
+        {
+          "productId": "P02",
+          "quantity": 2
+        },
+        {
+          "productId": "P03",
+          "quantity": 1
+        }
+      ],
+      "totalBill": 6347,
+      "payment": "",
+      "shipment": "",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "22d6",
+      "orderDate": "02/06/2025",
+      "items": [
+        {
+          "productId": "P01",
+          "quantity": 1
+        },
+        {
+          "productId": "P04",
+          "quantity": 1
+        },
+        {
+          "productId": "P05",
+          "quantity": 1
+        },
+        {
+          "productId": "P06",
+          "quantity": 1
+        }
+      ],
+      "totalBill": 4996,
+      "payment": "",
+      "shipment": "",
+      "status": "Pending",
+      "cancellation": false
     }
   ]
 }

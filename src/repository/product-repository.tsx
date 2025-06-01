@@ -10,7 +10,7 @@ const getProduct = async():Promise<Product[]> => {
     }
 }
 
-const getProductById = async(id: string) => {
+const getProductById = async(id: string):Promise<Product> => {
     try{
         const response = await fetch(`http://localhost:3000/product/${id}`)
         if(!response.ok) throw new Error (`Failed to fetch product with id ${id}`)

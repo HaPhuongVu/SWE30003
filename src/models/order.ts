@@ -1,13 +1,12 @@
-import { Product } from "./product";
-
 
 class Order {
     id: string;
     customerId: string;
     orderDate: Date;
-    items: Map<Product, number>;
-    payment: null;
-    shipment: null;
+    items: {productId: string, quantity: number}[];
+    totalBill: number;
+    payment: string;
+    shipment: string;
     status: string;
     cancellation: boolean;
 
@@ -16,10 +15,13 @@ class Order {
         this.id = "";
         this.customerId = "";
         this.orderDate = new Date();
-        this.items = new Map<Product, number>();
-        this.payment = null;
-        this.shipment = null;
+        this.items = [];
+        this.totalBill = 0
+        this.payment = "";
+        this.shipment = "";
         this.status = "Pending";
         this.cancellation = false;
     }
 }
+
+export {Order}
