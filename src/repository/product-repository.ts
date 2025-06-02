@@ -11,7 +11,9 @@ class ProductRepository {
             ProductRepository._instance = new ProductRepository();
         }
         return ProductRepository._instance;
-    }    async get(): Promise<Product[]> {
+    }
+
+    async getAll(): Promise<Product[]> {
         try {
             const response = await fetch(this.baseUrl)
             if (!response.ok) throw new Error('Failed to fetch products')
@@ -21,7 +23,7 @@ class ProductRepository {
         }
     }
 
-    async getById(id: string): Promise<Product> {
+    async getById(id: string): Promise<Product | null> {
         try {
             const response = await fetch(`${this.baseUrl}/${id}`)
             if (!response.ok) throw new Error(`Failed to fetch product with id ${id}`)
@@ -38,6 +40,59 @@ class ProductRepository {
             return response.json()
         } catch (error) {
             throw new Error(`Failed to fetch product with category ${categoryId}: ${error}`)
+        }
+    }
+
+    async create(
+        name: string,
+        image: string,
+        shortDescription: string,
+        longDescription: string,
+        price: number,
+        category: string
+    ): Promise<Product> {
+        try {
+            const response = await fetch(this.baseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, image, shortDescription, longDescription, price, category })
+            });
+            if (!response.ok) throw new Error('Failed to create product');
+            return response.json();
+        } catch (error) {
+            throw new Error(`Failed to create product: ${error}`);
+        }
+    }
+
+    async update(
+        id: string,
+        data: Partial<Product>
+    ): Promise<Product> {
+        try {
+            const response = await fetch(`${this.baseUrl}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error(`Failed to update product with id ${id}`);
+            return response.json();
+        } catch (error) {
+            throw new Error(`Failed to update product with id ${id}: ${error}`);
+        }
+    }
+
+    async delete(id: string): Promise<void> {
+        try {
+            const response = await fetch(`${this.baseUrl}/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error(`Failed to delete product with id ${id}`);
+        } catch (error) {
+            throw new Error(`Failed to delete product with id ${id}: ${error}`);
         }
     }
 }
