@@ -104,7 +104,6 @@ class OrderController {
         }
 
         const shipment = ShipmentController.instance.createShipmentObject(shipmentDetails);
-
         order.setShipment(shipment);
 
         paymentDetails.amount = cart.getSubtotalPrice() + shipment.fee;
@@ -122,6 +121,30 @@ class OrderController {
         order.setPayment(payment);
 
         return order;
+    }
+
+    async placeOrder(order: Order): Promise<Order> {
+        if (!order.verify()) {
+            throw new Error("Order is not valid");
+        }
+
+        const user = await AccountController.instance.getAccount(order.userId);
+        if (!user) throw new Error(`User not found: ${order.userId}`);
+
+        const shipment = await ShipmentController.instance.storeShipment(order.shipment!);
+        const payment = await PaymentController.instance.storePayment(order.payment!);
+
+        const createdOrder = await this.createOrder(
+            order.userId,
+            order.items,
+            payment,
+            shipment
+        );
+
+        // Clear the user's cart after placing the order
+        await CartController.instance.emptyCart(user.cart!);
+
+        return createdOrder;
     }
 }
 
