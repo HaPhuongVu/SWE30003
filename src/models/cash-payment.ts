@@ -10,11 +10,11 @@ class CashPayment extends Payment {
         return true;
     }
 
-    process() {
+    async process() {
         this.updateStatus('Processed');
     }
 
-    refund() {
+    async refund() {
         this.updateStatus('Refunded');
     }
 }

@@ -11,11 +11,11 @@ abstract class Payment {
         this.status = status;
     }
 
-    verify() {}
+    abstract verify(): boolean;
 
-    process() {}
+    abstract process(): Promise<void>;
 
-    refund() {}
+    abstract refund(): Promise<void>;
 
     updateStatus(status: string) {
         this.status = status;

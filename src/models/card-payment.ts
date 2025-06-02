@@ -13,20 +13,19 @@ class CardPayment extends Payment {
     }
 
     verify() {
-        // Cash payments are always verified
         return true;
     }
 
-    process() {
-        this.connectToGateway();
+    async process() {
+        await this.connectToGateway();
         this.updateStatus('Processed');
     }
 
-    refund() {
+    async refund() {
         this.updateStatus('Refunded');
     }
 
-    connectToGateway() {
+    async connectToGateway() {
         return;
     }
 
