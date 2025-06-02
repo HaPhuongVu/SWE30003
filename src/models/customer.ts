@@ -4,17 +4,21 @@ import { Cart } from './cart';
 class Customer extends Account {
 
   details: {
-    personal: { name: string; email: string | undefined; phone: string | undefined };
+    personal: { phone: string | undefined };
     delivery: { address: string | undefined };
     payment: { cardNumber: string | undefined; expiryDate: string | undefined };
   };
 
   shoppingCart: Cart;
 
-  constructor(id: string, username: string, hashedPassword: string, details: any) {
-    super(id, username, hashedPassword);
+  constructor(id: string, username: string, fullname: string, email: string, password: string, details: any) {
+    super(id, username, fullname, email, password);
     this.details = details;
-    this.shoppingCart = new Cart;
+    this.shoppingCart = new Cart(this.id);
+  }
+
+  getRole(): string {
+    return 'customer';
   }
 }
 

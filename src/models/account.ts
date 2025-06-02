@@ -4,8 +4,6 @@ abstract class Account {
   fullname: string;
   email: string;
   password: string;
-  phoneNumber: string;
-  address: string
 
   constructor(id: string, username: string, fullname: string, email: string, password: string) {
     this.id = id;
@@ -13,8 +11,6 @@ abstract class Account {
     this.fullname = fullname
     this.email = email;
     this.password = password;
-    this.phoneNumber = ""
-    this.address = ""
   }
 
 }
