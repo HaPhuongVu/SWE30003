@@ -1,9 +1,4 @@
-type CartItem = {
-    id: string;
-    productId: string;
-    userId: string;
-    quantity: number;
-}
+import type { CartItem } from "../models/cart"
 
 class CartRepository {
     private static _instance: CartRepository;
@@ -18,7 +13,7 @@ class CartRepository {
         return CartRepository._instance;
     }
 
-    async getCart(userId: string): Promise<CartItem[]> {
+    async getByUserId(userId: string): Promise<CartItem[]> {
         try {
             const response = await fetch(`${this.baseUrl}?userId=${userId}`)
             if (!response.ok) throw new Error('Failed to fetch cart')
@@ -28,7 +23,7 @@ class CartRepository {
         }
     }
 
-    async addProductToCart(userId: string, productId: string, quantity: number): Promise<CartItem> {
+    async addProduct(userId: string, productId: string, quantity: number): Promise<CartItem> {
         try {
             const response = await fetch(this.baseUrl, {
                 method: 'POST',
@@ -42,7 +37,7 @@ class CartRepository {
         }
     }
 
-    async removeProductInCart(userId: string, productId: string): Promise<void> {
+    async removeProduct(userId: string, productId: string): Promise<void> {
         try {
             const entry = await fetch(`${this.baseUrl}?userId=${userId}&productId=${productId}`)
             const cartId = (await entry.json())[0].id;
@@ -55,7 +50,7 @@ class CartRepository {
         }
     }
 
-    async updateCart(userId: string, productId: string, quantity: number): Promise<CartItem> {
+    async update(userId: string, productId: string, quantity: number): Promise<CartItem> {
         try {
             const entry = await fetch(`${this.baseUrl}?userId=${userId}&productId=${productId}`)
             const cartId = (await entry.json())[0].id;

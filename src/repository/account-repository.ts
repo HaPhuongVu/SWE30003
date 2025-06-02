@@ -13,7 +13,7 @@ class AccountRepository {
         return AccountRepository._instance;
     }
 
-    async get(email: string, password: string): Promise<Account[]> {
+    async getByCredentials(email: string, password: string): Promise<Account | null> {
         try {
             const response = await fetch(`${this.baseUrl}?email=${email}&password=${password}`)
             if (!response.ok) throw new Error('Failed to fetch account')
@@ -23,7 +23,7 @@ class AccountRepository {
         }
     }
 
-    async getById(id: string): Promise<Account> {
+    async getById(id: string): Promise<Account | null> {
         try {
             const response = await fetch(`${this.baseUrl}/${id}`)
             if (!response.ok) throw new Error(`Failed to fetch account ${id}`)
@@ -54,25 +54,13 @@ class AccountRepository {
 
     async update(
         id: string,
-        fullname: string,
-        email: string,
-        username: string,
-        password: string,
-        address: string,
-        phoneNumber: string
+        data: Partial<Account>
     ): Promise<Account> {
         try {
             const response = await fetch(`${this.baseUrl}/${id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    fullname,
-                    email,
-                    username,
-                    password,
-                    address,
-                    phoneNumber
-                })
+                body: JSON.stringify(data)
             })
             return response.json()
         } catch (error) {

@@ -13,7 +13,7 @@ class CategoryRepository {
         return CategoryRepository._instance;
     }
 
-    async get(): Promise<Category[]> {
+    async getAll(): Promise<Category[]> {
         try {
             const response = await fetch(this.baseUrl)
             if (!response.ok) throw new Error('Failed to fetch category')
@@ -23,7 +23,7 @@ class CategoryRepository {
         }
     }
 
-    async getById(id: string): Promise<Category> {
+    async getById(id: string): Promise<Category | null> {
         try {
             const response = await fetch(`${this.baseUrl}/${id}`)
             if (!response.ok) throw new Error(`Failed to fetch category with id ${id}`)
