@@ -1,5 +1,12 @@
 import { Product } from "./product";
 
+type CartItem = {
+    id: string;
+    productId: string;
+    userId: string;
+    quantity: number;
+}
+
 class Cart {
     userId: string;
     items: { product: Product; quantity: number }[];
@@ -18,19 +25,28 @@ class Cart {
         }
     }
 
-    removeItem(productId: string) {
-        this.items = this.items.filter(item => item.product.id !== productId);
+    removeItem(product: Product) {
+        this.items = this.items.filter(item => item.product.id !== product.id);
     }
 
-    getItems() {
-        return this.items;
+    getItemQuantity(product: Product): number {
+        const item = this.items.find(item => item.product.id === product.id);
+        return item ? item.quantity : 0;
     }
 
-    updateItemQuantity(productId: string, quantity: number) {
-        const item = this.items.find(item => item.product.id === productId);
+    setItemQuantity(product: Product, quantity: number) {
+        const item = this.items.find(item => item.product.id === product.id);
         if (item) {
             item.quantity = quantity;
         }
+    }
+
+    containsProduct(product: Product): boolean {
+        return this.items.some(item => item.product.id === product.id);
+    }
+
+    clear() {
+        this.items = [];
     }
 
     getSubtotalPrice() {
@@ -40,3 +56,4 @@ class Cart {
 }
 
 export { Cart };
+export type { CartItem };
