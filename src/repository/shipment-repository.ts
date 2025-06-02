@@ -21,9 +21,8 @@ class ShipmentRepository {
                 shipment.id,
                 shipment.status,
                 shipment.partner!,
-                new Date(shipment.date!),
-                shipment.address!,
-                shipment.fee
+                new Date(shipment.deliveryDate!),
+                shipment.address!
             );
         } else if (shipment.type === 'pickup') {
             return new PickupShipment(
