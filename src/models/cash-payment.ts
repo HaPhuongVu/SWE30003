@@ -1,7 +1,7 @@
 import { Payment } from './payment';
 
 class CashPayment extends Payment {
-    constructor(id: string, amount: number, date: Date, status: string) {
+    constructor(id: string | null, amount: number, date: Date, status: string) {
         super(id, amount, date, status);
     }
 
