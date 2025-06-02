@@ -4,7 +4,7 @@ class Category {
     image: string;
     description: string;
 
-    constructor(id: string, name: string, image:string, description: string, price: number) {
+    constructor(id: string, name: string, image:string, description: string) {
         this.id = id;
         this.name = name;
         this.image = image
