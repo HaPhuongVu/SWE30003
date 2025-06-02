@@ -2,12 +2,12 @@ import { Product } from "./product";
 import { Payment } from "./payment";
 import { Shipment } from "./shipment";
 import { Receipt } from "./receipt";
-import { Customer } from "./customer";
+import { Account } from "./account";
 import type { NotificationObserver } from "./notification-observer";
 
 class Order {
     id: string;
-    customer: Customer;
+    customer: Account;
     orderDate: Date;
     items: {product: Product, quantity: number}[];
     payment?: Payment;
@@ -17,7 +17,7 @@ class Order {
 
     observers: NotificationObserver[] = [];
 
-    constructor(customer: Customer) {
+    constructor(customer: Account) {
         this.id = "";
         this.customer = customer;
         this.orderDate = new Date();

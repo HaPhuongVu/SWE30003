@@ -1,11 +1,11 @@
 import { Product } from "./product";
 import { Payment } from "./payment";
 import { Shipment } from "./shipment";
-import { Customer } from "./customer";
+import { Account } from "./account";
 
 class Receipt {
     orderId: string;
-    customer: Customer;
+    customer: Account;
     items: { product: Product, quantity: number, price: number }[];
     total: number;
     payment: Payment;
@@ -13,7 +13,7 @@ class Receipt {
 
     constructor(
         orderId: string,
-        customer: Customer,
+        customer: Account,
         items: { product: Product, quantity: number, price: number }[],
         total: number,
         payment: Payment,
