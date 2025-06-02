@@ -67,9 +67,11 @@ class AccountController {
         fullName: string,
         email: string,
         username: string,
-        password: string
+        password: string,
+        address: string,
+        phoneNumber: string
     ): Promise<Account> {
-        const account = await AccountRepository.instance.create(fullName, email, username, password);
+        const account = await AccountRepository.instance.create(fullName, email, username, password, address, phoneNumber);
         if (account.role === 'customer') {
             account.cart = new Cart(account.id);
         }

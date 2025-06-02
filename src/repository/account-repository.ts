@@ -37,13 +37,15 @@ class AccountRepository {
         fullname: string,
         email: string,
         username: string,
-        password: string
+        password: string,
+        address: string,
+        phoneNumber: string
     ): Promise<Account> {
         try {
             const response = await fetch(`${this.baseUrl}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({fullname, email, username, password})
+                body: JSON.stringify({fullname, email, username, password, address, phoneNumber, role: 'user'})
             })
             if (!response.ok) throw new Error('Failed to create account')
             return response.json()
