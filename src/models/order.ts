@@ -1,13 +1,11 @@
 import { Product } from "./product";
 import { Payment } from "./payment";
 import { Shipment } from "./shipment";
-import { Receipt } from "./receipt";
-import { Account } from "./account";
 import type { NotificationObserver } from "./notification-observer";
 
 class Order {
-    id: string;
-    customer: Account;
+    id?: string;
+    userId: string;
     orderDate: Date;
     items: {product: Product, quantity: number}[];
     payment?: Payment;
@@ -17,9 +15,8 @@ class Order {
 
     observers: NotificationObserver[] = [];
 
-    constructor(customer: Account) {
-        this.id = "";
-        this.customer = customer;
+    constructor(userId: string) {
+        this.userId = userId;
         this.orderDate = new Date();
         this.items = [];
         this.payment = undefined;
@@ -61,32 +58,11 @@ class Order {
     }
 
     verify() {
-        return this.payment && this.shipment;
+        return this.payment && this.shipment && this.id;
     }
 
     isCancellable() {
         return this.status === "Pending" && new Date().getTime() - this.orderDate.getTime() < 3 * 24 * 60 * 60 * 1000; // 72 hours
-    }
-
-    generateReceipt() {
-        if (!this.verify()) {
-            throw new Error("Order is not valid");
-        }
-
-        const receipt = new Receipt(
-            this.id,
-            this.customer,
-            this.items.map(item => ({
-                product: item.product,
-                quantity: item.quantity,
-                price: item.product.price * item.quantity
-            })),
-            this.getTotalPrice(),
-            this.payment!,
-            this.shipment!
-        );
-
-        return receipt;
     }
 
     subscribe(observer: NotificationObserver) {

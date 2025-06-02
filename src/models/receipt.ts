@@ -5,7 +5,7 @@ import { Account } from "./account";
 
 class Receipt {
     orderId: string;
-    customer: Account;
+    user: Account;
     items: { product: Product, quantity: number, price: number }[];
     total: number;
     payment: Payment;
@@ -13,14 +13,14 @@ class Receipt {
 
     constructor(
         orderId: string,
-        customer: Account,
+        user: Account,
         items: { product: Product, quantity: number, price: number }[],
         total: number,
         payment: Payment,
         shipment: Shipment
     ) {
         this.orderId = orderId;
-        this.customer = customer;
+        this.user = user;
         this.items = items;
         this.total = total;
         this.payment = payment;
