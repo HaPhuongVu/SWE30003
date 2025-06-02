@@ -1,76 +1,109 @@
-import { useQueries, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { Col, Modal, Row } from "react-bootstrap"
-import { cartAPI } from "../repository/cart-repository"
 import type { Cart } from "../models/cart"
 import Button from "../components/button"
-import { productAPI } from "../repository/product-repository"
 import { Trash } from "lucide-react"
-import { handleCheckout, removeProductInCart, totalCart } from "../controller/cart-controller"
-import { USERID } from "../controller/account-controller"
+import { CartController } from "../controller/cart-controller"
+import { AccountController } from "../controller/account-controller"
 
 function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
-  const {data: cartItems, error, isLoading} = useQuery<Cart[], Error>({
-    queryKey: ['cart'],
-    queryFn: () => cartAPI.getCart(),
-    enabled: open
-  })
- const productData = useQueries({
-  queries: (cartItems ?? []).map(item => ({
-    queryKey: ['product', item.productId],
-    queryFn: () => productAPI.getById(item.productId)
-  }))
- })
+  const loggedInUser = AccountController.loggedInUser;
 
-  if(isLoading) return <div>Loading...</div>
-  if(error) throw error
+  const {data: cart, error, isLoading, refetch} = useQuery<Cart, Error>({
+    queryKey: ['cart', loggedInUser],
+    queryFn: () => {
+      if (!loggedInUser) throw new Error('User not logged in');
+      return CartController.instance.getCart(loggedInUser);
+    },
+    enabled: open && !!loggedInUser
+  })
+
+  const handleRemoveProduct = async (productId: string) => {
+    if (!cart || !loggedInUser) return;
+
+    try {
+      const product = cart.items.find(item => item.product.id === productId)?.product;
+      if (product) {
+        await CartController.instance.removeProductInCart(cart, product);
+        refetch(); // Refresh the cart data
+      }
+    } catch (error) {
+      console.error('Failed to remove product:', error);
+      alert('Failed to remove product from cart');
+    }
+  };
+
+  const handleCheckout = async () => {
+    if (!cart || !loggedInUser) return;
+
+    try {
+      // This would typically integrate with order controller
+      alert('Checkout functionality would be implemented here');
+      // await OrderController.instance.createOrder(cart);
+      onClose();
+    } catch (error) {
+      console.error('Checkout failed:', error);
+      alert('Checkout failed. Please try again');
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) throw error
+
   return (
     <>
-    {!!USERID ? (
-     <Modal show={open} onHide={onClose}>
-      <Modal.Header closeButton>
-        <Modal.Title className="fw-bold fs-4">Shopping Cart</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-      {(cartItems ?? []).map((item, index) => {
-          const product = productData[index]
-          return (
-            <Row key={item.id}>
-              <Col className="col-4">
-                <img src={`/${product.data?.image}`} className="w-100 h-100" />
-              </Col>
-              <Col className="col-4 fw-bold text-secondary">
-                <p>{product.data?.name}</p>
-                <p>${product.data?.price.toFixed(2)} x {item?.quantity}</p>
-              </Col>
-              <Col className="col-4 text-end">
-                <Button onClick={() => removeProductInCart(item.id)}>
-                  <Trash />
-                </Button>
-              </Col>
-            </Row>
-          )
-        })}
-        <Row className="mt-5 ms-4 fw-bold">
-          <Col className="col-6">Total:</Col>
-          <Col className="col-6">${totalCart(cartItems!, productData)}</Col>
-          <Col className="col-6">Shipping</Col>
-          <Col className="col-6">Free</Col>
-        </Row>
-      </Modal.Body>
-      <Modal.Footer className="justify-content-center">
-        <Button className='w-50' onClick={onClose}>Continue Shopping</Button>
-        <Button variant="destructive" onClick={()=>handleCheckout(cartItems!, productData!)}>Checkout</Button>
-      </Modal.Footer>
-    </Modal>
-  ) : (
-    <Modal show={open} onHide={onClose}>
-      <Modal.Header closeButton>
-        <Modal.Title className="fw-bold fs-4">Shopping Cart</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>You need to login to view shopping cart</Modal.Body>
-    </Modal>
-  )}
-  </>
+      {loggedInUser ? (
+        <Modal show={open} onHide={onClose}>
+          <Modal.Header closeButton>
+            <Modal.Title className="fw-bold fs-4">Shopping Cart</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {cart?.items && cart.items.length > 0 ? (
+              cart.items.map((item) => (
+                <Row key={item.product.id} className="mb-3">
+                  <Col className="col-4">
+                    <img src={`/${item.product.image}`} className="w-100 h-100" alt={item.product.name} />
+                  </Col>
+                  <Col className="col-4 fw-bold text-secondary">
+                    <p>{item.product.name}</p>
+                    <p>${item.product.price.toFixed(2)} x {item.quantity}</p>
+                  </Col>
+                  <Col className="col-4 text-end">
+                    <Button onClick={() => handleRemoveProduct(item.product.id)}>
+                      <Trash />
+                    </Button>
+                  </Col>
+                </Row>
+              ))
+            ) : (
+              <p>Your cart is empty</p>
+            )}
+
+            {cart?.items && cart.items.length > 0 && (
+              <Row className="mt-5 ms-4 fw-bold">
+                <Col className="col-6">Total:</Col>
+                <Col className="col-6">${CartController.instance.calculateTotal(cart).toFixed(2)}</Col>
+                <Col className="col-6">Shipping:</Col>
+                <Col className="col-6">Free</Col>
+              </Row>
+            )}
+          </Modal.Body>
+          <Modal.Footer className="justify-content-center">
+            <Button className='w-50' onClick={onClose}>Continue Shopping</Button>
+            {cart?.items && cart.items.length > 0 && (
+              <Button variant="destructive" onClick={handleCheckout}>Checkout</Button>
+            )}
+          </Modal.Footer>
+        </Modal>
+      ) : (
+        <Modal show={open} onHide={onClose}>
+          <Modal.Header closeButton>
+            <Modal.Title className="fw-bold fs-4">Shopping Cart</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>You need to login to view shopping cart</Modal.Body>
+        </Modal>
+      )}
+    </>
   )
 }
 

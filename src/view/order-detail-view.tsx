@@ -1,36 +1,40 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Container } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router'
 import { Order } from '../models/order'
-import { orderAPI } from '../repository/order-repository'
+import { OrderController } from '../controller/order-controller'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/table'
-import { productAPI } from '../repository/product-repository'
 import { Account } from '../models/account'
-import { accountAPI } from '../repository/account-repository'
-import { USERID } from '../controller/account-controller'
+import { AccountController } from '../controller/account-controller'
 import Button from '../components/button'
 import { ArrowLeft } from 'lucide-react'
 
 export default function OrderDetailView() {
   const navigate = useNavigate()
   const {orderId} = useParams<{orderId: string}>()
-  if (!orderId) return null
+  const loggedInUser = AccountController.loggedInUser;
   const {data: orderData, error, isLoading} = useQuery<Order, Error>({
     queryKey: ['order', orderId],
-    queryFn: () => orderAPI.getById(orderId)
+    queryFn: async () => {
+      const order = await OrderController.instance.getOrderById(orderId!)
+      if (!order) throw new Error('Order not found')
+      return order
+    },
+    enabled: !!orderId
   })
-
-  const productData = useQueries({
-    queries: orderData?.items?.map(item => ({
-      queryKey: ['product', item.productId],
-      queryFn: () => productAPI.getById(item.productId)
-    })) || []
-  });
 
   const {data: userData} = useQuery<Account, Error>({
-    queryKey: ['account'],
-    queryFn: () => accountAPI.getById()
+    queryKey: ['account', loggedInUser],
+    queryFn: async () => {
+      if (!loggedInUser) throw new Error('No logged in user')
+      const account = await AccountController.instance.getAccount(loggedInUser)
+      if (!account) throw new Error('Account not found')
+      return account
+    },
+    enabled: !!loggedInUser
   })
+
+  if (!orderId) return null
 
   if (isLoading) return <div>Loading...</div>
   if (error) throw error
@@ -57,12 +61,11 @@ export default function OrderDetailView() {
         </TableHeader>
         <TableBody>
           {orderData?.items.map((item, index) => {
-            const product = productData[index]?.data
             return (
-              <TableRow>
-                <TableCell>{product?.name}</TableCell>
+              <TableRow key={index}>
+                <TableCell>{item.product?.name}</TableCell>
                 <TableCell>{item.quantity}</TableCell>
-                <TableCell>${((product?.price)! * item.quantity).toFixed(2)}</TableCell>
+                <TableCell>${item.product?.price && (item.product.price * item.quantity).toFixed(2)}</TableCell>
               </TableRow>
             )
           })}
@@ -72,15 +75,15 @@ export default function OrderDetailView() {
           </TableRow>
           <TableRow className='fw-bold'>
             <TableCell colSpan={2}>Total</TableCell>
-            <TableCell>${orderData?.totalBill.toFixed(2)}</TableCell>
+            <TableCell>${orderData?.getTotalPrice().toFixed(2)}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
       <div className='mt-5'>
         <h4 className='fw-bold text-uppercase'>Customer Information</h4>
         <ul className='list-unstyled'>
-          <li>Payment Method: {orderData?.payment}</li>
-          <li>Shipping Method: {orderData?.shipment}</li>
+          <li>Payment Method: {orderData?.payment?.constructor.name || 'N/A'}</li>
+          <li>Shipping Method: {orderData?.shipment?.constructor.name || 'N/A'}</li>
           <li>Address: {userData?.address}</li>
           <li>Contact Number: {userData?.phoneNumber}</li>
         </ul>

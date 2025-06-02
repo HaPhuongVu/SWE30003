@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { Card, CardContent, CardHeader, CardImage, CardFooter } from "../components/card";
 import { useQuery } from "@tanstack/react-query";
-import { categoryAPI } from "../repository/category-repository";
+import { CategoryController } from "../controller/category-controller";
 import type { Category } from "../models/category";
 import Button from "../components/button";
 import { useNavigate } from "react-router";
@@ -10,7 +10,7 @@ function CategoryView() {
   const navigate = useNavigate()
   const { data, error, isLoading } = useQuery<Category[], Error>({
     queryKey: ['category'],
-    queryFn: categoryAPI.get
+    queryFn: () => CategoryController.instance.getAllCategories()
   });
   if(isLoading) return <div>Loading...</div>
   if(error) throw error

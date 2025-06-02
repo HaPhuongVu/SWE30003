@@ -2,25 +2,53 @@ import { useQuery } from '@tanstack/react-query'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router'
 import { Product } from '../models/product'
-import { productAPI } from '../repository/product-repository'
+import { ProductController } from '../controller/product-controller'
 import { Card, CardContent, CardImage, CardHeader } from '../components/card'
 import Button from '../components/button'
 import { ArrowLeft, ShoppingCart } from 'lucide-react'
-import { categoryAPI } from '../repository/category-repository'
+import { CategoryController } from '../controller/category-controller'
 import type { Category } from '../models/category'
-import { addProductToCart } from '../controller/cart-controller'
+import { CartController } from '../controller/cart-controller'
+import { AccountController } from '../controller/account-controller'
 
 function CategoryProductView() {
     const navigate = useNavigate()
     const {categoryId} = useParams<{categoryId: string}>()
     const {data: category} = useQuery<Category, Error>({
         queryKey: ['category', categoryId],
-        queryFn: () => categoryAPI.getById(categoryId!)
+        queryFn: async () => {
+            const category = await CategoryController.instance.getCategoryById(categoryId!)
+            if (!category) throw new Error('Category not found')
+            return category
+        }
     })
     const {data: products, isLoading, error} = useQuery<Product[], Error>({
         queryKey: ['product', categoryId],
-        queryFn: () => productAPI.getByCategory(categoryId!)
+        queryFn: () => ProductController.instance.getByCategory(categoryId!)
     })
+
+    const handleAddToCart = async (productId: string) => {
+        const loggedInUser = AccountController.loggedInUser;
+        if (!loggedInUser) {
+            alert('Please login to add products to cart');
+            return;
+        }
+
+        try {
+            const product = await ProductController.instance.get(productId);
+            if (!product) {
+                alert('Product not found');
+                return;
+            }
+            const cart = await CartController.instance.getCart(loggedInUser);
+            await CartController.instance.addProductToCart(cart, product, 1);
+            alert('Product added to cart!');
+        } catch (error) {
+            console.error('Failed to add product to cart:', error);
+            alert('Failed to add product to cart');
+        }
+    };
+
     if (isLoading) return <div>Loading...</div>
     if (error) throw error
   return (
@@ -58,7 +86,7 @@ function CategoryProductView() {
                         <Button
                         variant='destructive'
                         className="w-100"
-                        onClick={() => addProductToCart(product.id)}>
+                        onClick={() => handleAddToCart(product.id)}>
                             <ShoppingCart/> Add to Cart
                         </Button>
                         </Col>

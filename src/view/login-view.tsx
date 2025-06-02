@@ -2,7 +2,7 @@ import { FormLayout, FormControl, FormGroup, FormLabel } from '../components/for
 import { Container} from 'react-bootstrap'
 import Button from '../components/button'
 import { useState } from 'react'
-import { accountAPI } from '../repository/account-repository'
+import { AccountController } from '../controller/account-controller'
 import { useNavigate } from 'react-router'
 
 export default function LoginView() {
@@ -12,16 +12,15 @@ export default function LoginView() {
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
     try{
-      const account = await accountAPI.get(email, password)
+      const account = await AccountController.instance.verifyAccount(email, password)
       if (account){
-        localStorage.setItem('username', account[0].username)
-        localStorage.setItem('userId', account[0].id)
+        AccountController.loggedInUser = account.id
         navigate('/')
         window.location.reload()
         alert('Login successfully')
       }
-    } catch(error) {
-      alert('Login failed')
+    } catch (error) {
+      alert(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
       setEmail('')
       setPassword('')
     }

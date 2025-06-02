@@ -2,7 +2,7 @@ import { FormLayout, FormControl, FormGroup, FormLabel } from '../components/for
 import { Container} from 'react-bootstrap'
 import Button from '../components/button'
 import React, { useState } from 'react'
-import { accountAPI } from '../repository/account-repository'
+import { AccountController } from '../controller/account-controller'
 import { useNavigate } from 'react-router'
 
 export default function SignupView() {
@@ -11,19 +11,26 @@ export default function SignupView() {
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match')
+      return
+    }
+
     try{
-      const account = await accountAPI.create(name, email, username, password)
+      const account = await AccountController.instance.createAccount(name, email, username, password, '', '')
       if (account){
-        localStorage.setItem('username', account.username)
-        localStorage.setItem('userId', account.id)
+        AccountController.loggedInUser = account.id
         navigate('/')
         window.location.reload()
         alert('Successfully create account')
       }
-    } catch(error){
-      alert('Failed to create account. Try again.')
+    } catch (error) {
+      alert(`Failed to create account. ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
     return (
@@ -70,7 +77,10 @@ export default function SignupView() {
             <FormLabel>Confirm Password</FormLabel>
             <FormControl
             type='password'
-            placeholder='Confirm your password'/>
+            placeholder='Confirm your password'
+            value={confirmPassword}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
+            />
           </FormGroup>
           <Button type='submit' className='d-flex justify-content-center mx-auto' variant='destructive'>Create Account</Button>
         </FormLayout>

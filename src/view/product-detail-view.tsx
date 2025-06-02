@@ -1,21 +1,49 @@
 import { useQuery } from "@tanstack/react-query";
 import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router";
-import { productAPI } from "../repository/product-repository";
+import { ProductController } from "../controller/product-controller";
 import type { Product } from "../models/product";
 import Button from "../components/button";
 import { ArrowLeft, Check, Minus, Plus } from "lucide-react";
 import { useState } from "react";
-import { addProductToCart } from "../controller/cart-controller";
+import { CartController } from "../controller/cart-controller";
+import { AccountController } from "../controller/account-controller";
 
 function ProductDetailView() {
   const navigate = useNavigate()
-  let [value, setValue] = useState<number>(1)
+  const [value, setValue] = useState<number>(1)
   const {productId} = useParams<{productId: string}>()
   const {data, isLoading, error} = useQuery<Product, Error>({
     queryKey: ['product', productId],
-    queryFn: () => productAPI.getById(productId!)
+    queryFn: async () => {
+      const product = await ProductController.instance.get(productId!)
+      if (!product) throw new Error('Product not found')
+      return product
+    }
   })
+
+  const handleAddToCart = async (quantity: number) => {
+    const loggedInUser = AccountController.loggedInUser;
+    if (!loggedInUser) {
+      alert('Please login to add products to cart');
+      return;
+    }
+
+    if (!productId || !data) {
+      alert('Product not found');
+      return;
+    }
+
+    try {
+      const cart = await CartController.instance.getCart(loggedInUser);
+      await CartController.instance.addProductToCart(cart, data, quantity);
+      alert('Product added to cart!');
+    } catch (error) {
+      console.error('Failed to add product to cart:', error);
+      alert('Failed to add product to cart');
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>
   if (error) throw error
 
@@ -62,7 +90,7 @@ function ProductDetailView() {
             <Button
             className="w-100"
             variant="destructive"
-            onClick={() => addProductToCart(productId!, value)}
+            onClick={() => handleAddToCart(value)}
             >
              <Plus/> Add to Cart
             </Button>
