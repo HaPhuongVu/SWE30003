@@ -1,4 +1,6 @@
-import type { Shipment } from "../models/shipment";
+import { DeliveryShipment } from "../models/delivery-shipment";
+import { PickupShipment } from "../models/pickup-shipment";
+import type { Shipment, JointShipment } from "../models/shipment";
 import { ShipmentRepository } from "../repository/shipment-repository";
 
 class ShipmentController {
@@ -29,36 +31,63 @@ class ShipmentController {
         }
     }
 
-    async createShipment(
-        type: 'delivery' | 'pickup',
-        status: string,
-        fee: number,
-        partner?: string,
-        date?: string,
-        address?: string,
-        pickupTime?: string
-    ): Promise<Shipment> {
+    createShipmentObject(data: Partial<JointShipment>): Shipment {
         try {
-            if (type === 'delivery' && (!partner || !date || !address)) {
-                throw new Error('Partner, date, and address are required for delivery shipments');
-            } else if (type === 'pickup' && (!pickupTime || fee !== 0)) {
-                throw new Error('Pickup time must be provided and fee should be 0 for pickup shipments');
+            const { type, status, partner, deliveryDate, address, pickupTime } = data;
+            if (type === 'delivery') {
+                if (!partner || !deliveryDate || !address) throw new Error('Partner, date, and address are required for delivery shipments');
+                else {
+                    return new DeliveryShipment(
+                        null,
+                        status || 'pending',
+                        partner,
+                        new Date(deliveryDate),
+                        address
+                    );
+                }
+            } else if (type === 'pickup') {
+                if (!pickupTime) throw new Error('Pickup time must be provided and fee should be 0 for pickup shipments');
+                else {
+                    return new PickupShipment(
+                        null,
+                        status || 'pending',
+                        new Date(pickupTime)
+                    );
+                }
+            } else {
+                throw new Error(`Unknown shipment type ${type}`);
             }
+        } catch (error) {
+            throw new Error(`Failed to create shipment object: ${error}`);
+        }
+    }
+
+    async storeShipment(shipment: Shipment): Promise<Shipment> {
+        try {
             return await ShipmentRepository.instance.create(
-                type,
-                status,
-                fee,
-                partner,
-                date,
-                address,
-                pickupTime
+                shipment instanceof DeliveryShipment ? 'delivery' : 'pickup',
+                shipment.status,
+                shipment.fee,
+                shipment instanceof DeliveryShipment ? shipment.partner : undefined,
+                shipment instanceof DeliveryShipment ? shipment.deliveryDate?.toISOString() : undefined,
+                shipment instanceof DeliveryShipment ? shipment.address : undefined,
+                shipment instanceof PickupShipment ? shipment.pickupTime?.toISOString() : undefined
             );
+        } catch (error) {
+            throw new Error(`Failed to store shipment: ${error}`);
+        }
+    }
+
+    async createShipment(data: Partial<JointShipment>): Promise<Shipment> {
+        try {
+            const shipmentObject = this.createShipmentObject(data);
+            return await this.storeShipment(shipmentObject);
         } catch (error) {
             throw new Error(`Failed to create shipment: ${error}`);
         }
     }
 
-    async updateShipment(id: string, data: Partial<Shipment>): Promise<Shipment> {
+    async updateShipment(id: string, data: Partial<JointShipment>): Promise<Shipment> {
         try {
             return await ShipmentRepository.instance.update(id, data);
         } catch (error) {
