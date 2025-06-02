@@ -99,9 +99,10 @@
       "fullname": "Admin",
       "username": "Admin",
       "password": "admin123",
-      "phoneNo": "",
+      "phoneNumber": "",
       "address": "",
-      "id": "admin"
+      "id": "0001",
+      "role": "admin"
     },
     {
       "fullname": "amie",
@@ -110,25 +111,26 @@
       "password": "12345",
       "address": "3 Launder Street",
       "phoneNumber": "",
-      "id": "2915"
+      "id": "2915",
+      "role": "user"
     }
   ],
   "cart": [
     {
       "id": "9d88",
       "productId": "P06",
-      "userId": "admin",
+      "userId": "2915",
       "quantity": 1
     },
     {
       "productId": "P02",
-      "userId": "admin",
+      "userId": "2915",
       "quantity": 3,
       "id": "a412"
     },
     {
       "productId": "P03",
-      "userId": "admin",
+      "userId": "2915",
       "quantity": 4,
       "id": "9763"
     }
@@ -147,9 +149,8 @@
           "quantity": 1
         }
       ],
-      "totalBill": 6347,
-      "payment": "",
-      "shipment": "",
+      "paymentId": "",
+      "shipmentId": "",
       "status": "Pending",
       "cancellation": false
     },
@@ -174,9 +175,8 @@
           "quantity": 1
         }
       ],
-      "totalBill": 4996,
-      "payment": "",
-      "shipment": "",
+      "paymentId": "",
+      "shipmentId": "",
       "status": "Pending",
       "cancellation": false
     }
