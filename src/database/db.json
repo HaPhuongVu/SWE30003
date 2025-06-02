@@ -93,6 +93,32 @@
       "price": 599
     }
   ],
+  "catalogue": [
+    {
+      "id": "P01",
+      "quantity": 100
+    },
+    {
+      "id": "P02",
+      "quantity": 50
+    },
+    {
+      "id": "P03",
+      "quantity": 75
+    },
+    {
+      "id": "P04",
+      "quantity": 30
+    },
+    {
+      "id": "P05",
+      "quantity": 20
+    },
+    {
+      "id": "P06",
+      "quantity": 10
+    }
+  ],
   "account": [
     {
       "email": "admin@gmail.com",
@@ -138,6 +164,7 @@
   "order": [
     {
       "id": "f00c",
+      "userId": "2915",
       "orderDate": "02/06/2025",
       "items": [
         {
@@ -156,6 +183,7 @@
     },
     {
       "id": "22d6",
+      "userId": "2915",
       "orderDate": "02/06/2025",
       "items": [
         {
@@ -179,6 +207,43 @@
       "shipmentId": "",
       "status": "Pending",
       "cancellation": false
+    }
+  ],
+  "payment": [
+    {
+      "id": "0001",
+      "type": "cash",
+      "amount": 4997,
+      "date": "02/06/2025",
+      "status": "Completed"
+    },
+    {
+      "id": "0002",
+      "type": "card",
+      "amount": 4999,
+      "date": "02/06/2025",
+      "status": "Completed",
+      "cardNumber": "1234-5678-9012-3456",
+      "expiryDate": "12/26",
+      "paymentGateway": "Visa"
+    }
+  ],
+  "shipment": [
+    {
+      "id": "0001",
+      "type": "delivery",
+      "status": "Shipped",
+      "fee": 0,
+      "partner": "DHL",
+      "date": "10/06/2025",
+      "address": "3 Launder Street, Melbourne, VIC 3000"
+    },
+    {
+      "id": "0002",
+      "type": "pickup",
+      "status": "Shipped",
+      "fee": 0,
+      "pickupTime": "02/06/2025 10:00"
     }
   ]
 }
