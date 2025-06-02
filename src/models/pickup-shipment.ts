@@ -1,11 +1,12 @@
 import { Shipment } from './shipment';
 
 class PickupShipment extends Shipment {
-    pickupTime: Date;
+    pickupTime: Date | null;
 
-    constructor(id: string, status: string, pickupTime: Date) {
-        super(id, status, 0); // Pickup shipments typically have no fee
-        this.pickupTime = pickupTime;
+    constructor(id: string | null, status: string, pickupTime?: Date) {
+        super(id, status);
+        this.pickupTime = pickupTime || null;
+        this.fee = 0; // Pickup shipments typically have no fee
     }
 
     updatePickupTime(newTime: Date) {

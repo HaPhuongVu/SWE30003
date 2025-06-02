@@ -2,18 +2,23 @@ import { Shipment } from './shipment';
 
 class DeliveryShipment extends Shipment {
     partner: string;
-    date: Date;
+    deliveryDate: Date;
     address: string;
 
-    constructor(id: string, status: string, partner: string, date: Date, address: string, fee: number) {
-        super(id, status, fee);
+    constructor(id: string | null, status: string, partner: string, date: Date, address: string) {
+        super(id, status);
         this.partner = partner;
-        this.date = date;
+        this.deliveryDate = date;
         this.address = address;
+        this.fee = this.calculateFee(); // Calculate fee for delivery shipments
+    }
+
+    calculateFee(): number {
+        return 10;
     }
 
     updateDate(newDate: Date) {
-        this.date = newDate;
+        this.deliveryDate = newDate;
     }
 
     updateAddress(newAddress: string) {
