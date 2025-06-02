@@ -13,17 +13,7 @@ class OrderRepository {
         return OrderRepository._instance;
     }
 
-    async get(userId: string): Promise<Order[]> {
-        try {
-            const response = await fetch(`${this.baseUrl}?userId=${userId}`)
-            if (!response.ok) throw new Error('Failed to fetch orders')
-            return response.json()
-        } catch (error) {
-            throw new Error(`Failed to get order data: ${error}`)
-        }
-    }
-
-    async getById(orderId: string): Promise<Order> {
+    async getById(orderId: string): Promise<Order | null> {
         try {
             const response = await fetch(`${this.baseUrl}/${orderId}`)
             if (!response.ok) throw new Error(`Failed to fetch order ${orderId}`)
@@ -33,11 +23,21 @@ class OrderRepository {
         }
     }
 
+    async getByUserId(userId: string): Promise<Order[]> {
+        try {
+            const response = await fetch(`${this.baseUrl}?userId=${userId}`)
+            if (!response.ok) throw new Error('Failed to fetch orders')
+            return response.json()
+        } catch (error) {
+            throw new Error(`Failed to get order data: ${error}`)
+        }
+    }
+
     async create(
+        userId: string,
         items: { productId: string, quantity: number }[],
-        totalBill: number,
-        payment: string,
-        shipment: string,
+        paymentId: string,
+        shipmentId: string,
         status: string,
         cancellation: boolean
     ): Promise<Order> {
@@ -47,11 +47,11 @@ class OrderRepository {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    userId,
                     orderDate: today,
                     items,
-                    totalBill,
-                    payment,
-                    shipment,
+                    paymentId,
+                    shipmentId,
                     status,
                     cancellation
                 })
@@ -60,6 +60,23 @@ class OrderRepository {
             return response.json();
         } catch (error) {
             throw new Error(`Failed to create new order: ${error}`);
+        }
+    }
+
+    async update(
+        orderId: string,
+        data: Partial<Order>
+    ): Promise<Order> {
+        try {
+            const response = await fetch(`${this.baseUrl}/${orderId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error(`Failed to update order ${orderId}`);
+            return response.json();
+        } catch (error) {
+            throw new Error(`Failed to update order: ${error}`);
         }
     }
 
