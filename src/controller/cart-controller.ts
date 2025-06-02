@@ -1,69 +1,90 @@
-import { queryClient } from "../main"
-import type { Cart } from "../models/cart";
-import { cartAPI } from "../repository/cart-repository"
-import { orderAPI } from "../repository/order-repository";
-import { USERID } from "./account-controller"
+// import { queryClient } from "../main"
+import { Cart } from "../models/cart"
+import { Product } from "../models/product";
+import { CartRepository } from "../repository/cart-repository"
+import { ProductRepository } from "../repository/product-repository"
+import type { CartItem } from "../models/cart"
 
-export const addProductToCart = async (productId: string,  quantity: number = 1) => {
-  if(USERID){
-    try{
-      const cartItems = await cartAPI.getCart();
-      const existItem = cartItems.find((item: {productId: string}) => item.productId === productId)
-      let addedQuantity = quantity
-      if (existItem){
-        addedQuantity = existItem.quantity + quantity
-        await cartAPI.updateCart(existItem.id, productId, addedQuantity)
-      } else {
-        await cartAPI.addProductToCart(productId, quantity)
+class CartController {
+  private static _instance: CartController;
+
+  private constructor() {}
+
+  static get instance(): CartController {
+    if (!CartController._instance) {
+      CartController._instance = new CartController();
+    }
+    return CartController._instance;
+  }
+
+  async getCart(userId: string): Promise<Cart> {
+    const cart = new Cart(userId);
+
+    const cartItems = await CartRepository.instance.getByUserId(userId);
+    cartItems.forEach(async (item: CartItem) => {
+      const product = await ProductRepository.instance.getById(item.productId);
+      if (product) {
+        cart.addItem(product, item.quantity);
       }
-      alert('Product successfully added')
-    } catch(error){
-      alert(`Error, try again! ${error}`)
+    });
+    return cart;
+  }
+
+  async addProductToCart(cart: Cart, product: Product, quantity: number = 1): Promise<Cart> {
+    try {
+      if (cart.containsProduct(product)) {
+        const addedQuantity = cart.getItemQuantity(product) + quantity;
+        await CartRepository.instance.update(cart.userId, product.id, addedQuantity);
+      } else {
+        await CartRepository.instance.addProduct(cart.userId, product.id, quantity);
+      }
+      cart.addItem(product, quantity);
+      return cart;
+    } catch (error) {
+      throw new Error(`Failed to add product to cart: ${error}`);
     }
-  } else {
-    alert('You need to login to add product')
   }
-}
 
-export const removeProductInCart = async(cartId: string) => {
-    try{
-        await cartAPI.removeProductInCart(cartId)
-        queryClient.invalidateQueries({queryKey: ['cart']})
-    } catch(error){
-        alert(`Error, try again! ${error}`)
+  async removeProductInCart(cart: Cart, product: Product): Promise<Cart> {
+    try {
+      await CartRepository.instance.removeProduct(cart.userId, product.id);
+      cart.removeItem(product);
+      return cart;
+    } catch (error) {
+      throw new Error(`Failed to remove product from cart: ${error}`);
     }
-}
+  }
 
-export const emptyCart = (cartItems: Cart[]) => {
-  try{
-    cartItems.map((item) => (
-      cartAPI.removeProductInCart(item?.id)
-    ))
-  }catch(error){
-    alert ('Order failed!')
+  async emptyCart(cart: Cart): Promise<Cart> {
+    try {
+      await Promise.all(
+        cart.items.map((item) => CartRepository.instance.removeProduct(cart.userId, item.product.id))
+      );
+      cart.clear();
+      return cart;
+    } catch {
+      throw new Error('Failed to empty cart!');
+    }
+  }
+
+  calculateTotal(cart: Cart): number {
+    return Number(cart.getSubtotalPrice().toFixed(2));
   }
 }
 
-export const totalCart = (cartItems: Cart[], productData: any) => {
-  let total = 0;
-  cartItems?.forEach((item, index) => {
-    const product = productData[index]?.data;
-    total += (product?.price ?? 0) * item.quantity;
-  });
-  return Number(total.toFixed(2));
-}
+export { CartController };
 
-export const handleCheckout = async(cartItems: Cart[], productData: any) => {
-  try{
-    const orderItems = cartItems?.map(item => ({
-      productId: item.productId,
-      quantity: item.quantity
-    }))
-    await orderAPI.create(orderItems!, totalCart(cartItems, productData), "", "", "Pending", false)
-    emptyCart(cartItems!)
-    alert('Order success')
-    window.location.reload()
-  } catch(error){
-    alert('Order failed. Please try again')
-  }
-}
+// export const handleCheckout = async(cartItems: Cart[], productData: any) => {
+//   try{
+//     const orderItems = cartItems?.map(item => ({
+//       productId: item.productId,
+//       quantity: item.quantity
+//     }))
+//     await orderAPI.create(orderItems!, totalCart(cartItems, productData), "", "", "Pending", false)
+//     emptyCart(cartItems!)
+//     alert('Order success')
+//     window.location.reload()
+//   } catch(error){
+//     alert('Order failed. Please try again')
+//   }
+// }
