@@ -1,5 +1,10 @@
 import { Product } from './product';
 
+type CatalogueItem = {
+    id: string;
+    quantity: number;
+}
+
 class Catalogue {
     items: {product: Product, quantity: number}[];
 
@@ -11,16 +16,16 @@ class Catalogue {
         this.items.push({ product, quantity });
     }
 
-    removeItem(productId: string) {
-        this.items = this.items.filter(item => item.product.id !== productId);
+    removeItem(product: Product) {
+        this.items = this.items.filter(item => item.product.id !== product.id);
     }
 
     getItems() {
         return this.items;
     }
 
-    updateItemQuantity(productId: string, quantity: number) {
-        const item = this.items.find(item => item.product.id === productId);
+    updateItemQuantity(product: Product, quantity: number) {
+        const item = this.items.find(item => item.product.id === product.id);
         if (item) {
             item.quantity = quantity;
         }
@@ -28,3 +33,4 @@ class Catalogue {
 }
 
 export { Catalogue };
+export type { CatalogueItem };
