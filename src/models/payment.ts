@@ -1,3 +1,14 @@
+type JointPayment = {
+    id: string,
+    type: 'card' | 'cash',
+    amount: number,
+    date: Date | string,
+    status: string,
+    cardNumber?: string,
+    expiryDate?: string,
+    paymentGateway?: string
+};
+
 abstract class Payment {
     id: string;
     amount: number;
@@ -23,3 +34,4 @@ abstract class Payment {
 }
 
 export { Payment };
+export type { JointPayment };

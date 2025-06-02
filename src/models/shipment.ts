@@ -1,3 +1,14 @@
+type JointShipment = {
+    id: string;
+    type: 'delivery' | 'pickup';
+    status: string;
+    fee: number;
+    pickupTime?: Date | string;
+    partner?: string;
+    date?: Date | string;
+    address?: string;
+};
+
 abstract class Shipment {
     id: string;
     status: string;
@@ -15,3 +26,4 @@ abstract class Shipment {
 }
 
 export { Shipment };
+export type { JointShipment };
