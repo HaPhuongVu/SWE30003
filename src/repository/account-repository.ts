@@ -17,7 +17,8 @@ class AccountRepository {
         try {
             const response = await fetch(`${this.baseUrl}?email=${email}&password=${password}`)
             if (!response.ok) throw new Error('Failed to fetch account')
-            return response.json()
+            const accounts = await response.json()
+            return accounts.length > 0 ? accounts[0] : null
         } catch (error) {
             throw new Error(`Failed to get account: ${error}`)
         }
