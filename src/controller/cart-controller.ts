@@ -21,12 +21,17 @@ class CartController {
     const cart = new Cart(userId);
 
     const cartItems = await CartRepository.instance.getByUserId(userId);
-    cartItems.forEach(async (item: CartItem) => {
-      const product = await ProductRepository.instance.getById(item.productId);
-      if (product) {
-        cart.addItem(product, item.quantity);
-      }
-    });
+
+    // Use Promise.all to wait for all async operations to complete
+    await Promise.all(
+      cartItems.map(async (item: CartItem) => {
+        const product = await ProductRepository.instance.getById(item.productId);
+        if (product) {
+          cart.addItem(product, item.quantity);
+        }
+      })
+    );
+
     return cart;
   }
 
