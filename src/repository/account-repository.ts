@@ -43,6 +43,8 @@ class AccountRepository {
         phoneNumber: string
     ): Promise<Account> {
         try {
+            const existingAccount = await (await fetch(`${this.baseUrl}?email=${email}`)).json()
+            if (existingAccount.length > 0) throw new Error('Account with this email already exists')
             const response = await fetch(`${this.baseUrl}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
