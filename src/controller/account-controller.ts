@@ -1,39 +1,18 @@
 import { Account } from "../models/account"
 import { Cart } from "../models/cart";
+import type { NotificationObserver } from "../models/notification-observer";
 import { AccountRepository } from "../repository/account-repository"
 import { CartController } from "./cart-controller";
-
-// export const USERID = localStorage.getItem('userId')
-// export const USERNAME = localStorage.getItem('username')
-
-
-// export const handleSubmit = async(
-//     e: React.FormEvent,
-//     userData: Account,
-//     fullName: string,
-//     email: string,
-//     username: string,
-//     password: string,
-//     address: string,
-//     phoneNumber: string
-// ) => {
-//     e.preventDefault()
-//     try{
-//         if (!userData) return null
-//         const response = await AccountRepository.instance.update(userData.id, fullName, email, username, password, address, phoneNumber)
-//         if (response) {
-//             alert("Updated!")
-//             window.location.reload()
-//         }
-//     }catch(error){
-//         throw new Error(`Faild to update account ${error}`)
-//     }
-// }
+import { NotificationController } from "./notification-controller";
 
 class AccountController {
     private static _instance: AccountController;
 
-    private constructor() {}
+    observers: NotificationObserver[] = [];
+
+    private constructor() {
+        this.subscribe(NotificationController.instance);
+    }
 
     static get instance(): AccountController {
         if (!AccountController._instance) {
@@ -49,8 +28,10 @@ class AccountController {
     static set loggedInUser(user: string | null) {
         if (user) {
             localStorage.setItem('userId', user);
+            this.instance.notify(`User ${user} logged in successfully.`);
         } else {
             localStorage.removeItem('userId');
+            this.instance.notify('User logged out successfully.');
         }
     }
 
@@ -75,6 +56,7 @@ class AccountController {
         if (account.role === 'customer') {
             account.cart = new Cart(account.id);
         }
+        this.notify(`Account ${account.id} created successfully.`);
         return account;
     }
 
@@ -101,7 +83,26 @@ class AccountController {
         address: string,
         phoneNumber: string
     ): Promise<Account> {
-        return AccountRepository.instance.update(id, {fullname, email, username, password, address, phoneNumber});
+        const updatedAccount = await AccountRepository.instance.update(id, {fullname, email, username, password, address, phoneNumber});
+        this.notify(`Account ${id} updated successfully.`);
+        return updatedAccount;
+    }
+
+    subscribe(observer: NotificationObserver): void {
+        if (!this.observers.includes(observer)) {
+            this.observers.push(observer);
+        }
+    }
+
+    unsubscribe(observer: NotificationObserver): void {
+        const index = this.observers.indexOf(observer);
+        if (index !== -1) {
+            this.observers.splice(index, 1);
+        }
+    }
+
+    notify(notification: string): void {
+        this.observers.forEach(observer => observer.update(notification));
     }
 }
 
