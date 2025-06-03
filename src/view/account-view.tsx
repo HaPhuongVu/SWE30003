@@ -34,6 +34,18 @@ const validatePassword = (password: string): boolean => {
     return password.length >= 8 && password.length <= 12 && hasAlpha && hasNumber && hasSpecialChar;
 };
 
+const validatePhoneNumber = (phone: string): boolean => {
+    // Allow digits only
+    const phoneRegex = /^[\d]+$/;
+    return phoneRegex.test(phone) && phone.trim().length == 10;
+};
+
+const validateAddress = (address: string): boolean => {
+    // Allow alphanumeric, comma, slash, and space
+    const addressRegex = /^[A-Za-z0-9,/\s]+$/;
+    return addressRegex.test(address) && address.trim().length > 0;
+};
+
 export default function AccountView() {
     const navigate = useNavigate()
     const {data: userData} = useQuery<Account, Error>({
@@ -81,14 +93,15 @@ export default function AccountView() {
     const [email, setEmail] = useState(userData?.email ?? "")
     const [username, setUsername] = useState(userData?.username ?? "")
     const [address, setAddress] = useState(userData?.address ?? "")
-    const [phoneNumber, setPhoneNumber] = useState(userData?.phoneNumber ?? "")
-      // Validation error states
+    const [phoneNumber, setPhoneNumber] = useState(userData?.phoneNumber ?? "")    // Validation error states
     const [errors, setErrors] = useState({
         fullName: "",
         email: "",
         username: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        phoneNumber: "",
+        address: ""
     });
 
     useEffect(() => {
@@ -130,6 +143,12 @@ export default function AccountView() {
                 if (!value) return "Password confirmation is required";
                 if (value !== password) return "Passwords do not match";
                 return "";
+            case 'phoneNumber':
+                if (value.trim() && !validatePhoneNumber(value)) return "Phone number must be 10 digits";
+                return "";
+            case 'address':
+                if (value.trim() && !validateAddress(value)) return "Address must contain only letters, numbers, commas, slashes, and spaces";
+                return "";
             default:
                 return "";
         }
@@ -142,7 +161,9 @@ export default function AccountView() {
             email: validateField('email', email),
             username: validateField('username', username),
             password: validateField('password', password),
-            confirmPassword: validateField('confirmPassword', confirmPassword)
+            confirmPassword: validateField('confirmPassword', confirmPassword),
+            phoneNumber: validateField('phoneNumber', phoneNumber),
+            address: validateField('address', address)
         };
 
         setErrors(newErrors);
@@ -275,20 +296,32 @@ export default function AccountView() {
                 </Row>
                 <Row className='mt-3'>
                 <Col className='col-12'>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel>Address (Optional)</FormLabel>
                     <FormControl
                     value={address}
                     type="text"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setAddress(e.target.value);
+                        clearError('address');
+                    }}
+                    className={errors.address ? 'border-danger' : ''}
                     />
+                    {errors.address && <div className="text-danger small mt-1">{errors.address}</div>}
+                    <div className="text-muted small mt-1">Optional - Letters, numbers, commas, slashes, and spaces only</div>
                 </Col>
                 <Col className='col-12 mt-3'>
-                    <FormLabel>Contact number</FormLabel>
+                    <FormLabel>Contact number (Optional)</FormLabel>
                     <FormControl
                     value={phoneNumber}
-                    type="text"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)}
+                    type="tel"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setPhoneNumber(e.target.value);
+                        clearError('phoneNumber');
+                    }}
+                    className={errors.phoneNumber ? 'border-danger' : ''}
                     />
+                    {errors.phoneNumber && <div className="text-danger small mt-1">{errors.phoneNumber}</div>}
+                    <div className="text-muted small mt-1">Optional - 10 digits only</div>
                 </Col>
                 </Row>
                 <Button className='text-end mt-3' variant='destructive' type='submit'>Save changes</Button>
