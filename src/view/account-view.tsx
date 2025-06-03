@@ -11,6 +11,29 @@ import { OrderController } from '../controller/order-controller'
 import { AccountController } from '../controller/account-controller'
 import type { Order } from '../models/order'
 
+// Validation functions
+const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
+const validateFullName = (name: string): boolean => {
+    const nameRegex = /^[A-Za-z\s]+$/;
+    return nameRegex.test(name) && name.trim().length > 0 && name.trim().length <= 50;
+};
+
+const validateUsername = (username: string): boolean => {
+    const usernameRegex = /^[A-Za-z0-9]+$/;
+    return usernameRegex.test(username) && username.length >= 8 && username.length <= 12;
+};
+
+const validatePassword = (password: string): boolean => {
+    const hasAlpha = /[A-Za-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
+    return password.length >= 8 && password.length <= 12 && hasAlpha && hasNumber && hasSpecialChar;
+};
+
 export default function AccountView() {
     const navigate = useNavigate()
     const {data: userData} = useQuery<Account, Error>({
@@ -51,32 +74,91 @@ export default function AccountView() {
         onError: (error: Error) => {
             alert(`Failed to update account: ${error.message}`);
         }
-    });
-
-    const [dashboard, setDashboard] = useState(true)
+    });    const [dashboard, setDashboard] = useState(true)
     const [fullName, setFullName] = useState(userData?.fullname ?? "")
     const [password, setPassword] = useState(userData?.password ?? "")
+    const [confirmPassword, setConfirmPassword] = useState("")
     const [email, setEmail] = useState(userData?.email ?? "")
     const [username, setUsername] = useState(userData?.username ?? "")
     const [address, setAddress] = useState(userData?.address ?? "")
     const [phoneNumber, setPhoneNumber] = useState(userData?.phoneNumber ?? "")
+      // Validation error states
+    const [errors, setErrors] = useState({
+        fullName: "",
+        email: "",
+        username: "",
+        password: "",
+        confirmPassword: ""
+    });
 
     useEffect(() => {
-    if (userData) {
-        setFullName(userData.fullname);
-        setPassword(userData.password);
-        setEmail(userData.email);
-        setUsername(userData.username);
-        setAddress(userData.address ?? "");
-        setPhoneNumber(userData.phoneNumber ?? "");
-    }
+        if (userData) {
+            setFullName(userData.fullname);
+            setPassword(userData.password);
+            setEmail(userData.email);
+            setUsername(userData.username);
+            setAddress(userData.address ?? "");
+            setPhoneNumber(userData.phoneNumber ?? "");
+        }
     }, [userData]);
 
+    // Clear specific error when user starts typing
+    const clearError = (field: string) => {
+        setErrors(prev => ({ ...prev, [field]: "" }));
+    };
 
-    function handleSubmit(e: FormEvent<Element>, userData: Account, fullName: string, email: string, username: string, password: string, address: string, phoneNumber: string) {
+    // Validate individual fields
+    const validateField = (field: string, value: string): string => {
+        switch (field) {
+            case 'fullName':
+                if (!value.trim()) return "Full name is required";
+                if (!validateFullName(value)) return "Full name must contain only letters and spaces, max 50 characters";
+                return "";
+            case 'email':
+                if (!value.trim()) return "Email is required";
+                if (!validateEmail(value)) return "Please enter a valid email address";
+                return "";
+            case 'username':
+                if (!value.trim()) return "Username is required";
+                if (!validateUsername(value)) return "Username must be 8-12 characters, alphanumeric only";
+                return "";
+            case 'password':
+                if (!value) return "Password is required";
+                if (!validatePassword(value)) return "Password must be 8-12 characters with letters, numbers, and special characters";
+                return "";
+            case 'confirmPassword':
+                if (!value) return "Password confirmation is required";
+                if (value !== password) return "Passwords do not match";
+                return "";
+            default:
+                return "";
+        }
+    };
+
+    // Validate all fields
+    const validateForm = (): boolean => {
+        const newErrors = {
+            fullName: validateField('fullName', fullName),
+            email: validateField('email', email),
+            username: validateField('username', username),
+            password: validateField('password', password),
+            confirmPassword: validateField('confirmPassword', confirmPassword)
+        };
+
+        setErrors(newErrors);
+        return Object.values(newErrors).every(error => error === "");
+    };
+
+    function handleSubmit(e: FormEvent<Element>) {
         e.preventDefault();
+
         if (!userData) {
             alert('User data is not available.');
+            return;
+        }
+
+        // Validate form before submission
+        if (!validateForm()) {
             return;
         }
 
@@ -116,52 +198,79 @@ export default function AccountView() {
             </Col>
             <Col className='col-8 ms-3'>
             {dashboard ? (
-                <>
+            <>
             <h4 className='fw-bold'>Your information</h4>
-                <FormLayout
-                onSubmit={(e: React.FormEvent) => handleSubmit(
-                    e,
-                    userData!,
-                    fullName,
-                    email,
-                    username,
-                    password,
-                    address,
-                    phoneNumber)}>
-                <Row>
-                <Col className='col-6'>
+            <FormLayout onSubmit={handleSubmit}>
+                <Row>                <Col className='col-6'>
                     <FormLabel>Fullname</FormLabel>
                     <FormControl
-                    value={fullName}
-                    type="text"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFullName(e.target.value)}
+                        value={fullName}
+                        type="text"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setFullName(e.target.value);
+                            clearError('fullName');
+                        }}
+                        className={errors.fullName ? 'border-danger' : ''}
                     />
-                </Col>
-                <Col className='col-6'>
+                    {errors.fullName && <div className="text-danger small mt-1">{errors.fullName}</div>}
+                </Col>                <Col className='col-6'>
                     <FormLabel>Email</FormLabel>
                     <FormControl
-                    value={email}
-                    type="text"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                        value={email}
+                        type="email"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setEmail(e.target.value);
+                            clearError('email');
+                        }}
+                        className={errors.email ? 'border-danger' : ''}
                     />
+                    {errors.email && <div className="text-danger small mt-1">{errors.email}</div>}
                 </Col>
                 </Row>
-                <Row className='mt-3'>
-                <Col className='col-6'>
+                <Row className='mt-3'>                <Col className='col-6'>
                     <FormLabel>Username</FormLabel>
                     <FormControl
-                    value={username}
-                    type="text"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                        value={username}
+                        type="text"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setUsername(e.target.value);
+                            clearError('username');
+                        }}
+                        className={errors.username ? 'border-danger' : ''}
                     />
-                </Col>
-                <Col className='col-6'>
+                    {errors.username && <div className="text-danger small mt-1">{errors.username}</div>}
+                    <div className="text-muted small mt-1">8-12 characters, alphanumeric only</div>
+                </Col>                <Col className='col-6'>
                     <FormLabel>Password</FormLabel>
                     <FormControl
-                    value={password}
-                    type="password"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        value={password}
+                        type="password"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setPassword(e.target.value);
+                            clearError('password');
+                            if (confirmPassword) clearError('confirmPassword'); // Clear confirm password error when password changes
+                        }}
+                        className={errors.password ? 'border-danger' : ''}
                     />
+                    {errors.password && <div className="text-danger small mt-1">{errors.password}</div>}
+                    <div className="text-muted small mt-1">8-12 characters with letters, numbers, and special characters</div>
+                </Col>                </Row>
+                <Row className='mt-3'>
+                <Col className='col-6'>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl
+                        value={confirmPassword}
+                        type="password"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setConfirmPassword(e.target.value);
+                            clearError('confirmPassword');
+                        }}
+                        className={errors.confirmPassword ? 'border-danger' : ''}
+                    />
+                    {errors.confirmPassword && <div className="text-danger small mt-1">{errors.confirmPassword}</div>}
+                </Col>
+                <Col className='col-6'>
+                    {/* Empty column for spacing */}
                 </Col>
                 </Row>
                 <Row className='mt-3'>
