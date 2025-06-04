@@ -2,7 +2,7 @@ import { Product } from './product';
 
 type CatalogueItem = {
     id: string;
-    quantity: number;
+    availableQuantity: number;
 }
 
 class Catalogue {
@@ -22,6 +22,11 @@ class Catalogue {
 
     getItems() {
         return this.items;
+    }
+
+    getItemQuantity(product: Product): number {
+        const item = this.items.find(item => item.product.id === product.id);
+        return item ? item.quantity : 0;
     }
 
     updateItemQuantity(product: Product, quantity: number) {

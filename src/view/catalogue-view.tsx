@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { Col, Container, Row } from 'react-bootstrap'
-import { Product } from '../models/product'
 import { CatalogueController } from '../controller/catalogue-controller'
 import { ProductController } from '../controller/product-controller'
 import { Card, CardContent, CardImage, CardHeader } from '../components/card'
@@ -9,12 +8,13 @@ import { ShoppingCart } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { CartController } from '../controller/cart-controller'
 import { AccountController } from '../controller/account-controller'
+import type { Catalogue } from '../models/catalogue'
 
 export default function CatalogueView() {
   const navigate = useNavigate()
-  const {data, error, isLoading} = useQuery<Product[], Error>({
-    queryKey: ['products'],
-    queryFn: () => CatalogueController.instance.getAllProducts()
+  const {data, error, isLoading} = useQuery<Catalogue, Error>({
+    queryKey: ['catalogue'],
+    queryFn: () => CatalogueController.instance.getCatalogue()
   })
 
   const handleAddToCart = async (productId: string) => {
@@ -50,26 +50,26 @@ export default function CatalogueView() {
         </Col>
       </Row>
       <Row className='text-center'>
-        {data?.map((product) => (
+        {data?.items.map((catalogueItem) => (
           <Col className='col-4 mb-5'>
           <Card className='text-start'>
-            <CardImage className='mx-auto w-50 h-50' src={product.image} alt={product.id}></CardImage>
-            <CardHeader className='fs-5 border-0'>{product.name}</CardHeader>
+            <CardImage className='mx-auto w-50 h-50' src={catalogueItem.product.image} alt={catalogueItem.product.id}></CardImage>
+            <CardHeader className='fs-5 border-0'>{catalogueItem.product.name}</CardHeader>
             <CardContent>
-              {product.shortDescription}
-              <p className='mt-3 fw-bold text-dark'>${product.price.toFixed(2)}</p>
+              {catalogueItem.product.shortDescription}
+              <p className='mt-3 fw-bold text-dark'>${catalogueItem.product.price.toFixed(2)}</p>
               <Row>
                 <Col>
                   <Button variant='destructive'
                   className="w-100"
-                  onClick={() => navigate(`/product/${product.id}`)}>
+                  onClick={() => navigate(`/product/${catalogueItem.product.id}`)}>
                     More Details
                   </Button>
                 </Col>
                 <Col>
                   <Button
                   variant='destructive'
-                  className="w-100" onClick={() => handleAddToCart(product.id)}>
+                  className="w-100" onClick={() => handleAddToCart(catalogueItem.product.id)}>
                   <ShoppingCart/> Add to Cart
                   </Button>
                 </Col>

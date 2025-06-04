@@ -1,3 +1,4 @@
+import { Catalogue } from "../models/catalogue";
 import { Category } from "../models/category";
 import { Product } from "../models/product";
 import { CatalogueRepository } from "../repository/catalogue-repository";
@@ -15,10 +16,18 @@ class CatalogueController {
         return CatalogueController._instance;
     }
 
-    async getAllProducts(): Promise<Product[]> {
-        const productItems = await CatalogueRepository.instance.getAll();
-        const products = await Promise.all(productItems.map(item => ProductController.instance.get(item.id)));
-        return products.filter((product: Product | null): product is Product => product !== null);
+    async getCatalogue(): Promise<Catalogue> {
+        const catalogueItems = await CatalogueRepository.instance.getAll();
+        const products = await Promise.all(catalogueItems.map(item => ProductController.instance.get(item.id)));
+        const availableProducts = products.filter((product: Product | null): product is Product => product !== null);
+        const catalogue = new Catalogue();
+        availableProducts.forEach(product => {
+            const item = catalogueItems.find(item => item.id === product.id);
+            if (item) {
+                catalogue.addItem(product, item.availableQuantity);
+            }
+        });
+        return catalogue;
     }
 
     async createProduct(

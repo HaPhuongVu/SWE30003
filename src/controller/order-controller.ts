@@ -9,6 +9,7 @@ import { ShipmentController } from "./shipment-controller";
 import { PaymentController } from "./payment-controller";
 import { Receipt } from "../models/receipt";
 import { ProductController } from "./product-controller";
+import { CatalogueController } from "./catalogue-controller";
 
 class OrderController {
     private static _instance: OrderController;
@@ -117,6 +118,12 @@ class OrderController {
             throw new Error("Cart is empty");
         }
 
+        const catalogue = await CatalogueController.instance.getCatalogue();
+
+        if (cart.items.some(item => catalogue.getItemQuantity(item.product) < item.quantity)) {
+            throw new Error("One or more products are not available");
+        }
+
         const order = new Order(user.id);
 
         cart.items.forEach(item => {
@@ -157,8 +164,9 @@ class OrderController {
             storedShipment
         );
 
-        console.log(user);
-        console.log(createdOrder);
+        order.items.forEach(item => {
+            CatalogueController.instance.updateProductQuantity(item.product, catalogue.getItemQuantity(item.product) - item.quantity);
+        });
 
         await CartController.instance.emptyCart(user.cart!);
 
