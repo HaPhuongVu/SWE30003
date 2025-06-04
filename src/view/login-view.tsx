@@ -36,9 +36,9 @@ export default function LoginView() {
 
     if (isError) return;
 
-    try{
+    try {
       const account = await AccountController.instance.verifyAccount(email, password)
-      if (account){
+      if (account) {
         AccountController.loggedInUser = account.id
         navigate('/')
         window.location.reload()

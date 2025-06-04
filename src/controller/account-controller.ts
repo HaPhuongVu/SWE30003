@@ -139,16 +139,16 @@ class AccountController {
 
     validateForm(data: Partial<FormValidation>): FormValidation {
         return {
-            fullName: data.fullName ? this.validateField('fullName', data.fullName) : "",
-            email: data.email ? this.validateField('email', data.email) : "",
-            username: data.username ? this.validateField('username', data.username) : "",
-            password: data.password ? this.validateField('password', data.password) : "",
-            confirmPassword: data.confirmPassword ? this.validateField('confirmPassword', data.confirmPassword, data.password) : "",
-            phoneNumber: data.phoneNumber ? this.validateField('phoneNumber', data.phoneNumber) : "",
-            address: data.address ? this.validateField('address', data.address) : ""
+            fullName: data.fullName !== undefined ? this.validateField('fullName', data.fullName) : "",
+            email: data.email !== undefined ? this.validateField('email', data.email) : "",
+            username: data.username !== undefined ? this.validateField('username', data.username) : "",
+            password: data.password !== undefined ? this.validateField('password', data.password) : "",
+            confirmPassword: data.confirmPassword !== undefined ? this.validateField('confirmPassword', data.confirmPassword, data.password) : "",
+            phoneNumber: data.phoneNumber !== undefined ? this.validateField('phoneNumber', data.phoneNumber) : "",
+            address: data.address !== undefined ? this.validateField('address', data.address) : ""
         };
-
     };
+    
 
     /**
      * Fetches and verifies the account by email and password.
