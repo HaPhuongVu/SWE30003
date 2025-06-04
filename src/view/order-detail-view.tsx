@@ -18,6 +18,7 @@ export default function OrderDetailView() {
     queryFn: async () => {
       const order = await OrderController.instance.getOrderById(orderId!)
       if (!order) throw new Error('Order not found')
+        console.log(order)
       return order
     },
     enabled: !!orderId

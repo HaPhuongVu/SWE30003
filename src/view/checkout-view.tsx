@@ -28,7 +28,7 @@ export default function CheckOutView() {
 
   async function handleSubmit(e: FormEvent<Element>) {
     e.preventDefault();
-    let cardData = {
+    const cardData = {
       visaNumber: paymentMethod === "Visa" ? cardNumber : undefined,
       creditNumber: paymentMethod === "Credit Card" ? cardNumber : undefined,
       mastercardNumber: paymentMethod === "Mastercard" ? cardNumber : undefined
@@ -44,7 +44,7 @@ export default function CheckOutView() {
         ...(paymentMethod !== "Cash" && {
           cardNumber,
           expiryDate: new Date().toISOString(),
-          paymentGateway: "",
+          paymentGateway: "Tyro",
         }),
       }
 
@@ -55,6 +55,10 @@ export default function CheckOutView() {
         partner: shipmentMethod === "Delivery" ? "Australia Post" : undefined,
         deliveryDate: shipmentMethod === "Delivery" ? new Date().toLocaleString('en') : undefined,
       }
+
+      console.log("Payment Details:", paymentDetails);
+      console.log("Shipment Details:", shipmentDetails);
+
       await OrderController.instance.checkout(paymentDetails, shipmentDetails)
       alert("Order placed successfully!");
     } catch (error) {

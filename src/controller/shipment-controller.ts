@@ -35,25 +35,22 @@ class ShipmentController {
         try {
             const { type, status, partner, deliveryDate, address, pickupTime } = data;
             if (type === 'delivery') {
-                if (!partner || !deliveryDate || !address) throw new Error('Partner, date, and address are required for delivery shipments');
+                if (!partner || !address) throw new Error('Partner and address are required for delivery shipments');
                 else {
                     return new DeliveryShipment(
                         null,
                         status || 'pending',
                         partner,
-                        new Date(deliveryDate),
-                        address
+                        address,
+                        deliveryDate ? new Date(deliveryDate) : undefined
                     );
                 }
             } else if (type === 'pickup') {
-                if (!pickupTime) throw new Error('Pickup time must be provided and fee should be 0 for pickup shipments');
-                else {
-                    return new PickupShipment(
-                        null,
-                        status || 'pending',
-                        new Date(pickupTime)
-                    );
-                }
+                return new PickupShipment(
+                    null,
+                    status || 'pending',
+                    pickupTime ? new Date(pickupTime) : undefined
+                );
             } else {
                 throw new Error(`Unknown shipment type ${type}`);
             }

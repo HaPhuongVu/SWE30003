@@ -1,4 +1,4 @@
-import { Order } from "../models/order";
+import { Order, type OrderJSON } from "../models/order";
 import type { Product } from "../models/product";
 import type { JointPayment, Payment } from "../models/payment";
 import { Shipment, type JointShipment } from "../models/shipment";
@@ -8,6 +8,7 @@ import { CartController } from "./cart-controller";
 import { ShipmentController } from "./shipment-controller";
 import { PaymentController } from "./payment-controller";
 import { Receipt } from "../models/receipt";
+import { ProductController } from "./product-controller";
 
 class OrderController {
     private static _instance: OrderController;
@@ -21,6 +22,30 @@ class OrderController {
         return OrderController._instance;
     }
 
+    async parseOrderJSON(orderjson: OrderJSON): Promise<Order> {
+        return new Order(
+            orderjson.userId,
+            orderjson.id,
+            new Date(orderjson.orderDate),
+            await Promise.all(
+                orderjson.items.map(async item => {
+                    const product = await ProductController.instance.get(item.productId);
+                    if (!product) {
+                        throw new Error(`Product not found: ${item.productId}`);
+                    }
+                    return {
+                        product,
+                        quantity: item.quantity
+                    };
+                })
+            ),
+            await PaymentController.instance.getPaymentById(orderjson.paymentId),
+            await ShipmentController.instance.getShipmentById(orderjson.shipmentId),
+            orderjson.status,
+            orderjson.cancellation
+        );
+    }
+
     async createOrder(
         userId: string,
         products: { product: Product; quantity: number }[],
@@ -32,15 +57,18 @@ class OrderController {
             quantity: item.quantity,
         }));
         const order = await OrderRepository.instance.create(userId, items, payment.id!, shipment.id!, "Pending", false);
-        return order;
+        return this.parseOrderJSON(order);
     }
 
     async getOrderById(orderId: string): Promise<Order | null> {
-        return await OrderRepository.instance.getById(orderId);
+        const orderjson = await OrderRepository.instance.getById(orderId);
+        if (!orderjson) return null;
+        return this.parseOrderJSON(orderjson);
     }
 
     async getOrdersByUser(userId: string): Promise<Order[]> {
-        return await OrderRepository.instance.getByUserId(userId);
+        const orders = await OrderRepository.instance.getByUserId(userId);
+        return Promise.all(orders.map(order => this.parseOrderJSON(order)));
     }
 
     async updateOrder(orderId: string, data: Partial<Order>): Promise<void> {
@@ -110,9 +138,9 @@ class OrderController {
         if (paymentDetails.type === "card") {
             paymentDetails = {
                 ...paymentDetails,
-                cardNumber: paymentDetails.cardNumber || "",
+                cardNumber: paymentDetails.cardNumber,
                 expiryDate: paymentDetails.expiryDate || new Date().toISOString(),
-                paymentGateway: "",
+                paymentGateway: paymentDetails.paymentGateway || "Tyro",
             };
         }
 
@@ -128,6 +156,9 @@ class OrderController {
             storedPayment,
             storedShipment
         );
+
+        console.log(user);
+        console.log(createdOrder);
 
         await CartController.instance.emptyCart(user.cart!);
 

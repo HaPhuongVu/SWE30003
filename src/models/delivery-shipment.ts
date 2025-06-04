@@ -2,10 +2,10 @@ import { Shipment } from './shipment';
 
 class DeliveryShipment extends Shipment {
     partner: string;
-    deliveryDate: Date;
+    deliveryDate?: Date;
     address: string;
 
-    constructor(id: string | null, status: string, partner: string, date: Date, address: string) {
+    constructor(id: string | null, status: string, partner: string, address: string, date?: Date) {
         super(id, status);
         this.partner = partner;
         this.deliveryDate = date;

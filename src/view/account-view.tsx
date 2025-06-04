@@ -1,4 +1,4 @@
-import { Col, Container, InputGroup, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { Ellipsis, EyeClosed, UserRound } from 'lucide-react'
 import Button from '../components/button'
 import { FormControl, FormLabel, FormLayout } from '../components/form'

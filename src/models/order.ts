@@ -3,6 +3,17 @@ import { Payment } from "./payment";
 import { Shipment } from "./shipment";
 import type { NotificationObserver } from "./notification-observer";
 
+type OrderJSON = {
+    id: string;
+    userId: string;
+    orderDate: string;
+    items: { productId: string; quantity: number }[];
+    paymentId: string;
+    shipmentId: string;
+    status: string;
+    cancellation: boolean;
+}
+
 class Order {
     id?: string;
     userId: string;
@@ -15,14 +26,24 @@ class Order {
 
     observers: NotificationObserver[] = [];
 
-    constructor(userId: string) {
+    constructor(
+        userId: string,
+        id?: string,
+        orderDate?: Date,
+        items?: { product: Product; quantity: number }[],
+        payment?: Payment,
+        shipment?: Shipment,
+        status?: string,
+        cancellation?: boolean
+    ) {
         this.userId = userId;
-        this.orderDate = new Date();
-        this.items = [];
-        this.payment = undefined;
-        this.shipment = undefined;
-        this.status = "Pending";
-        this.cancellation = false;
+        this.id = id;
+        this.orderDate = orderDate ? new Date(orderDate) : new Date();
+        this.items = items ? items : [];
+        this.payment = payment;
+        this.shipment = shipment;
+        this.status = status ? status : "Pending";
+        this.cancellation = cancellation ? cancellation : false;
     }
 
     addItem(product: Product, quantity: number) {
@@ -79,4 +100,4 @@ class Order {
 
 }
 
-export { Order };
+export { Order, type OrderJSON };

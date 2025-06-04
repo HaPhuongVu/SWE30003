@@ -141,14 +141,7 @@
       "role": "user"
     }
   ],
-  "cart": [
-    {
-      "id": "cf31",
-      "productId": "P03",
-      "userId": "0001",
-      "quantity": 1
-    }
-  ],
+  "cart": [],
   "order": [
     {
       "id": "f00c",
@@ -271,6 +264,144 @@
       "shipmentId": "a6ef",
       "status": "Pending",
       "cancellation": false
+    },
+    {
+      "id": "610a",
+      "userId": "0001",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P02",
+          "quantity": 1
+        },
+        {
+          "productId": "P03",
+          "quantity": 3
+        },
+        {
+          "productId": "P05",
+          "quantity": 5
+        }
+      ],
+      "paymentId": "dd64",
+      "shipmentId": "ae4a",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "fdb6",
+      "userId": "0001",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P02",
+          "quantity": 1
+        },
+        {
+          "productId": "P03",
+          "quantity": 3
+        },
+        {
+          "productId": "P05",
+          "quantity": 5
+        }
+      ],
+      "paymentId": "e107",
+      "shipmentId": "fd4a",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "a19b",
+      "userId": "0001",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P02",
+          "quantity": 1
+        },
+        {
+          "productId": "P03",
+          "quantity": 3
+        },
+        {
+          "productId": "P05",
+          "quantity": 5
+        }
+      ],
+      "paymentId": "fef2",
+      "shipmentId": "ac3b",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "3fb9",
+      "userId": "0001",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P02",
+          "quantity": 1
+        },
+        {
+          "productId": "P03",
+          "quantity": 3
+        },
+        {
+          "productId": "P05",
+          "quantity": 5
+        }
+      ],
+      "paymentId": "a763",
+      "shipmentId": "6860",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "3767",
+      "userId": "0001",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P03",
+          "quantity": 3
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        },
+        {
+          "productId": "P05",
+          "quantity": 5
+        },
+        {
+          "productId": "P04",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "7df3",
+      "shipmentId": "acf4",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "88dd",
+      "userId": "0001",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P01",
+          "quantity": 1
+        },
+        {
+          "productId": "P05",
+          "quantity": 5
+        }
+      ],
+      "paymentId": "777f",
+      "shipmentId": "66a4",
+      "status": "Pending",
+      "cancellation": false
     }
   ],
   "payment": [
@@ -316,6 +447,51 @@
       "id": "916e",
       "amount": 7905,
       "date": "2025-06-04T13:33:30.026Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "dd64",
+      "amount": 16041,
+      "date": "2025-06-04T14:39:17.527Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "e107",
+      "amount": 16041,
+      "date": "2025-06-04T14:40:33.025Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "fef2",
+      "amount": 16041,
+      "date": "2025-06-04T14:41:47.212Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "a763",
+      "amount": 16041,
+      "date": "2025-06-04T14:44:49.687Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "7df3",
+      "amount": 17300,
+      "date": "2025-06-04T15:16:42.740Z",
+      "status": "pending",
+      "type": "card",
+      "cardNumber": "1234123412341234",
+      "expiryDate": "2025-06-04T15:16:42.551Z",
+      "paymentGateway": "Tyro"
+    },
+    {
+      "id": "777f",
+      "amount": 10744,
+      "date": "2025-06-04T15:19:50.980Z",
       "status": "pending",
       "type": "cash"
     }
@@ -372,6 +548,45 @@
       "partner": "Australia Post",
       "date": "2025-06-04T13:33:30.000Z",
       "address": "3 Launder Street"
+    },
+    {
+      "id": "ae4a",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "fd4a",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "ac3b",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "6860",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "acf4",
+      "status": "Pending",
+      "fee": 10,
+      "type": "delivery",
+      "partner": "Australia Post",
+      "date": "2025-06-04T15:16:42.000Z",
+      "address": "123 Oink"
+    },
+    {
+      "id": "66a4",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
     }
   ]
 }

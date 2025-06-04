@@ -1,4 +1,4 @@
-import { Order } from "../models/order"
+import { Order, type OrderJSON } from "../models/order"
 
 class OrderRepository {
     private static _instance: OrderRepository;
@@ -13,21 +13,21 @@ class OrderRepository {
         return OrderRepository._instance;
     }
 
-    async getById(orderId: string): Promise<Order | null> {
+    async getById(orderId: string): Promise<OrderJSON | null> {
         try {
             const response = await fetch(`${this.baseUrl}/${orderId}`)
             if (!response.ok) throw new Error(`Failed to fetch order ${orderId}`)
-            return response.json()
+            return response.json();
         } catch (error) {
             throw new Error(`Failed to get order data: ${error}`)
         }
     }
 
-    async getByUserId(userId: string): Promise<Order[]> {
+    async getByUserId(userId: string): Promise<OrderJSON[]> {
         try {
             const response = await fetch(`${this.baseUrl}?userId=${userId}`)
             if (!response.ok) throw new Error('Failed to fetch orders')
-            return response.json()
+            return response.json();
         } catch (error) {
             throw new Error(`Failed to get order data: ${error}`)
         }
@@ -40,7 +40,7 @@ class OrderRepository {
         shipmentId: string,
         status: string,
         cancellation: boolean
-    ): Promise<Order> {
+    ): Promise<OrderJSON> {
         try {
             const today = new Date().toLocaleDateString("en-GB")
             const response = await fetch(this.baseUrl, {
@@ -66,7 +66,7 @@ class OrderRepository {
     async update(
         orderId: string,
         data: Partial<Order>
-    ): Promise<Order> {
+    ): Promise<OrderJSON> {
         try {
             const response = await fetch(`${this.baseUrl}/${orderId}`, {
                 method: 'PUT',

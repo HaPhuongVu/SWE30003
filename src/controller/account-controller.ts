@@ -81,9 +81,7 @@ class AccountController {
     async getAccount(id: string): Promise<Account> {
         const account = await AccountRepository.instance.getById(id);
         if (!account) throw new Error('Account not found');
-        if (account.role === 'customer') {
-            account.cart = await CartController.instance.getCart(account.id);
-        }
+        account.cart = await CartController.instance.getCart(account.id);
         return account;
     }
 

@@ -52,6 +52,8 @@ class PaymentController {
 
     createPaymentObject(data: Partial<JointPayment>): Payment {
         try {
+            console.log('Creating payment object with data:', data);
+
             const { type, amount, status, cardNumber, expiryDate, paymentGateway } = data;
 
             if (type === 'card') {

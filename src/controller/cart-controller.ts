@@ -66,7 +66,7 @@ class CartController {
       return cart;
     } catch(error) {
       console.error("Error while emptying cart:", error);
-      throw new Error('Failed to empty cart!');
+      throw new Error('Failed to empty cart: ' + (error instanceof Error ? error.message : error));
     }
   }
 
