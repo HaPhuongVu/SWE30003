@@ -164,9 +164,15 @@ class OrderController {
             storedShipment
         );
 
-        order.items.forEach(item => {
-            CatalogueController.instance.updateProductQuantity(item.product, catalogue.getItemQuantity(item.product) - item.quantity);
-        });
+        // Use Promise.all to wait for all product quantity updates
+        await Promise.all(
+            order.items.map(item =>
+                CatalogueController.instance.updateProductQuantity(
+                    item.product,
+                    catalogue.getItemQuantity(item.product) - item.quantity
+                )
+            )
+        );
 
         await CartController.instance.emptyCart(user.cart!);
 

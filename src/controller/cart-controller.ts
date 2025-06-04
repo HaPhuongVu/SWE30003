@@ -62,7 +62,8 @@ class CartController {
 
   async emptyCart(cart: Cart): Promise<Cart> {
     try {
-      cart.items.map((item) => CartRepository.instance.removeProduct(cart.userId, item.product.id))
+      await Promise.all(cart.items.map((item) => CartRepository.instance.removeProduct(cart.userId, item.product.id)));
+      cart.items = []
       return cart;
     } catch(error) {
       console.error("Error while emptying cart:", error);
