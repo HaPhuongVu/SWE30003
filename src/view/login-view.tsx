@@ -67,12 +67,10 @@ export default function LoginView() {
         AccountController.loggedInUser = account.id
         navigate('/')
         window.location.reload()
-        alert('Login successfully')
       }
     } catch (error) {
-      alert(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
       setEmail('')
-      setPassword('')      // Clear errors after failed login
+      setPassword('')
       setErrors({ email: "", password: "" });
     }
   }

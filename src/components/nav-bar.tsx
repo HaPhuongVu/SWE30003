@@ -29,7 +29,6 @@ function NavBar() {
   const logout = () => {
     AccountController.loggedInUser = null
     navigate('/')
-    alert('Successfully log out!')
     window.location.reload()
   }
   return (

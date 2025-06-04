@@ -13,7 +13,6 @@ class NotificationController implements NotificationObserver {
     }
 
     update(notification: string): void {
-        // Handle the notification update logic here
         alert(notification);
     }
 }
