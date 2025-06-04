@@ -8,8 +8,10 @@ import Button from "../components/button";
 import { useState, type FormEvent } from "react";
 import { PaymentController } from "../controller/payment-controller";
 import { OrderController } from "../controller/order-controller";
+import { useNavigate } from "react-router";
 
 export default function CheckOutView() {
+  const navigate = useNavigate();
   const loggedInUser = AccountController.loggedInUser;
   const [address, setAddress] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('Cash')
@@ -59,8 +61,9 @@ export default function CheckOutView() {
       console.log("Payment Details:", paymentDetails);
       console.log("Shipment Details:", shipmentDetails);
 
-      await OrderController.instance.checkout(paymentDetails, shipmentDetails)
+      const storedOrder = await OrderController.instance.checkout(paymentDetails, shipmentDetails)
       alert("Order placed successfully!");
+      navigate(`/${storedOrder.id}`);
     } catch (error) {
       alert (error)
     }
