@@ -1,5 +1,5 @@
-import { Col, Container, Row } from 'react-bootstrap'
-import { Ellipsis, UserRound } from 'lucide-react'
+import { Col, Container, InputGroup, Row } from 'react-bootstrap'
+import { Ellipsis, EyeClosed, UserRound } from 'lucide-react'
 import Button from '../components/button'
 import { FormControl, FormLabel, FormLayout } from '../components/form'
 import { useEffect, useState, type FormEvent } from 'react'
@@ -55,9 +55,9 @@ export default function AccountView() {
     });
 
     const [dashboard, setDashboard] = useState(true)
+    const [showPassword, setShowPassword] = useState(false)
     const [fullName, setFullName] = useState(userData?.fullname ?? "")
     const [password, setPassword] = useState(userData?.password ?? "")
-    const [confirmPassword, setConfirmPassword] = useState("")
     const [email, setEmail] = useState(userData?.email ?? "")
     const [username, setUsername] = useState(userData?.username ?? "")
     const [address, setAddress] = useState(userData?.address ?? "")
@@ -67,7 +67,6 @@ export default function AccountView() {
         email: "",
         username: "",
         password: "",
-        confirmPassword: "",
         phoneNumber: "",
         address: ""
     });
@@ -103,7 +102,6 @@ export default function AccountView() {
             email: email,
             username: username,
             password: password,
-            confirmPassword: confirmPassword,
             phoneNumber: phoneNumber,
             address: address
         });
@@ -193,40 +191,27 @@ export default function AccountView() {
                         className={errors.username ? 'border-danger' : ''}
                     />
                     {errors.username && <div className="text-danger small mt-1">{errors.username}</div>}
-                    <div className="text-muted small mt-1">8-12 characters, alphanumeric only</div>
                 </Col>
                 <Col className='col-6'>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>
+                        Password
+                    <Button
+                    className='ms-2 my-0 border-0'
+                    size='icon'
+                    onClick={() => setShowPassword(!showPassword)}>
+                        <EyeClosed/>
+                    </Button>
+                    </FormLabel>
                     <FormControl
                         value={password}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setPassword(e.target.value);
                             clearError('password');
-                            if (confirmPassword) clearError('confirmPassword'); // Clear confirm password error when password changes
                         }}
                         className={errors.password ? 'border-danger' : ''}
                     />
                     {errors.password && <div className="text-danger small mt-1">{errors.password}</div>}
-                    <div className="text-muted small mt-1">8-12 characters with letters, numbers, and special characters</div>
-                </Col>
-                </Row>
-                <Row className='mt-3'>
-                <Col className='col-6'>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl
-                        value={confirmPassword}
-                        type="password"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setConfirmPassword(e.target.value);
-                            clearError('confirmPassword');
-                        }}
-                        className={errors.confirmPassword ? 'border-danger' : ''}
-                    />
-                    {errors.confirmPassword && <div className="text-danger small mt-1">{errors.confirmPassword}</div>}
-                </Col>
-                <Col className='col-6'>
-                    {/* Empty column for spacing */}
                 </Col>
                 </Row>
                 <Row className='mt-3'>

@@ -2,7 +2,7 @@ import React, { type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'default' | 'destructive';
-    size?: 'default' | 'small';
+    size?: 'default' | 'small' | 'icon';
     children: ReactNode;
     className?: string;
 }
@@ -23,6 +23,7 @@ const Button: React.FC<ButtonProps> = ({
     const sizeClass = {
         default: 'py-2 px-3',
         small: 'py-1 px-2',
+        icon: 'p-0'
 
     };
 

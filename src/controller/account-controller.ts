@@ -10,7 +10,7 @@ type FormValidation = {
     email: string;
     username: string;
     password: string;
-    confirmPassword: string;
+    confirmPassword?: string;
     phoneNumber: string;
     address: string;
 };
@@ -148,7 +148,7 @@ class AccountController {
             address: data.address !== undefined ? this.validateField('address', data.address) : ""
         };
     };
-    
+
 
     /**
      * Fetches and verifies the account by email and password.

@@ -1,6 +1,6 @@
 type JointShipment = {
     id: string;
-    type: 'delivery' | 'pickup';
+    type: string;
     status: string;
     fee: number;
     pickupTime?: Date | string;
@@ -12,7 +12,7 @@ type JointShipment = {
 abstract class Shipment {
     id: string | null;
     status: string;
-    fee: number = 0; // Default fee, can be overridden in subclasses
+    fee: number = 0;
 
     constructor(id: string | null, status: string) {
         this.id = id;

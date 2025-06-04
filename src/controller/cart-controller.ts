@@ -5,6 +5,7 @@ import { CartRepository } from "../repository/cart-repository"
 import { ProductRepository } from "../repository/product-repository"
 import type { CartItem } from "../models/cart"
 
+
 class CartController {
   private static _instance: CartController;
 
@@ -22,7 +23,6 @@ class CartController {
 
     const cartItems = await CartRepository.instance.getByUserId(userId);
 
-    // Use Promise.all to wait for all async operations to complete
     await Promise.all(
       cartItems.map(async (item: CartItem) => {
         const product = await ProductRepository.instance.getById(item.productId);
@@ -62,12 +62,10 @@ class CartController {
 
   async emptyCart(cart: Cart): Promise<Cart> {
     try {
-      await Promise.all(
-        cart.items.map((item) => CartRepository.instance.removeProduct(cart.userId, item.product.id))
-      );
-      cart.clear();
+      cart.items.map((item) => CartRepository.instance.removeProduct(cart.userId, item.product.id))
       return cart;
-    } catch {
+    } catch(error) {
+      console.error("Error while emptying cart:", error);
       throw new Error('Failed to empty cart!');
     }
   }
@@ -79,17 +77,3 @@ class CartController {
 
 export { CartController };
 
-// export const handleCheckout = async(cartItems: Cart[], productData: any) => {
-//   try{
-//     const orderItems = cartItems?.map(item => ({
-//       productId: item.productId,
-//       quantity: item.quantity
-//     }))
-//     await orderAPI.create(orderItems!, totalCart(cartItems, productData), "", "", "Pending", false)
-//     emptyCart(cartItems!)
-//     alert('Order success')
-//     window.location.reload()
-//   } catch(error){
-//     alert('Order failed. Please try again')
-//   }
-// }

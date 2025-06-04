@@ -45,10 +45,6 @@ class Cart {
         return this.items.some(item => item.product.id === product.id);
     }
 
-    clear() {
-        this.items = [];
-    }
-
     getSubtotalPrice() {
         return this.items.reduce((total, item) => total + item.product.price * item.quantity, 0);
     }

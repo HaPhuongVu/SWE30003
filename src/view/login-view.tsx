@@ -53,7 +53,7 @@ export default function LoginView() {
 
   return (
     <Container fluid className='d-flex flex-column vh-100 overflow-hidden bg-dark justify-content-center align-items-center'>
-      <FormLayout className='w-50 h-50' onSubmit={handleSubmit}>
+      <FormLayout className='w-50' onSubmit={handleSubmit}>
         <h4 className='text-center fw-bolder'>Welcome Back</h4>
         {formError && <div className="text-danger small mt-1 text-center">{formError}</div>}
       <FormGroup>

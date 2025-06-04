@@ -123,7 +123,7 @@
     {
       "email": "admin@gmail.com",
       "fullname": "Admin",
-      "username": "Admin",
+      "username": "Admin123",
       "password": "admin123@",
       "phoneNumber": "",
       "address": "",
@@ -134,7 +134,7 @@
       "fullname": "amie",
       "email": "amie@gmail.com",
       "username": "amie1212",
-      "password": "12345anie@",
+      "password": "12345amie@",
       "address": "3 Launder Street",
       "phoneNumber": "",
       "id": "2915",
@@ -143,27 +143,9 @@
   ],
   "cart": [
     {
-      "id": "9d88",
-      "productId": "P06",
-      "userId": "2915",
-      "quantity": 1
-    },
-    {
-      "productId": "P02",
-      "userId": "2915",
-      "quantity": 3,
-      "id": "a412"
-    },
-    {
+      "id": "cf31",
       "productId": "P03",
-      "userId": "2915",
-      "quantity": 4,
-      "id": "9763"
-    },
-    {
-      "id": "3e31",
-      "productId": "P05",
-      "userId": "2915",
+      "userId": "0001",
       "quantity": 1
     }
   ],
@@ -213,6 +195,82 @@
       "shipmentId": "",
       "status": "Pending",
       "cancellation": false
+    },
+    {
+      "id": "7f83",
+      "userId": "0001",
+      "orderDate": "04/06/2025",
+      "items": [
+        {
+          "productId": "P03",
+          "quantity": 4
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "abda",
+      "shipmentId": "7fab",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "c8d4",
+      "userId": "0001",
+      "orderDate": "04/06/2025",
+      "items": [
+        {
+          "productId": "P03",
+          "quantity": 4
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "029c",
+      "shipmentId": "b164",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "4a4f",
+      "userId": "0001",
+      "orderDate": "04/06/2025",
+      "items": [
+        {
+          "productId": "P03",
+          "quantity": 4
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "f1e0",
+      "shipmentId": "3236",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "c2b3",
+      "userId": "0001",
+      "orderDate": "04/06/2025",
+      "items": [
+        {
+          "productId": "P03",
+          "quantity": 4
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "916e",
+      "shipmentId": "a6ef",
+      "status": "Pending",
+      "cancellation": false
     }
   ],
   "payment": [
@@ -232,6 +290,34 @@
       "cardNumber": "1234-5678-9012-3456",
       "expiryDate": "12/26",
       "paymentGateway": "Visa"
+    },
+    {
+      "id": "abda",
+      "amount": 7905,
+      "date": "2025-06-04T13:27:16.602Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "029c",
+      "amount": 7905,
+      "date": "2025-06-04T13:28:44.848Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "f1e0",
+      "amount": 7905,
+      "date": "2025-06-04T13:31:53.324Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "916e",
+      "amount": 7905,
+      "date": "2025-06-04T13:33:30.026Z",
+      "status": "pending",
+      "type": "cash"
     }
   ],
   "shipment": [
@@ -250,6 +336,42 @@
       "status": "Shipped",
       "fee": 0,
       "pickupTime": "02/06/2025 10:00"
+    },
+    {
+      "id": "7fab",
+      "status": "Pending",
+      "fee": 10,
+      "type": "delivery",
+      "partner": "Australia Post",
+      "date": "2025-06-04T13:27:16.000Z",
+      "address": "3 Launder Street"
+    },
+    {
+      "id": "b164",
+      "status": "Pending",
+      "fee": 10,
+      "type": "delivery",
+      "partner": "Australia Post",
+      "date": "2025-06-04T13:28:44.000Z",
+      "address": "3 Launder Street"
+    },
+    {
+      "id": "3236",
+      "status": "Pending",
+      "fee": 10,
+      "type": "delivery",
+      "partner": "Australia Post",
+      "date": "2025-06-04T13:31:53.000Z",
+      "address": "3 Launder Street"
+    },
+    {
+      "id": "a6ef",
+      "status": "Pending",
+      "fee": 10,
+      "type": "delivery",
+      "partner": "Australia Post",
+      "date": "2025-06-04T13:33:30.000Z",
+      "address": "3 Launder Street"
     }
   ]
 }

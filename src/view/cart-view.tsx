@@ -5,10 +5,11 @@ import Button from "../components/button"
 import { Trash } from "lucide-react"
 import { CartController } from "../controller/cart-controller"
 import { AccountController } from "../controller/account-controller"
+import { useNavigate } from "react-router"
 
 function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
+  const navigate = useNavigate()
   const loggedInUser = AccountController.loggedInUser;
-
   const {data: cart, error, isLoading, refetch} = useQuery<Cart, Error>({
     queryKey: ['cart', loggedInUser],
     queryFn: () => {
@@ -25,25 +26,11 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
       const product = cart.items.find(item => item.product.id === productId)?.product;
       if (product) {
         await CartController.instance.removeProductInCart(cart, product);
-        refetch(); // Refresh the cart data
+        refetch();
       }
     } catch (error) {
       console.error('Failed to remove product:', error);
       alert('Failed to remove product from cart');
-    }
-  };
-
-  const handleCheckout = async () => {
-    if (!cart || !loggedInUser) return;
-
-    try {
-      // This would typically integrate with order controller
-      alert('Checkout functionality would be implemented here');
-      // await OrderController.instance.createOrder(cart);
-      onClose();
-    } catch (error) {
-      console.error('Checkout failed:', error);
-      alert('Checkout failed. Please try again');
     }
   };
 
@@ -53,7 +40,7 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
   return (
     <>
       {loggedInUser ? (
-        <Modal show={open} onHide={onClose}>
+        <Modal className="h-100" show={open} onHide={onClose}>
           <Modal.Header closeButton>
             <Modal.Title className="fw-bold fs-4">Shopping Cart</Modal.Title>
           </Modal.Header>
@@ -91,7 +78,7 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
           <Modal.Footer className="justify-content-center">
             <Button className='w-50' onClick={onClose}>Continue Shopping</Button>
             {cart?.items && cart.items.length > 0 && (
-              <Button variant="destructive" onClick={handleCheckout}>Checkout</Button>
+              <Button variant="destructive" onClick={() => navigate('/checkout')}>Checkout</Button>
             )}
           </Modal.Footer>
         </Modal>

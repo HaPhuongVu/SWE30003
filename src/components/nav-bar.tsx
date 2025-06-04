@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import CartView from '../view/cart-view';
 import { AccountController } from '../controller/account-controller';
-import { LogOut, UserRound } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Account } from '../models/account';
 
@@ -50,7 +50,7 @@ function NavBar() {
             <Button variant="destructive" onClick={() => setOpen(!open)}>Cart</Button>
             {userData ?
             (<>
-            <Button onClick={()=> navigate('/account')}><UserRound/>{userData.username}</Button>
+            <Button onClick={()=> navigate('/account')}>{userData.username}</Button>
             <Button onClick={()=> logout()}><LogOut/></Button>
             </>):(<>
             <Button onClick={()=> navigate('/login')}>Login</Button>

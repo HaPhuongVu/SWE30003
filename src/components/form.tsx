@@ -19,7 +19,7 @@ interface FormGroupProps extends Omit<React.ComponentProps<typeof Form.Group>, '
 }
 
 const FormGroup = forwardRef<HTMLDivElement, FormGroupProps>(({ className = '', ...props }, ref) => (
-    <Form.Group className={`px-5 py-4 ${className}`} ref={ref} {...props} />
+    <Form.Group className={`px-5 py-3 ${className}`} ref={ref} {...props} />
 ));
 FormGroup.displayName = 'FormGroup';
 
@@ -58,4 +58,13 @@ const FormControl = forwardRef<HTMLInputElement, FormControlProps>(({ className 
 ));
 FormControl.displayName = 'FormControl';
 
-export { FormLayout, FormGroup, FormItem, FormLabel, FormControl };
+const FormSelect = forwardRef<HTMLSelectElement, FormControlProps>(({className = '', ...props}, ref) => (
+    <Form.Select
+    ref={ref}
+    className={`shadow-none ${className}`}
+    {...props}
+    />
+))
+FormSelect.displayName = 'FormSelect'
+
+export { FormLayout, FormGroup, FormItem, FormLabel, FormControl, FormSelect };

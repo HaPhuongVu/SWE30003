@@ -98,7 +98,6 @@ class OrderController {
         if (shipmentDetails.type === "delivery") {
             shipmentDetails = {
                 ...shipmentDetails,
-                partner: shipmentDetails.partner || "Australia Post",
                 address: shipmentDetails.address || user.address!
             };
         }
@@ -114,38 +113,27 @@ class OrderController {
                 cardNumber: paymentDetails.cardNumber || "",
                 expiryDate: paymentDetails.expiryDate || new Date().toISOString(),
                 paymentGateway: "",
-            }
+            };
         }
 
         const payment = PaymentController.instance.createPaymentObject(paymentDetails);
         order.setPayment(payment);
 
-        return order;
-    }
-
-    async placeOrder(order: Order): Promise<Order> {
-        if (!order.verify()) {
-            throw new Error("Order is not valid");
-        }
-
-        const user = await AccountController.instance.getAccount(order.userId);
-        if (!user) throw new Error(`User not found: ${order.userId}`);
-
-        const shipment = await ShipmentController.instance.storeShipment(order.shipment!);
-        const payment = await PaymentController.instance.storePayment(order.payment!);
+        const storedShipment = await ShipmentController.instance.storeShipment(order.shipment!);
+        const storedPayment = await PaymentController.instance.storePayment(order.payment!);
 
         const createdOrder = await this.createOrder(
             order.userId,
             order.items,
-            payment,
-            shipment
+            storedPayment,
+            storedShipment
         );
 
-        // Clear the user's cart after placing the order
         await CartController.instance.emptyCart(user.cart!);
 
         return createdOrder;
     }
+
 }
 
 export { OrderController };

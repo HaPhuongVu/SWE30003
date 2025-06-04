@@ -24,7 +24,6 @@ export default function SignupView() {
   });
   const [formError, setFormError] = useState<string>("");
 
-  // Clear specific error when user starts typing
   const clearError = (field: string) => {
     setErrors(prev => ({ ...prev, [field]: "" }));
     setFormError("");
@@ -61,10 +60,13 @@ export default function SignupView() {
     return (
         <Container fluid className='d-flex bg-dark justify-content-center align-items-center'>
         <FormLayout className='w-50 my-5' onSubmit={handleSubmit}>
-          <h4 className='text-center fw-bolder'>Create Account</h4>
+          <h3 className='text-center fw-bolder'>Create Account</h3>
             {formError && <div className="text-danger small mt-1 text-center">{formError}</div>}
           <FormGroup>
-            <FormLabel>Full Name</FormLabel>
+            <FormLabel>
+              Full Name
+            <span className="text-muted small ms-2">(Letters and spaces only, max 50 characters)</span>
+            </FormLabel>
             <FormControl
             type='text'
             placeholder='Enter your full name'
@@ -73,7 +75,6 @@ export default function SignupView() {
             className={errors.fullName ? 'border-danger' : ''}
             />
             {errors.fullName && <div className="text-danger small mt-1">{errors.fullName}</div>}
-            <div className="text-muted small mt-1">Letters and spaces only, max 50 characters</div>
           </FormGroup>
           <FormGroup>
             <FormLabel>Email Address</FormLabel>
@@ -87,7 +88,10 @@ export default function SignupView() {
             {errors.email && <div className="text-danger small mt-1">{errors.email}</div>}
           </FormGroup>
           <FormGroup>
-            <FormLabel>Username</FormLabel>
+            <FormLabel>
+              Username
+            <span className="text-muted small ms-2">(8-12 characters, alphanumeric only)</span>
+            </FormLabel>
             <FormControl
             type='text'
             placeholder='Enter your username'
@@ -96,10 +100,12 @@ export default function SignupView() {
             className={errors.username ? 'border-danger' : ''}
             />
             {errors.username && <div className="text-danger small mt-1">{errors.username}</div>}
-            <div className="text-muted small mt-1">8-12 characters, alphanumeric only</div>
           </FormGroup>
           <FormGroup>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>
+              Password
+            <span className="text-muted small ms-2">(8-12 characters with letters, numbers, and special characters)</span>
+            </FormLabel>
             <FormControl
             type='password'
             placeholder='Create a password'
@@ -112,7 +118,6 @@ export default function SignupView() {
             className={errors.password ? 'border-danger' : ''}
             />
             {errors.password && <div className="text-danger small mt-1">{errors.password}</div>}
-            <div className="text-muted small mt-1">8-12 characters with letters, numbers, and special characters</div>
           </FormGroup>
           <FormGroup>
             <FormLabel>Confirm Password</FormLabel>

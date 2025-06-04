@@ -3,6 +3,25 @@ import { CashPayment } from "../models/cash-payment";
 import type { Payment, JointPayment } from "../models/payment";
 import { PaymentRepository } from "../repository/payment-repository";
 
+type FormValidation = {
+    visaNumber?: string;
+    creditNumber?: string;
+    mastercardNumber?: string;
+}
+const validateVisa = (cardNumber: string):boolean => {
+    const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/;
+    return visaRegex.test(cardNumber)
+}
+
+const validateCredit = (cardNumber: string):boolean => {
+    const creditRegex = /^\d{13,16}$/;
+    return creditRegex.test(cardNumber)
+}
+
+const validateMastercard = (cardNumber: string):boolean => {
+    const mastercardRegex = /^5[1-5][0-9]{14}$|^2[2-7][0-9]{14}$/;
+    return mastercardRegex.test(cardNumber)
+}
 class PaymentController {
     private static _instance: PaymentController;
 
@@ -132,11 +151,30 @@ class PaymentController {
         }
     }
 
-    async deletePayment(id: string): Promise<void> {
-        try {
-            await PaymentRepository.instance.delete(id);
-        } catch (error) {
-            throw new Error(`Failed to delete payment: ${error}`);
+    validateField (paymentMethod: string, value: string):string {
+        switch(paymentMethod){
+            case 'Visa':
+                if (!value.trim()) return 'Card number is required'
+                if (!validateVisa(value)) return 'Visa number is in wrong format'
+                return "";
+            case 'Credit Card':
+                if(!value.trim()) return 'Card number is required'
+                if (!validateCredit(value)) return 'Credit number is in wrong format'
+                return "";
+            case 'Mastercard':
+                if (!value.trim()) return 'Card number is required'
+                if(!validateMastercard(value)) return 'Mastercard number is in wrong format'
+                return "";
+            default:
+                return "";
+        }
+    }
+
+    validateForm(data: FormValidation):FormValidation {
+        return {
+            visaNumber: data.visaNumber !== undefined ? this.validateField('Visa', data.visaNumber) : "",
+            creditNumber: data.creditNumber !== undefined ? this.validateField('Credit Card', data.creditNumber): "",
+            mastercardNumber: data.mastercardNumber !== undefined ? this.validateField('Mastercard', data.mastercardNumber) : ""
         }
     }
 }

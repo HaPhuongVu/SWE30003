@@ -1,6 +1,6 @@
 type JointPayment = {
     id: string,
-    type: 'card' | 'cash',
+    type: string,
     amount: number,
     date: Date | string,
     status: string,
