@@ -43,7 +43,7 @@
       "name": "iPhone 15 Pro",
       "shortDescription": "256GB, Space Black - Latest flagship with cutting edge features",
       "longDescription": "Premium device with cutting edge technology and innovative design. Experience the future of mobile technology with advanced features and unparalleled performance.",
-      "image": "public/iphone_15_pro.jpg",
+      "image": "iphone_15_pro.jpg",
       "category": "CA01",
       "price": 1249
     },
@@ -52,7 +52,7 @@
       "name": "MacBook Pro 16”",
       "shortDescription": "M3 Pro Chip - High performance computing solutions",
       "longDescription": "The MacBook Pro 16” with the M3 Pro chip delivers groundbreaking performance, featuring enhanced graphics and battery life, perfect for professionals seeking the ultimate laptop experience.",
-      "image": "public/macbook_pro_16.jpg",
+      "image": "macbook_pro_16.jpg",
       "category": "CA02",
       "price": 2499
     },
@@ -61,7 +61,7 @@
       "name": "Airpods Pro",
       "shortDescription": "2nd Generation - Studio quality sound experience",
       "longDescription": "Airpods Pro 2nd Generation redefines audio with improved Active Noise Cancellation, adaptive transparency, and a customized fit for immersive sound and comfort during extended use.",
-      "image": "public/airpod_pro.jpg",
+      "image": "airpod_pro.jpg",
       "category": "CA03",
       "price": 1349
     },
@@ -70,7 +70,7 @@
       "name": "Apple Watch Ultra",
       "shortDescription": "Connected lifestyle technology for modern living ",
       "longDescription": "The Apple Watch Ultra is designed for adventurers and athletes, offering rugged durability, advanced health tracking, and up to 36 hours of battery life to keep you connected wherever you go.",
-      "image": "public/apple_watch.jpg",
+      "image": "apple_watch.jpg",
       "category": "CA04",
       "price": 1249
     },
@@ -79,7 +79,7 @@
       "name": "4K Smart TV",
       "shortDescription": "55” OLED Display - Premium viewing experience ",
       "longDescription": "Experience cinema-quality visuals at home with the 55” OLED 4K Smart TV, offering vibrant colors, deep blacks, and integrated smart features for seamless streaming of your favorite content.",
-      "image": "public/smart_tv.jpg",
+      "image": "smart_tv.jpg",
       "category": "CA05",
       "price": 1899
     },
@@ -88,7 +88,7 @@
       "name": "Gaming Console",
       "shortDescription": "Next gen gaming with immerse graphic, bringing your favorite games to life",
       "longDescription": "Unleash next-gen gaming with ultra-realistic graphics, high-speed processing, and a vast library of games, making the Gaming Console your gateway to the most immersive gaming experiences.",
-      "image": "public/gaming_console.jpg",
+      "image": "gaming_console.jpg",
       "category": "CA06",
       "price": 599
     }
@@ -107,16 +107,16 @@
       "id": "P03"
     },
     {
-      "id": "P04",
-      "quantity": 30
+      "quantity": null,
+      "id": "P04"
     },
     {
-      "id": "P05",
-      "quantity": 20
+      "quantity": null,
+      "id": "P05"
     },
     {
-      "id": "P06",
-      "quantity": 10
+      "quantity": null,
+      "id": "P06"
     }
   ],
   "account": [
@@ -516,6 +516,148 @@
       "shipmentId": "fd70",
       "status": "Pending",
       "cancellation": false
+    },
+    {
+      "id": "d765",
+      "userId": "2915",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P01",
+          "quantity": 1
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        },
+        {
+          "productId": "P03",
+          "quantity": 1
+        },
+        {
+          "productId": "P04",
+          "quantity": 1
+        },
+        {
+          "productId": "P05",
+          "quantity": 1
+        },
+        {
+          "productId": "P06",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "cc01",
+      "shipmentId": "c761",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "5841",
+      "userId": "2915",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P01",
+          "quantity": 5
+        },
+        {
+          "productId": "P02",
+          "quantity": 4
+        },
+        {
+          "productId": "P03",
+          "quantity": 3
+        },
+        {
+          "productId": "P06",
+          "quantity": 3
+        },
+        {
+          "productId": "P05",
+          "quantity": 3
+        },
+        {
+          "productId": "P04",
+          "quantity": 4
+        }
+      ],
+      "paymentId": "1855",
+      "shipmentId": "7cd8",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "7b6d",
+      "userId": "2915",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P01",
+          "quantity": 2
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "0ee4",
+      "shipmentId": "444d",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "8119",
+      "userId": "2915",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P01",
+          "quantity": 1
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "33d7",
+      "shipmentId": "245f",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "7073",
+      "userId": "2915",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P01",
+          "quantity": 1
+        },
+        {
+          "productId": "P02",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "b6c7",
+      "shipmentId": "fa7c",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "5684",
+      "userId": "2915",
+      "orderDate": "05/06/2025",
+      "items": [
+        {
+          "productId": "P01",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "77ee",
+      "shipmentId": "e0bd",
+      "status": "Pending",
+      "cancellation": false
     }
   ],
   "payment": [
@@ -650,6 +792,48 @@
       "date": "2025-06-04T16:29:36.210Z",
       "status": "pending",
       "type": "cash"
+    },
+    {
+      "id": "cc01",
+      "amount": 8844,
+      "date": "2025-06-04T17:04:24.286Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "1855",
+      "amount": 32778,
+      "date": "2025-06-04T17:14:08.827Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "0ee4",
+      "amount": 4997,
+      "date": "2025-06-04T17:18:39.211Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "33d7",
+      "amount": 3748,
+      "date": "2025-06-04T17:19:55.395Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "b6c7",
+      "amount": 3748,
+      "date": "2025-06-04T17:25:39.057Z",
+      "status": "pending",
+      "type": "cash"
+    },
+    {
+      "id": "77ee",
+      "amount": 1249,
+      "date": "2025-06-04T17:32:36.240Z",
+      "status": "pending",
+      "type": "cash"
     }
   ],
   "shipment": [
@@ -776,6 +960,42 @@
     },
     {
       "id": "fd70",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "c761",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "7cd8",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "444d",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "245f",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "fa7c",
+      "status": "Pending",
+      "fee": 0,
+      "type": "pickup"
+    },
+    {
+      "id": "e0bd",
       "status": "Pending",
       "fee": 0,
       "type": "pickup"
