@@ -2,7 +2,7 @@ import { FormLayout, FormControl, FormGroup, FormLabel } from '../components/for
 import { Container} from 'react-bootstrap'
 import Button from '../components/button'
 import React, { useState } from 'react'
-import { AccountController } from '../controller/account-controller'
+import { AccountController, type FormValidation } from '../controller/account-controller'
 import { useNavigate } from 'react-router'
 
 
@@ -13,31 +13,38 @@ export default function SignupView() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [errors, setErrors] = useState<Record<string,string>>({
+  const [errors, setErrors] = useState<FormValidation>({
     fullName: "",
     email: "",
     username: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    phoneNumber: "",
+    address: ""
   });
+  const [formError, setFormError] = useState<string>("");
 
   // Clear specific error when user starts typing
   const clearError = (field: string) => {
     setErrors(prev => ({ ...prev, [field]: "" }));
+    setFormError("");
   };
 
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
-    const newError = AccountController.instance.validateForm(
-      fullName,
-      email,
-      username,
-      password,
-      confirmPassword)
-      setErrors(newError)
-      const isValid = Object.values(newError).some(error => error !== "");
-      if (isValid) return;
+
+    const newError = AccountController.instance.validateForm({
+      fullName: fullName,
+      email: email,
+      username: username,
+      password: password,
+      confirmPassword: confirmPassword
+    });
+    setErrors(newError);
+
+    const isError = Object.values(newError).some(error => error !== "");
+    if (isError) return;
 
     try{
       const account = await AccountController.instance.createAccount(fullName, email, username, password, '', '')
@@ -45,10 +52,9 @@ export default function SignupView() {
         AccountController.loggedInUser = account.id
         navigate('/')
         window.location.reload()
-        alert('Successfully create account')
       }
     } catch (error) {
-      alert(`Failed to create account. ${error instanceof Error ? error.message : 'Unknown error'}`)
+      setFormError(error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
@@ -56,6 +62,7 @@ export default function SignupView() {
         <Container fluid className='d-flex bg-dark justify-content-center align-items-center'>
         <FormLayout className='w-50 my-5' onSubmit={handleSubmit}>
           <h4 className='text-center fw-bolder'>Create Account</h4>
+            {formError && <div className="text-danger small mt-1 text-center">{formError}</div>}
           <FormGroup>
             <FormLabel>Full Name</FormLabel>
             <FormControl
@@ -65,7 +72,7 @@ export default function SignupView() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setFullName(e.target.value); clearError('fullName'); }}
             className={errors.fullName ? 'border-danger' : ''}
             />
-            {errors.name && <div className="text-danger small mt-1">{errors.fullName}</div>}
+            {errors.fullName && <div className="text-danger small mt-1">{errors.fullName}</div>}
             <div className="text-muted small mt-1">Letters and spaces only, max 50 characters</div>
           </FormGroup>
           <FormGroup>

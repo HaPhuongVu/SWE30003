@@ -2,14 +2,8 @@ import { FormLayout, FormControl, FormGroup, FormLabel } from '../components/for
 import { Container} from 'react-bootstrap'
 import Button from '../components/button'
 import { useState } from 'react'
-import { AccountController } from '../controller/account-controller'
+import { AccountController, type FormValidation } from '../controller/account-controller'
 import { useNavigate } from 'react-router'
-
-// Validation functions
-const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-};
 
 export default function LoginView() {
   const navigate = useNavigate()
@@ -17,49 +11,30 @@ export default function LoginView() {
   const [password, setPassword] = useState('')
 
   // Validation error states
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Partial<FormValidation>>({
     email: "",
     password: ""
   });
+  const [formError, setFormError] = useState<string>("");
 
   // Clear specific error when user starts typing
   const clearError = (field: string) => {
     setErrors(prev => ({ ...prev, [field]: "" }));
-  };
-
-  // Validate individual fields
-  const validateField = (field: string, value: string): string => {
-    switch (field) {
-      case 'email':
-        if (!value.trim()) return "Email is required";
-        if (!validateEmail(value)) return "Please enter a valid email address";
-        return "";
-      case 'password':
-        if (!value) return "Password is required";
-        return "";
-      default:
-        return "";
-    }
-  };
-
-  // Validate all fields
-  const validateForm = (): boolean => {
-    const newErrors = {
-      email: validateField('email', email),
-      password: validateField('password', password)
-    };
-
-    setErrors(newErrors);
-    return Object.values(newErrors).every(error => error === "");
+    setFormError("");
   };
 
   const handleSubmit = async(e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    // Validate form before submission
-    if (!validateForm()) {
-      return;
-    }
+    const newErrors = AccountController.instance.validateForm({
+      email: email,
+      password: password
+    });
+
+    setErrors(newErrors);
+    const isError = Object.values(newErrors).some(error => error !== "");
+
+    if (isError) return;
 
     try{
       const account = await AccountController.instance.verifyAccount(email, password)
@@ -72,13 +47,15 @@ export default function LoginView() {
       setEmail('')
       setPassword('')
       setErrors({ email: "", password: "" });
+      setFormError(error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
   return (
     <Container fluid className='d-flex flex-column vh-100 overflow-hidden bg-dark justify-content-center align-items-center'>
       <FormLayout className='w-50 h-50' onSubmit={handleSubmit}>
-      <h4 className='text-center fw-bolder'>Welcome Back</h4>
+        <h4 className='text-center fw-bolder'>Welcome Back</h4>
+        {formError && <div className="text-danger small mt-1 text-center">{formError}</div>}
       <FormGroup>
         <FormLabel>Email Address</FormLabel>
         <FormControl

@@ -5,6 +5,16 @@ import { AccountRepository } from "../repository/account-repository"
 import { CartController } from "./cart-controller";
 import { NotificationController } from "./notification-controller";
 
+type FormValidation = {
+    fullName: string;
+    email: string;
+    username: string;
+    password: string;
+    confirmPassword: string;
+    phoneNumber: string;
+    address: string;
+};
+
 const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -94,7 +104,7 @@ class AccountController {
     }
 
 
-    validateField = (field: string, value: string, password?:string): string => {
+    validateField(field: string, value: string, password?:string): string {
         switch (field) {
             case 'fullName':
                 if (!value.trim()) return "Full name is required";
@@ -127,22 +137,15 @@ class AccountController {
         }
     };
 
-    validateForm = (
-        fullName: string,
-        email:string,
-        username:string,
-        password:string,
-        confirmPassword:string,
-        phoneNumber?:string,
-        address?:string): Record<string, string> => {
+    validateForm(data: Partial<FormValidation>): FormValidation {
         return {
-            fullName: this.validateField('fullName', fullName),
-            email: this.validateField('email', email),
-            username: this.validateField('username', username),
-            password: this.validateField('password', password),
-            confirmPassword: this.validateField('confirmPassword', confirmPassword, password),
-            phoneNumber: this.validateField('phoneNumber', phoneNumber!),
-            address: this.validateField('address', address!)
+            fullName: data.fullName ? this.validateField('fullName', data.fullName) : "",
+            email: data.email ? this.validateField('email', data.email) : "",
+            username: data.username ? this.validateField('username', data.username) : "",
+            password: data.password ? this.validateField('password', data.password) : "",
+            confirmPassword: data.confirmPassword ? this.validateField('confirmPassword', data.confirmPassword, data.password) : "",
+            phoneNumber: data.phoneNumber ? this.validateField('phoneNumber', data.phoneNumber) : "",
+            address: data.address ? this.validateField('address', data.address) : ""
         };
 
     };
@@ -194,3 +197,4 @@ class AccountController {
 }
 
 export { AccountController };
+export type { FormValidation };

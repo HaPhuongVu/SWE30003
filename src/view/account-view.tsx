@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Account } from '../models/account'
 import { OrderController } from '../controller/order-controller'
-import { AccountController } from '../controller/account-controller'
+import { AccountController, type FormValidation } from '../controller/account-controller'
 import type { Order } from '../models/order'
 
 
@@ -47,12 +47,13 @@ export default function AccountView() {
             updatedAccount.phoneNumber ?? ""
         ),
         onSuccess: () => {
-            alert('Account updated successfully!');
+            setFormError('Account updated successfully!');
         },
         onError: (error: Error) => {
-            alert(`Failed to update account: ${error.message}`);
+            setFormError(`Failed to update account: ${error.message}`);
         }
     });
+
     const [dashboard, setDashboard] = useState(true)
     const [fullName, setFullName] = useState(userData?.fullname ?? "")
     const [password, setPassword] = useState(userData?.password ?? "")
@@ -61,7 +62,7 @@ export default function AccountView() {
     const [username, setUsername] = useState(userData?.username ?? "")
     const [address, setAddress] = useState(userData?.address ?? "")
     const [phoneNumber, setPhoneNumber] = useState(userData?.phoneNumber ?? "")
-    const [errors, setErrors] = useState<Record<string, string>>({
+    const [errors, setErrors] = useState<FormValidation>({
         fullName: "",
         email: "",
         username: "",
@@ -70,6 +71,7 @@ export default function AccountView() {
         phoneNumber: "",
         address: ""
     });
+    const [formError, setFormError] = useState<string>("");
 
     useEffect(() => {
         if (userData) {
@@ -84,6 +86,7 @@ export default function AccountView() {
 
     const clearError = (field: string) => {
         setErrors(prev => ({ ...prev, [field]: "" }));
+        setFormError("");
     };
 
 
@@ -91,21 +94,23 @@ export default function AccountView() {
         e.preventDefault();
 
         if (!userData) {
-            alert('User data is not available.');
+            setFormError('User data is not available.');
             return;
         }
-        const newError = AccountController.instance.validateForm(
-            fullName,
-            email,
-            username,
-            password,
-            confirmPassword,
-            phoneNumber,
-            address
-        )
-        setErrors(newError)
-        const isValid = Object.values(newError).some(error => error !== "");
-        if (isValid) return;
+
+        const newError = AccountController.instance.validateForm({
+            fullName: fullName,
+            email: email,
+            username: username,
+            password: password,
+            confirmPassword: confirmPassword,
+            phoneNumber: phoneNumber,
+            address: address
+        });
+
+        setErrors(newError);
+        const isError = Object.values(newError).some(error => error !== "");
+        if (isError) return;
 
         const updatedAccount: Account = {
             ...userData,
@@ -145,8 +150,10 @@ export default function AccountView() {
             {dashboard ? (
             <>
             <h4 className='fw-bold'>Your information</h4>
+            {formError && <div className="text-danger small mt-1 text-center">{formError}</div>}
             <FormLayout onSubmit={handleSubmit}>
-                <Row>                <Col className='col-6'>
+                <Row>
+                <Col className='col-6'>
                     <FormLabel>Fullname</FormLabel>
                     <FormControl
                         value={fullName}
@@ -158,7 +165,8 @@ export default function AccountView() {
                         className={errors.fullName ? 'border-danger' : ''}
                     />
                     {errors.fullName && <div className="text-danger small mt-1">{errors.fullName}</div>}
-                </Col>                <Col className='col-6'>
+                </Col>
+                <Col className='col-6'>
                     <FormLabel>Email</FormLabel>
                     <FormControl
                         value={email}
@@ -172,7 +180,8 @@ export default function AccountView() {
                     {errors.email && <div className="text-danger small mt-1">{errors.email}</div>}
                 </Col>
                 </Row>
-                <Row className='mt-3'>                <Col className='col-6'>
+                <Row className='mt-3'>
+                <Col className='col-6'>
                     <FormLabel>Username</FormLabel>
                     <FormControl
                         value={username}
@@ -185,7 +194,8 @@ export default function AccountView() {
                     />
                     {errors.username && <div className="text-danger small mt-1">{errors.username}</div>}
                     <div className="text-muted small mt-1">8-12 characters, alphanumeric only</div>
-                </Col>                <Col className='col-6'>
+                </Col>
+                <Col className='col-6'>
                     <FormLabel>Password</FormLabel>
                     <FormControl
                         value={password}
@@ -199,7 +209,8 @@ export default function AccountView() {
                     />
                     {errors.password && <div className="text-danger small mt-1">{errors.password}</div>}
                     <div className="text-muted small mt-1">8-12 characters with letters, numbers, and special characters</div>
-                </Col>                </Row>
+                </Col>
+                </Row>
                 <Row className='mt-3'>
                 <Col className='col-6'>
                     <FormLabel>Confirm Password</FormLabel>
