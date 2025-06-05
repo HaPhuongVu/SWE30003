@@ -2,7 +2,7 @@
 import { Cart } from "../models/cart"
 import { Product } from "../models/product";
 import { CartRepository } from "../repository/cart-repository"
-import { ProductRepository } from "../repository/product-repository"
+import { ProductController } from "../controller/product-controller"
 import type { CartItem } from "../models/cart"
 
 
@@ -25,7 +25,7 @@ class CartController {
 
     await Promise.all(
       cartItems.map(async (item: CartItem) => {
-        const product = await ProductRepository.instance.getById(item.productId);
+        const product = await ProductController.instance.get(item.productId);
         if (product) {
           cart.addItem(product, item.quantity);
         }
