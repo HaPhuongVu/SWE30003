@@ -71,6 +71,7 @@ class Order {
 
     updateStatus(status: string) {
         this.status = status;
+        this.notify(`Order status updated to ${status}`);
     }
 
     getTotalPrice() {
