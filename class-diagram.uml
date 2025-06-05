@@ -1,0 +1,482 @@
+@startuml class-diagram
+
+class AccountController {
+- _instance
++ observers
+- constructor()
++ get instance()
++ get loggedInUser()
++ set loggedInUser(user)
++ getAccount(id)
++ createAccount(fullName, email, username, password, address, phoneNumber)
++ validateField(field, value, password?)
++ validateForm(data)
++ verifyAccount(email, password)
++ updateAccount(id, fullname, email, username, password, address, phoneNumber)
++ subscribe(observer)
++ unsubscribe(observer)
++ notify(notification)
+}
+
+class CartController {
+- _instance
+- constructor()
++ get instance()
++ getCart(userId)
++ addProductToCart(cart, product, quantity)
++ removeProductInCart(cart, product)
++ emptyCart(cart)
++ calculateTotal(cart)
+}
+
+class CatalogueController {
+- _instance
+- constructor()
++ get instance()
++ getCatalogue()
++ createProduct(name, image, shortDescription, longDescription, price, category, quantity)
++ updateProductQuantity(product, quantity)
++ deleteProduct(product)
+}
+
+class CategoryController {
+- _instance
+- constructor()
++ get instance()
++ getAllCategories()
++ getCategoryById(id)
+}
+
+class NotificationController {
+- _instance
+- constructor()
++ get instance()
++ update(notification)
+}
+
+class OrderController {
+- _instance
+- constructor()
++ get instance()
++ parseOrderJSON(orderjson)
++ createOrder(userId, products, payment, shipment)
++ getOrderById(orderId)
++ getOrdersByUser(userId)
++ updateOrder(orderId, data)
++ deleteOrder(orderId)
++ generateReceipt(order)
++ checkout(paymentDetails, shipmentDetails)
+}
+
+class PaymentController {
+- _instance
+- constructor()
++ get instance()
++ getAllPayments()
++ getPaymentById(id)
++ createPaymentObject(data)
++ storePayment(payment)
++ createPayment(data)
++ updatePayment(id, data)
++ processPayment(payment)
++ refundPayment(payment)
++ validateField(paymentMethod, value)
++ validateForm(data)
+}
+
+class ProductController {
+- _instance
+- constructor()
++ get instance()
++ getProduct(id)
++ getProductByCategory(categoryId)
++ createProduct(name, image, shortDescription, longDescription, price, category)
++ updateProduct(id, data)
++ deleteProduct(product)
+}
+
+class ShipmentController {
+- _instance
+- constructor()
++ get instance()
++ getAllShipments()
++ getShipmentById(id)
++ createShipmentObject(data)
++ storeShipment(shipment)
++ createShipment(data)
++ updateShipment(id, data)
++ deleteShipment(id)
+}
+
+class Account {
++ id
++ username
++ fullname
++ email
++ password
++ role
++ address?
++ phoneNumber?
++ cart?
++ constructor(id, username, fullname, email, password)
+}
+
+class CardPayment {
++ cardNumber
++ expiryDate
++ paymentGateway
++ constructor(id, amount, date, status, cardNumber, expiryDate, paymentGateway)
++ verify()
++ process()
++ refund()
++ connectToGateway()
+}
+
+class Cart {
++ userId
++ items
++ constructor(userId)
++ addItem(product, quantity)
++ removeItem(product)
++ getItemQuantity(product)
++ setItemQuantity(product, quantity)
++ containsProduct(product)
++ getSubtotalPrice()
+}
+
+class CashPayment {
++ constructor(id, amount, date, status)
++ verify()
++ process()
++ refund()
+}
+
+class Catalogue {
++ items
++ constructor()
++ addItem(product, quantity)
++ removeItem(product)
++ getItems()
++ getItemQuantity(product)
++ updateItemQuantity(product, quantity)
+}
+
+class Category {
++ id
++ name
++ image
++ description
++ constructor(id, name, image, description)
+}
+
+class DeliveryShipment {
++ partner
++ deliveryDate?
++ address
++ constructor(id, status, partner, address, date?)
++ calculateFee()
++ updateDate(newDate)
++ updateAddress(newAddress)
+}
+
+interface NotificationObserver <<interface>> {
++ update(notification)
+}
+
+class Order {
++ id
++ userId
++ orderDate
++ items
++ payment
++ shipment
++ status
++ cancellation
++ observers
++ constructor(userId, id?, orderDate?, items?, payment?, shipment?, status?, cancellation?)
++ addItem(product, quantity)
++ removeItem(productId)
++ updateItemQuantity(productId, quantity)
++ setPayment(payment)
++ setShipment(shipment)
++ updateStatus(status)
++ getTotalPrice()
++ verify()
++ isCancellable()
++ subscribe(observer)
++ unsubscribe(observer)
++ notify(message)
+}
+
+abstract class Payment <<abstract>> {
++ id
++ amount
++ date
++ status
++ constructor(id, amount, date, status)
++ verify()
++ process()
++ refund()
++ updateStatus(status)
+}
+
+class PickupShipment {
++ pickupTime
++ constructor(id, status, pickupTime?)
++ updatePickupTime(newTime)
+}
+
+class Product {
++ id
++ name
++ image
++ shortDescription
++ longDescription
++ price
++ category?
++ constructor(id, name, image, shortDescription, longDescription, price, category?)
++ updateDetails(name?, image?, shortDescription?, longDescription?, price?, category?)
+}
+
+class Receipt {
++ orderId
++ user
++ items
++ total
++ payment
++ shipment
++ constrructor(orderId, user, items, total, payment, shipment)
+}
+
+abstract class Shipment <<abstract>> {
++ id
++ status
++ fee
++ constructor(id, status)
++ updateStatus(status)
+}
+
+class Statistics {
++ data
++ from
++ to
++ constructor(data)
+}
+
+class AccountRepository {
+- _instance
+- baseUrl
+- constructor()
++ get instance()
++ getByCredentials(email, password)
++ getById(id)
++ create(fullname, email, username, password, address, phoneNumber)
++ update(id, data)
+}
+
+class CartRepository {
+- _instance
+- baseUrl
+- constructor()
++ get instance()
++ getByUserId(userId)
++ addProduct(userId, productId, quantity)
++ removeProduct(userId, productId)
++ update(userId, productId, quantity)
+}
+
+class CatalogueRepository {
+- _instance
+- baseUrl
+- constructor()
++ get instance()
++ getAll()
++ getById(id)
++ create(id, quantity)
++ update(id, quantity)
++ delete(id)
+}
+
+class CategoryRepository {
+- _instance
+- baseUrl
+- constructor()
++ get instance()
++ getAll()
++ getById(id)
+}
+
+class OrderRepository {
+- _instance
+- baseUrl
+- constructor()
++ get instance()
++ getById(orderId)
++ getByUserId(userId)
++ create(userId, items, paymentId, shipmentId, status, cancellation)
++ update(orderId, data)
++ delete(orderId)
+}
+
+class PaymentRepository {
+- _instance
+- baseUrl
+- constructor()
++ get instance()
+- inferPaymentType(payment)
++ getAll()
++ getById(id)
++ create(amount, status, type, cardNumber?, expiryDate?, paymentGateway?)
++ update(id, data)
++ delete(id)
+}
+
+class ProductRepository {
+- _instance
+- baseUrl
+- constructor()
++ get instance()
++ getAll()
++ getById(id)
++ getByCategory(categoryId)
++ create(name, image, shortDescription, longDescription, price, category)
++ update(id, data)
++ delete(id)
+}
+
+class ShipmentRepository {
+- _instance
+- baseUrl
+- constructor()
++ get instance()
+- inferShipmentType(shipment)
++ getAll()
++ getById(id)
++ create(type, status, fee, partner?, date?, address?, pickupTime?)
++ update(id, data)
++ delete(id)
+}
+
+class AboutView {
++ render()
+}
+
+class AccountView {
+- userData
+- orderData
+- dashboard
+- showPassword
+- fullName
+- password
+- email
+- username
+- address
+- phoneNumber
+- errors
+- formError
+- clearError(field)
+- handleSubmit(e)
++ render()
+}
+
+class CartView {
+- loggedInUser
+- cart
+- error
+- isLoading
+- refetch()
++ open
++ onClose()
++ handleRemoveProduct(productId)
++ render()
+}
+
+class CatalogueView {
+- data
+- error
+- isLoading
++ handleAddToCart(productId)
++ render()
+}
+
+class CategoryProductView {
+- categoryId
+- category
+- products
+- isLoading
+- error
++ handleAddToCart(productId)
++ render()
+}
+
+class CategoryView {
+- data
+- error
+- isLoading
++ render()
+}
+
+class CheckOutView {
+- loggedInUser
+- address
+- paymentMethod
+- shipmentMethod
+- cardNumber
+- errors
+- cart
+- error
+- isLoading
++ handleSubmit(e)
++ render()
+}
+
+class HomeView {
++ render()
+}
+
+class LoginView {
+- email
+- password
+- errors
+- formError
++ clearError(field)
++ handleSubmit(e)
++ render()
+}
+
+class OrderDetailView {
+- orderId
+- loggedInUser
+- orderData
+- error
+- isLoading
+- userData
++ render()
+}
+
+class ProductDetailView {
+- value
+- productId
+- data
+- isLoading
+- error
++ increaseValue()
++ decreaseValue()
++ handleAddToCart(quantity)
++ render()
+}
+
+class SignupView {
+- fullName
+- email
+- username
+- password
+- confirmPassword
+- errors
+- formError
++ clearError(field)
++ handleSubmit(e)
++ render()
+}
+
+@enduml
