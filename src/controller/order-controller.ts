@@ -15,6 +15,8 @@ import { NotificationController } from "./notification-controller";
 class OrderController {
     private static _instance: OrderController;
 
+    private constructor() {}
+
     private generateReceiptText(receipt: Receipt):string {
         const lines = []
         lines.push("FROM: AWE Electronic Store")
@@ -180,7 +182,7 @@ class OrderController {
                 ...paymentDetails,
                 cardNumber: paymentDetails.cardNumber,
                 expiryDate: paymentDetails.expiryDate || new Date().toISOString(),
-                paymentGateway: paymentDetails.paymentGateway || "",
+                paymentGateway: paymentDetails.paymentGateway || "Online",
             };
         }
 

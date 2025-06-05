@@ -34,8 +34,8 @@ class CatalogueController {
 - constructor()
 + get instance()
 + getCatalogue()
-+ createProduct(name, image, shortDescription, longDescription, price, category, quantity)
-+ updateProductQuantity(product, quantity)
++ createProduct(name, image, shortDescription, longDescription, price, category, availableQuantity)
++ updateProductQuantity(product, availableQuantity)
 + deleteProduct(product)
 }
 
@@ -58,6 +58,7 @@ class OrderController {
 - _instance
 - constructor()
 + get instance()
+- generateReceiptText(receipt)
 + parseOrderJSON(orderjson)
 + createOrder(userId, products, payment, shipment)
 + getOrderById(orderId)
@@ -125,7 +126,7 @@ class CardPayment {
 + cardNumber
 + expiryDate
 + paymentGateway
-+ constructor(id, amount, date, status, cardNumber, expiryDate, paymentGateway)
++ constructor(id, amount, type, date, status, cardNumber, expiryDate, paymentGateway)
 + verify()
 + process()
 + refund()
@@ -145,7 +146,7 @@ class Cart {
 }
 
 class CashPayment {
-+ constructor(id, amount, date, status)
++ constructor(id, amount, type date, status)
 + verify()
 + process()
 + refund()
@@ -154,7 +155,7 @@ class CashPayment {
 class Catalogue {
 + items
 + constructor()
-+ addItem(product, quantity)
++ addItem(product, availableQuantity)
 + removeItem(product)
 + getItems()
 + getItemQuantity(product)
@@ -211,9 +212,13 @@ class Order {
 abstract class Payment <<abstract>> {
 + id
 + amount
++ type
 + date
 + status
-+ constructor(id, amount, date, status)
++ cardNumber?
++ expiryDate?
++ paymentGateway?
++ constructor(id, amount, type, date, status)
 + verify()
 + process()
 + refund()
@@ -252,7 +257,8 @@ abstract class Shipment <<abstract>> {
 + id
 + status
 + fee
-+ constructor(id, status)
++ type
++ constructor(id, status, type)
 + updateStatus(status)
 }
 
@@ -293,7 +299,7 @@ class CatalogueRepository {
 + getAll()
 + getById(id)
 + create(id, quantity)
-+ update(id, quantity)
++ update(id, availableQuantity)
 + delete(id)
 }
 
@@ -420,6 +426,8 @@ class CheckOutView {
 - loggedInUser
 - address
 - paymentMethod
+- expiryDate
+- cvv
 - shipmentMethod
 - cardNumber
 - errors
