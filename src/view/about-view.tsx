@@ -1,5 +1,5 @@
 import { Col, Container, Row } from 'react-bootstrap'
-import { Card, CardContent, CardHeader, CardImage } from '../components/card'
+import { Card, CardContent, CardHeader } from '../components/card'
 import { ShieldUser, UserRound } from 'lucide-react'
 
 function AboutView() {
