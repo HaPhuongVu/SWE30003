@@ -18,7 +18,7 @@ class CatalogueController {
 
     async getCatalogue(): Promise<Catalogue> {
         const catalogueItems = await CatalogueRepository.instance.getAll();
-        const products = await Promise.all(catalogueItems.map(item => ProductController.instance.get(item.id)));
+        const products = await Promise.all(catalogueItems.map(item => ProductController.instance.getProduct(item.id)));
         const availableProducts = products.filter((product: Product | null): product is Product => product !== null);
         const catalogue = new Catalogue();
         availableProducts.forEach(product => {
@@ -39,7 +39,7 @@ class CatalogueController {
         category: Category,
         quantity: number = 1
     ): Promise<Product> {
-        const product = await ProductController.instance.create(name, image, shortDescription, longDescription, price, category);
+        const product = await ProductController.instance.createProduct(name, image, shortDescription, longDescription, price, category);
         await CatalogueRepository.instance.create(product.id, quantity);
         return product;
     }
@@ -50,7 +50,7 @@ class CatalogueController {
 
     async deleteProduct(product: Product): Promise<void> {
         await CatalogueRepository.instance.delete(product.id);
-        await ProductController.instance.delete(product);
+        await ProductController.instance.deleteProduct(product);
     }
 }
 

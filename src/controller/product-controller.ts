@@ -14,15 +14,15 @@ class ProductController {
         return ProductController._instance;
     }
 
-    async get(id: string): Promise<Product | null> {
+    async getProduct(id: string): Promise<Product | null> {
         return ProductRepository.instance.getById(id);
     }
 
-    async getByCategory(categoryId: string): Promise<Product[]> {
+    async getProductByCategory(categoryId: string): Promise<Product[]> {
         return ProductRepository.instance.getByCategory(categoryId);
     }
 
-    async create(
+    async createProduct(
         name: string,
         image: string,
         shortDescription: string,
@@ -34,11 +34,11 @@ class ProductController {
         return product;
     }
 
-    async update(id: string, data: Partial<Product>): Promise<void> {
+    async updateProduct(id: string, data: Partial<Product>): Promise<void> {
         await ProductRepository.instance.update(id, data);
     }
 
-    async delete(product: Product): Promise<void> {
+    async deleteProduct(product: Product): Promise<void> {
         await ProductRepository.instance.delete(product.id);
     }
 }

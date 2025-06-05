@@ -30,7 +30,7 @@ class OrderController {
             new Date(orderjson.orderDate),
             await Promise.all(
                 orderjson.items.map(async item => {
-                    const product = await ProductController.instance.get(item.productId);
+                    const product = await ProductController.instance.getProduct(item.productId);
                     if (!product) {
                         throw new Error(`Product not found: ${item.productId}`);
                     }

@@ -25,7 +25,7 @@ class CartController {
 
     await Promise.all(
       cartItems.map(async (item: CartItem) => {
-        const product = await ProductController.instance.get(item.productId);
+        const product = await ProductController.instance.getProduct(item.productId);
         if (product) {
           cart.addItem(product, item.quantity);
         }

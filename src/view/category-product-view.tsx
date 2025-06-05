@@ -24,7 +24,7 @@ function CategoryProductView() {
     })
     const {data: products, isLoading, error} = useQuery<Product[], Error>({
         queryKey: ['product', categoryId],
-        queryFn: () => ProductController.instance.getByCategory(categoryId!)
+        queryFn: () => ProductController.instance.getProductByCategory(categoryId!)
     })
 
     const handleAddToCart = async (productId: string) => {
@@ -35,7 +35,7 @@ function CategoryProductView() {
         }
 
         try {
-            const product = await ProductController.instance.get(productId);
+            const product = await ProductController.instance.getProduct(productId);
             if (!product) {
                 alert('Product not found');
                 return;

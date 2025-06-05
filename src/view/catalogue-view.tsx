@@ -25,7 +25,7 @@ export default function CatalogueView() {
     }
 
     try {
-      const product = await ProductController.instance.get(productId);
+      const product = await ProductController.instance.getProduct(productId);
       if (!product) {
         alert('Product not found');
         return;

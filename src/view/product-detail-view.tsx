@@ -16,7 +16,7 @@ function ProductDetailView() {
   const {data, isLoading, error} = useQuery<Product, Error>({
     queryKey: ['product', productId],
     queryFn: async () => {
-      const product = await ProductController.instance.get(productId!)
+      const product = await ProductController.instance.getProduct(productId!)
       if (!product) throw new Error('Product not found')
       return product
     }
