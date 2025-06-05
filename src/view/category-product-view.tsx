@@ -10,6 +10,7 @@ import { CategoryController } from '../controller/category-controller'
 import type { Category } from '../models/category'
 import { CartController } from '../controller/cart-controller'
 import { AccountController } from '../controller/account-controller'
+import { NotificationController } from '../controller/notification-controller'
 
 function CategoryProductView() {
     const navigate = useNavigate()
@@ -30,22 +31,20 @@ function CategoryProductView() {
     const handleAddToCart = async (productId: string) => {
         const loggedInUser = AccountController.loggedInUser;
         if (!loggedInUser) {
-            alert('Please login to add products to cart');
+            NotificationController.instance.update('Please login to add products to cart');
             return;
         }
 
         try {
             const product = await ProductController.instance.get(productId);
             if (!product) {
-                alert('Product not found');
+                NotificationController.instance.update('Product not found');
                 return;
             }
             const cart = await CartController.instance.getCart(loggedInUser);
             await CartController.instance.addProductToCart(cart, product, 1);
-            alert('Product added to cart!');
         } catch (error) {
-            console.error('Failed to add product to cart:', error);
-            alert('Failed to add product to cart');
+            throw new Error (`Failed to add product to cart: ${error}`);
         }
     };
 

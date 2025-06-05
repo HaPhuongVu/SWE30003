@@ -2,7 +2,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from './button';
-import SearchBar from './search-bar';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import CartView from '../view/cart-view';
@@ -43,7 +42,6 @@ function NavBar() {
             <Nav.Link href='/category'>Categories</Nav.Link>
             <Nav.Link href='/catalogue'>Catalogue</Nav.Link>
             <Nav.Link href='/about'>About</Nav.Link>
-            <SearchBar className='ms-5'/>
           </Nav>
         </Navbar.Collapse>
         <Navbar.Collapse className="d-flex align-items-center gap-2 ms-auto w-25">

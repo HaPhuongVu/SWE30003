@@ -13,8 +13,7 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
   const {data: cart, error, isLoading, refetch} = useQuery<Cart, Error>({
     queryKey: ['cart', loggedInUser],
     queryFn: () => {
-      if (!loggedInUser) throw new Error('User not logged in');
-      return CartController.instance.getCart(loggedInUser);
+      return CartController.instance.getCart(loggedInUser!);
     },
     enabled: open && !!loggedInUser
   })
@@ -29,8 +28,7 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
         refetch();
       }
     } catch (error) {
-      console.error('Failed to remove product:', error);
-      alert('Failed to remove product from cart');
+      throw new Error (`Failed to remove product: ${error}`);
     }
   };
 
@@ -78,7 +76,7 @@ function CartView({open, onClose}:{open: boolean; onClose: () => void}) {
           <Modal.Footer className="justify-content-center">
             <Button className='w-50' onClick={onClose}>Continue Shopping</Button>
             {cart?.items && cart.items.length > 0 && (
-              <Button variant="destructive" onClick={() => navigate('/checkout')}>Checkout</Button>
+              <Button variant="destructive" onClick={() => {navigate('/checkout');onClose()}}>Checkout</Button>
             )}
           </Modal.Footer>
         </Modal>

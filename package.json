@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"json-server --watch src/database/db.json\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.77.2",
     "bootstrap": "^5.3.6",
+    "concurrently": "^9.1.2",
     "json-server": "^1.0.0-beta.3",
     "lucide-react": "^0.511.0",
     "react": "^19.1.0",

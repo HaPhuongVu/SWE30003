@@ -83,7 +83,7 @@ class Order {
     }
 
     isCancellable() {
-        return this.status === "Pending" && new Date().getTime() - this.orderDate.getTime() < 3 * 24 * 60 * 60 * 1000; // 72 hours
+        return this.status === "Pending" && new Date().getTime() - this.orderDate.getTime() < 3 * 24 * 60 * 60 * 1000;
     }
 
     subscribe(observer: NotificationObserver) {

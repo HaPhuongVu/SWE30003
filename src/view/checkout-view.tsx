@@ -6,18 +6,27 @@ import { CartController } from "../controller/cart-controller";
 import { AccountController } from "../controller/account-controller";
 import Button from "../components/button";
 import { useState, type FormEvent } from "react";
-import { PaymentController } from "../controller/payment-controller";
+import { type FormValidation, PaymentController } from "../controller/payment-controller";
 import { OrderController } from "../controller/order-controller";
 import { useNavigate } from "react-router";
 
-export default function CheckOutView() {
+function CheckOutView() {
   const navigate = useNavigate();
   const loggedInUser = AccountController.loggedInUser;
   const [address, setAddress] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('Cash')
-  const [shipmentMethod, setShipmentMethod] = useState('Pickup')
+  const [expiryDate, setExpiryDate] = useState('')
+  const [cvv, setCvv] = useState('')
+  const [shipmentMethod, setShipmentMethod] = useState('Delivery')
   const [cardNumber, setCardNumber] = useState('')
-  const [errors, setErrors] = useState('')
+  const [errors, setErrors] = useState<FormValidation>({
+    address: "",
+    visaNumber: "",
+    creditNumber: "",
+    mastercardNumber: "",
+    expiryDate: "",
+    cvv: ""
+  })
   const {data: cart, error, isLoading} = useQuery<Cart, Error>({
     queryKey: ['cart', loggedInUser],
     queryFn: () => {
@@ -30,23 +39,26 @@ export default function CheckOutView() {
 
   async function handleSubmit(e: FormEvent<Element>) {
     e.preventDefault();
-    const cardData = {
+    const validateData = {
+      address: shipmentMethod !== 'Pickup' ? address: undefined,
       visaNumber: paymentMethod === "Visa" ? cardNumber : undefined,
       creditNumber: paymentMethod === "Credit Card" ? cardNumber : undefined,
-      mastercardNumber: paymentMethod === "Mastercard" ? cardNumber : undefined
+      mastercardNumber: paymentMethod === "Mastercard" ? cardNumber : undefined,
+      expiryDate: paymentMethod !== 'Cash' ? expiryDate : undefined,
+      cvv: paymentMethod !== 'Cash' ? cvv : undefined
     }
 
-    const newError = PaymentController.instance.validateForm(cardData)
-    const errorMsg = newError.visaNumber || newError.creditNumber || newError.mastercardNumber || "";
+    const errorMsg = PaymentController.instance.validateForm(validateData)
+    const hasErrors = Object.values(errorMsg).some((msg) => msg !== "");
     setErrors(errorMsg);
-    if (errorMsg) return;
+    if (hasErrors) return;
     try{
       const paymentDetails = {
         type: paymentMethod === "Cash" ? "cash" : "card",
         ...(paymentMethod !== "Cash" && {
           cardNumber,
-          expiryDate: new Date().toISOString(),
-          paymentGateway: "Tyro",
+          expiryDate: expiryDate,
+          paymentGateway: paymentMethod,
         }),
       }
 
@@ -58,18 +70,14 @@ export default function CheckOutView() {
         deliveryDate: shipmentMethod === "Delivery" ? new Date().toLocaleString('en') : undefined,
       }
 
-      console.log("Payment Details:", paymentDetails);
-      console.log("Shipment Details:", shipmentDetails);
-
       const storedOrder = await OrderController.instance.checkout(paymentDetails, shipmentDetails)
-      alert("Order placed successfully!");
       navigate(`/${storedOrder.id}`);
     } catch (error) {
-      alert (error)
+      throw new Error (`${error}`);
     }
   }
   return (
-    <Container className="mt-5 vh-100">
+    <Container className="mt-5">
       <h2 className="fw-bold text-center">Checkout</h2>
       <Row>
         <Col className="col-6">
@@ -77,8 +85,8 @@ export default function CheckOutView() {
           <h4 className="fw-bold">Shipping Information</h4>
             <Col className="col-12 mt-3">
               <FormSelect onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setShipmentMethod(e.target.value)}>
-                <option>Pickup</option>
                 <option>Delivery</option>
+                <option>Pickup</option>
               </FormSelect>
             </Col>
             {shipmentMethod !== 'Pickup' && (
@@ -88,11 +96,9 @@ export default function CheckOutView() {
                placeholder='Enter your address'
                value={address}
                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)}/>
+              {errors.address && <div className="text-danger mt-1">{errors.address}</div>}
                </Col>
             )}
-            <Col className="col-12 mt-3">
-            <FormControl type='text' placeholder='Contact number'/>
-            </Col>
           <h4 className="fw-bold mt-4">Payment Details</h4>
             <Col className="col-12 mt-3">
               <FormSelect onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPaymentMethod(e.target.value)}>
@@ -105,17 +111,32 @@ export default function CheckOutView() {
             {paymentMethod !== 'Cash' && (
               <>
               <Col className="col-12 mt-3">
-                <FormControl value={cardNumber}
+                <FormControl
+                value={cardNumber}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCardNumber(e.target.value)}
                 placeholder='Card Number'/>
-                {errors && <div className="text-danger mt-1">{errors}</div>}
+                {(errors.visaNumber || errors.creditNumber || errors.mastercardNumber) && (
+                  <div className="text-danger mt-1">
+                    {errors.visaNumber || errors.creditNumber || errors.mastercardNumber}
+                  </div>
+                )}
               </Col>
               <Row>
               <Col className="col-6 mt-3">
-                <FormControl placeholder='MM/YY'/>
+                <FormControl
+                placeholder='MM/YY'
+                value={expiryDate}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setExpiryDate(e.target.value)}
+                />
+                {errors.expiryDate && <div className="text-danger mt-1">{errors.expiryDate}</div>}
               </Col>
               <Col className="col-6 mt-3">
-                <FormControl placeholder='CVV'/>
+                <FormControl
+                placeholder='CVV'
+                value={cvv}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCvv(e.target.value)}
+                />
+                {errors.cvv && <div className="text-danger mt-1">{errors.cvv}</div>}
               </Col>
               </Row>
               </>
@@ -143,3 +164,5 @@ export default function CheckOutView() {
     </Container>
   )
 }
+
+export default CheckOutView

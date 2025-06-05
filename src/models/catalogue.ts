@@ -6,14 +6,14 @@ type CatalogueItem = {
 }
 
 class Catalogue {
-    items: {product: Product, quantity: number}[];
+    items: {product: Product, availableQuantity: number}[];
 
     constructor() {
         this.items = [];
     }
 
-    addItem(product: Product, quantity: number) {
-        this.items.push({ product, quantity });
+    addItem(product: Product, availableQuantity: number) {
+        this.items.push({ product, availableQuantity });
     }
 
     removeItem(product: Product) {
@@ -26,13 +26,13 @@ class Catalogue {
 
     getItemQuantity(product: Product): number {
         const item = this.items.find(item => item.product.id === product.id);
-        return item ? item.quantity : 0;
+        return item ? item.availableQuantity : 0;
     }
 
     updateItemQuantity(product: Product, quantity: number) {
         const item = this.items.find(item => item.product.id === product.id);
         if (item) {
-            item.quantity = quantity;
+            item.availableQuantity = quantity;
         }
     }
 }

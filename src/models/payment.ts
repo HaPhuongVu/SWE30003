@@ -12,12 +12,17 @@ type JointPayment = {
 abstract class Payment {
     id: string | null;
     amount: number;
+    type: string;
     date: Date;
     status: string;
+    cardNumber?: string;
+    expiryDate?: string;
+    paymentGateway?: string
 
-    constructor(id: string | null, amount: number, date: Date, status: string) {
+    constructor(id: string | null, amount: number, type: string, date: Date, status: string) {
         this.id = id;
         this.amount = amount;
+        this.type = type;
         this.date = date;
         this.status = status;
     }

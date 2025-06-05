@@ -8,6 +8,7 @@ import { ArrowLeft, Check, Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { CartController } from "../controller/cart-controller";
 import { AccountController } from "../controller/account-controller";
+import { NotificationController } from "../controller/notification-controller";
 
 function ProductDetailView() {
   const navigate = useNavigate()
@@ -25,22 +26,19 @@ function ProductDetailView() {
   const handleAddToCart = async (quantity: number) => {
     const loggedInUser = AccountController.loggedInUser;
     if (!loggedInUser) {
-      alert('Please login to add products to cart');
+      NotificationController.instance.update('Please login to add products to cart');
       return;
     }
 
     if (!productId || !data) {
-      alert('Product not found');
       return;
     }
 
     try {
       const cart = await CartController.instance.getCart(loggedInUser);
       await CartController.instance.addProductToCart(cart, data, quantity);
-      alert('Product added to cart!');
     } catch (error) {
-      console.error('Failed to add product to cart:', error);
-      alert('Failed to add product to cart');
+      throw new Error (`Failed to get cart information ${error}`)
     }
   };
 

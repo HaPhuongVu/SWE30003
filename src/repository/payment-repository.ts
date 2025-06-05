@@ -21,6 +21,7 @@ class PaymentRepository {
             return new CardPayment(
                 payment.id,
                 payment.amount,
+                payment.type,
                 new Date(payment.date),
                 payment.status,
                 payment.cardNumber!,
@@ -31,6 +32,7 @@ class PaymentRepository {
             return new CashPayment(
                 payment.id,
                 payment.amount,
+                payment.type,
                 new Date(payment.date),
                 payment.status
             );

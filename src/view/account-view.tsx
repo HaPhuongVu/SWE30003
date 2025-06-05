@@ -1,5 +1,5 @@
 import { Col, Container, Row } from 'react-bootstrap'
-import { Ellipsis, EyeClosed, UserRound } from 'lucide-react'
+import { Download, Ellipsis, EyeClosed, UserRound } from 'lucide-react'
 import Button from '../components/button'
 import { FormControl, FormLabel, FormLayout } from '../components/form'
 import { useEffect, useState, type FormEvent } from 'react'
@@ -124,8 +124,8 @@ export default function AccountView() {
     }
 
   return (
-    <Container className='d-flex justify-content-start'>
-        <Row className='w-100 mt-3'>
+    <Container className='d-flex vh-100 justify-content-start'>
+        <Row className='w-100 mt-4'>
             <Col className='col-3 d-flex flex-column align-items-center border-end border-secondary-subtle'>
                 <div className='border border-secondary rounded-circle overflow-hidden'>
                     <UserRound width={150} height={150}/>
@@ -257,21 +257,35 @@ export default function AccountView() {
                             <TableHead>Date</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Details</TableHead>
+                            <TableHead>Receipt</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {orderData?.map((order) => (
-                            <TableRow>
-                                <TableCell>#{order?.id}</TableCell>
-                                <TableCell>{order?.orderDate.toLocaleString()}</TableCell>
-                                <TableCell>{order?.status}</TableCell>
-                                <TableCell>
-                                    <Button className='border-0' onClick={() => navigate(`/${order?.id}`)}>
-                                    <Ellipsis/>
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                    {orderData && orderData.length > 0 ? (
+                        orderData.map((order) => (
+                        <TableRow key={order?.id}>
+                            <TableCell>#{order?.id}</TableCell>
+                            <TableCell>{new Date(order?.orderDate).toLocaleDateString()}</TableCell>
+                            <TableCell>{order?.status}</TableCell>
+                            <TableCell>
+                            <Button className="border-0" onClick={() => navigate(`/${order?.id}`)}>
+                                <Ellipsis />
+                            </Button>
+                            </TableCell>
+                            <TableCell>
+                            <Button className="border-0" onClick={() => OrderController.instance.generateReceipt(order)}>
+                                <Download />
+                            </Button>
+                            </TableCell>
+                        </TableRow>
+                        ))
+                    ) : (
+                        <TableRow>
+                        <TableCell colSpan={4} className="text-center text-muted">
+                            No order has been placed yet.
+                        </TableCell>
+                        </TableRow>
+                    )}
                     </TableBody>
                 </Table>
                 </>
