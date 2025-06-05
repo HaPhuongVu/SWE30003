@@ -1,4 +1,4 @@
-import type { Cart } from "./cart";
+import { Cart } from "./cart";
 
 /**
  * Represents a user account in the system.
@@ -28,6 +28,7 @@ class Account {
     this.fullname = fullname;
     this.email = email;
     this.password = password;
+    this.cart = new Cart(id);
   }
 
 }

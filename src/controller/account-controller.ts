@@ -1,5 +1,4 @@
 import { Account } from "../models/account"
-import { Cart } from "../models/cart";
 import type { NotificationObserver } from "../models/notification-observer";
 import { AccountRepository } from "../repository/account-repository"
 import { CartController } from "./cart-controller";
@@ -94,9 +93,6 @@ class AccountController {
         phoneNumber: string
     ): Promise<Account> {
         const account = await AccountRepository.instance.create(fullName, email, username, password, address, phoneNumber);
-        if (account.role === 'customer') {
-            account.cart = new Cart(account.id);
-        }
         this.notify(`Account ${account.id} created successfully.`);
         return account;
     }
