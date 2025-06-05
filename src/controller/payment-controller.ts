@@ -3,11 +3,21 @@ import { CashPayment } from "../models/cash-payment";
 import type { Payment, JointPayment } from "../models/payment";
 import { PaymentRepository } from "../repository/payment-repository";
 
-type FormValidation = {
+export type FormValidation = {
+    address?: string;
     visaNumber?: string;
     creditNumber?: string;
     mastercardNumber?: string;
+    expiryDate?: string
+    cvv?: string
 }
+
+
+const validateAddress = (address: string): boolean => {
+    const addressRegex = /^[A-Za-z0-9\s,.-/]+$/;
+    return addressRegex.test(address) && address.trim().length > 0;
+};
+
 const validateVisa = (cardNumber: string):boolean => {
     const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/;
     return visaRegex.test(cardNumber)
@@ -21,6 +31,16 @@ const validateCredit = (cardNumber: string):boolean => {
 const validateMastercard = (cardNumber: string):boolean => {
     const mastercardRegex = /^5[1-5][0-9]{14}$|^2[2-7][0-9]{14}$/;
     return mastercardRegex.test(cardNumber)
+}
+
+const validateExpiryDate = (expiryDate: string):boolean => {
+    const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/
+    return expiryDateRegex.test(expiryDate)
+}
+
+const validateCvv = (cvv: string):boolean => {
+    const cvvRegex = /^\d{3,4}$/
+    return cvvRegex.test(cvv)
 }
 class PaymentController {
     private static _instance: PaymentController;
@@ -63,6 +83,7 @@ class PaymentController {
                 return new CardPayment(
                     null,
                     amount || 0,
+                    type,
                     new Date(),
                     status || 'pending',
                     cardNumber,
@@ -76,6 +97,7 @@ class PaymentController {
                 return new CashPayment(
                     null,
                     amount || 0,
+                    type,
                     new Date(),
                     status || 'pending'
                 );
@@ -153,8 +175,12 @@ class PaymentController {
         }
     }
 
-    validateField (paymentMethod: string, value: string):string {
-        switch(paymentMethod){
+    validateField (field: string, value: string):string {
+        switch(field){
+            case "address":
+                if(!value.trim()) return 'Address cannot be emtpy'
+                if(!validateAddress(value)) return "Address only allow numbers and letters"
+                return ""
             case 'Visa':
                 if (!value.trim()) return 'Card number is required'
                 if (!validateVisa(value)) return 'Visa number is in wrong format'
@@ -167,6 +193,14 @@ class PaymentController {
                 if (!value.trim()) return 'Card number is required'
                 if(!validateMastercard(value)) return 'Mastercard number is in wrong format'
                 return "";
+            case 'expiryDate':
+                if(!value.trim()) return 'Expiry date cannot be empty'
+                if(!validateExpiryDate(value)) return 'Expiry date need to be in MM/YY format'
+                return ""
+            case 'cvv':
+                if(!value.trim()) return 'CVV cannot be empty'
+                if(!validateCvv(value)) return 'CVV has to be 3 to 4-digit numbers'
+                return ""
             default:
                 return "";
         }
@@ -174,9 +208,12 @@ class PaymentController {
 
     validateForm(data: FormValidation):FormValidation {
         return {
+            address: data.address !== undefined ? this.validateField('address', data.address): "",
             visaNumber: data.visaNumber !== undefined ? this.validateField('Visa', data.visaNumber) : "",
             creditNumber: data.creditNumber !== undefined ? this.validateField('Credit Card', data.creditNumber): "",
-            mastercardNumber: data.mastercardNumber !== undefined ? this.validateField('Mastercard', data.mastercardNumber) : ""
+            mastercardNumber: data.mastercardNumber !== undefined ? this.validateField('Mastercard', data.mastercardNumber) : "",
+            expiryDate: data.expiryDate !== undefined ? this.validateField('expiryDate', data.expiryDate) : "",
+            cvv: data.cvv !== undefined ? this.validateField('cvv', data.cvv) : ""
         }
     }
 }

@@ -8,6 +8,7 @@ import { Account } from '../models/account'
 import { AccountController } from '../controller/account-controller'
 import Button from '../components/button'
 import { ArrowLeft } from 'lucide-react'
+import { DeliveryShipment } from '../models/delivery-shipment'
 
 export default function OrderDetailView() {
   const navigate = useNavigate()
@@ -42,7 +43,7 @@ export default function OrderDetailView() {
   return (
     <>
     <Container fluid>
-    <Button variant="destructive" onClick={()=>navigate(-1)}>
+    <Button variant="destructive" onClick={()=>navigate('/account')}>
       <ArrowLeft/> Back
     </Button>
     </Container>
@@ -82,11 +83,17 @@ export default function OrderDetailView() {
       </Table>
       <div className='mt-5'>
         <h4 className='fw-bold text-uppercase'>Customer Information</h4>
-        <ul className='list-unstyled'>
-          <li>Payment Method: {orderData?.payment?.constructor.name || 'N/A'}</li>
-          <li>Shipping Method: {orderData?.shipment?.constructor.name || 'N/A'}</li>
-          <li>Address: {userData?.address}</li>
-          <li>Contact Number: {userData?.phoneNumber}</li>
+        <ul className='list-unstyled text-capitalize'>
+          <li>Payment Method:
+          {orderData?.payment?.paymentGateway}
+          {orderData?.payment?.type}
+          {orderData?.payment?.cardNumber ? `(${orderData?.payment?.cardNumber})` : ""}
+          </li>
+          {orderData?.shipment?.type === 'delivery' && orderData.shipment instanceof DeliveryShipment &&(
+            <li>Address: {orderData.shipment.address}</li>
+          )}
+          <li>Shipping: {orderData?.shipment?.type}</li>
+          <li>Contact Number: {userData?.phoneNumber ? userData.phoneNumber : "No information"}</li>
         </ul>
       </div>
     </Container>

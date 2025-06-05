@@ -10,11 +10,36 @@ import { PaymentController } from "./payment-controller";
 import { Receipt } from "../models/receipt";
 import { ProductController } from "./product-controller";
 import { CatalogueController } from "./catalogue-controller";
+import { NotificationController } from "./notification-controller";
 
 class OrderController {
     private static _instance: OrderController;
 
-    private constructor() {}
+    private generateReceiptText(receipt: Receipt):string {
+        const lines = []
+        lines.push("FROM: AWE Electronic Store")
+        lines.push(`TO: ${receipt.user.fullname}`)
+        lines.push("")
+        lines.push("===Receipt===")
+        lines.push(`Order ID: ${receipt.orderId.id}`)
+        lines.push(`Order Date: ${receipt.orderId.orderDate.toLocaleDateString()}`)
+        lines.push("")
+        lines.push("===Contact Information===")
+        lines.push(`Email: ${receipt.user.email}`)
+        lines.push(`Phone Number: ${receipt.user.phoneNumber ? receipt.user.phoneNumber : "No information"}`)
+        lines.push(`Address: ${receipt.user.address}`)
+        lines.push("")
+        lines.push("===Order===")
+        lines.push("")
+        receipt.items.forEach((item, index) => {
+            lines.push(`${index+1}.     ${item.product.name}  x  ${item.quantity}      $${(item.price * item.quantity).toFixed(2)}`)
+        })
+        lines.push("")
+        lines.push(`Total Paid: $${receipt.total.toFixed(2)}`)
+        lines.push(`Pay through: ${receipt.payment.date}`)
+        lines.push(`Shipping method: ${receipt.shipment.type}`)
+        return lines.join("\n")
+    }
 
     static get instance(): OrderController {
         if (!OrderController._instance) {
@@ -89,7 +114,7 @@ class OrderController {
         if (!user) throw new Error(`User not found: ${order.userId}`);
 
         const receipt = new Receipt(
-            order.id!,
+            order,
             user,
             order.items.map(item => ({
                 product: item.product,
@@ -100,9 +125,17 @@ class OrderController {
             order.payment!,
             order.shipment!
         );
-
+        const receiptText = this.generateReceiptText(receipt);
+        const blob = new Blob([receiptText], {type: "text/plain"});
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = `receipt-${order.id}.txt`
+        a.click()
+        URL.revokeObjectURL(url)
         return receipt;
     }
+
 
     async checkout(paymentDetails: Partial<JointPayment>, shipmentDetails: Partial<JointShipment>): Promise<Order> {
         if (!AccountController.loggedInUser) {
@@ -147,7 +180,7 @@ class OrderController {
                 ...paymentDetails,
                 cardNumber: paymentDetails.cardNumber,
                 expiryDate: paymentDetails.expiryDate || new Date().toISOString(),
-                paymentGateway: paymentDetails.paymentGateway || "Tyro",
+                paymentGateway: paymentDetails.paymentGateway || "",
             };
         }
 
@@ -164,7 +197,6 @@ class OrderController {
             storedShipment
         );
 
-        // Use Promise.all to wait for all product quantity updates
         await Promise.all(
             order.items.map(item =>
                 CatalogueController.instance.updateProductQuantity(
@@ -175,7 +207,9 @@ class OrderController {
         );
 
         await CartController.instance.emptyCart(user.cart!);
-
+        if(createdOrder) {
+            NotificationController.instance.update("Order placed successfully!")
+        }
         return createdOrder;
     }
 

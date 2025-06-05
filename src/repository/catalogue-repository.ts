@@ -54,7 +54,7 @@ class CatalogueRepository {
 
     async update(
         id: string,
-        quantity: number,
+        availableQuantity: number,
     ): Promise<CatalogueItem> {
         try {
             const response = await fetch(`${this.baseUrl}/${id}`, {
@@ -62,7 +62,7 @@ class CatalogueRepository {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ quantity })
+                body: JSON.stringify({ availableQuantity })
             });
             if (!response.ok) throw new Error(`Failed to update product with id ${id}`);
             return response.json();

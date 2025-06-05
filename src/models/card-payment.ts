@@ -5,9 +5,10 @@ class CardPayment extends Payment {
     expiryDate: string;
     paymentGateway: string;
 
-    constructor(id: string | null, amount: number, date: Date, status: string, cardNumber: string, expiryDate: string, paymentGateway: string) {
-        super(id, amount, date, status);
+    constructor(id: string | null, amount: number, type: string, date: Date, status: string, cardNumber: string, expiryDate: string, paymentGateway: string) {
+        super(id, amount, type, date, status);
         this.cardNumber = cardNumber;
+        this.type = 'card'
         this.expiryDate = expiryDate;
         this.paymentGateway = paymentGateway;
     }

@@ -37,15 +37,15 @@ class CatalogueController {
         longDescription: string,
         price: number,
         category: Category,
-        quantity: number = 1
+        availableQuantity: number = 1
     ): Promise<Product> {
         const product = await ProductController.instance.createProduct(name, image, shortDescription, longDescription, price, category);
-        await CatalogueRepository.instance.create(product.id, quantity);
+        await CatalogueRepository.instance.create(product.id, availableQuantity);
         return product;
     }
 
-    async updateProductQuantity(product: Product, quantity: number): Promise<void> {
-        await CatalogueRepository.instance.update(product.id, quantity);
+    async updateProductQuantity(product: Product, availableQuantity: number): Promise<void> {
+        await CatalogueRepository.instance.update(product.id, availableQuantity);
     }
 
     async deleteProduct(product: Product): Promise<void> {

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router'
 import { CartController } from '../controller/cart-controller'
 import { AccountController } from '../controller/account-controller'
 import type { Catalogue } from '../models/catalogue'
+import { NotificationController } from '../controller/notification-controller'
 
 export default function CatalogueView() {
   const navigate = useNavigate()
@@ -20,22 +21,20 @@ export default function CatalogueView() {
   const handleAddToCart = async (productId: string) => {
     const loggedInUser = AccountController.loggedInUser;
     if (!loggedInUser) {
-      alert('Please login to add products to cart');
+      NotificationController.instance.update('Please login to add products to cart');
       return;
     }
 
     try {
       const product = await ProductController.instance.getProduct(productId);
       if (!product) {
-        alert('Product not found');
+        NotificationController.instance.update('Product not found');
         return;
       }
       const cart = await CartController.instance.getCart(loggedInUser);
       await CartController.instance.addProductToCart(cart, product, 1);
-      alert('Product added to cart!');
     } catch (error) {
-      console.error('Failed to add product to cart:', error);
-      alert('Failed to add product to cart');
+      throw new Error (`Failed to add product to cart: ${error}`);
     }
   };
 
@@ -56,8 +55,9 @@ export default function CatalogueView() {
             <CardImage className='mx-auto w-50 h-50' src={catalogueItem.product.image} alt={catalogueItem.product.id}></CardImage>
             <CardHeader className='fs-5 border-0'>{catalogueItem.product.name}</CardHeader>
             <CardContent>
-              {catalogueItem.product.shortDescription}
+              <span>{catalogueItem.product.shortDescription}</span>
               <p className='mt-3 fw-bold text-dark'>${catalogueItem.product.price.toFixed(2)}</p>
+              <p className='text-secondary'>Available left: {data?.getItemQuantity(catalogueItem.product)}</p>
               <Row>
                 <Col>
                   <Button variant='destructive'

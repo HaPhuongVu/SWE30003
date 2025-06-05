@@ -95,27 +95,27 @@
   ],
   "catalogue": [
     {
-      "quantity": null,
+      "availableQuantity": 20,
       "id": "P01"
     },
     {
-      "quantity": null,
+      "availableQuantity": 5,
       "id": "P02"
     },
     {
-      "quantity": null,
+      "availableQuantity": 27,
       "id": "P03"
     },
     {
-      "quantity": null,
+      "availableQuantity": 40,
       "id": "P04"
     },
     {
-      "quantity": null,
+      "availableQuantity": 21,
       "id": "P05"
     },
     {
-      "quantity": null,
+      "availableQuantity": 50,
       "id": "P06"
     }
   ],
@@ -135,870 +135,95 @@
       "email": "amie@gmail.com",
       "username": "amie1212",
       "password": "12345amie@",
-      "address": "3 Launder Street",
-      "phoneNumber": "",
-      "id": "2915",
-      "role": "user"
+      "address": "",
+      "phoneNumber": "0422525603",
+      "id": "2915"
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "id": "b8ef",
+      "productId": "P02",
+      "userId": "2915",
+      "quantity": 1
+    },
+    {
+      "productId": "P03",
+      "userId": "2915",
+      "quantity": 2,
+      "id": "6985"
+    }
+  ],
   "order": [
     {
-      "id": "f00c",
+      "id": "fdc4",
       "userId": "2915",
-      "orderDate": "02/06/2025",
+      "orderDate": "05/06/2025",
       "items": [
-        {
-          "productId": "P02",
-          "quantity": 2
-        },
-        {
-          "productId": "P03",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "abda",
-      "shipmentId": "7fab",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "22d6",
-      "userId": "2915",
-      "orderDate": "02/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        },
-        {
-          "productId": "P04",
-          "quantity": 1
-        },
-        {
-          "productId": "P05",
-          "quantity": 1
-        },
         {
           "productId": "P06",
           "quantity": 1
-        }
-      ],
-      "paymentId": "abda",
-      "shipmentId": "7fab",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "7f83",
-      "userId": "0001",
-      "orderDate": "04/06/2025",
-      "items": [
-        {
-          "productId": "P03",
-          "quantity": 4
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "abda",
-      "shipmentId": "7fab",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "c8d4",
-      "userId": "0001",
-      "orderDate": "04/06/2025",
-      "items": [
-        {
-          "productId": "P03",
-          "quantity": 4
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "029c",
-      "shipmentId": "b164",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "4a4f",
-      "userId": "0001",
-      "orderDate": "04/06/2025",
-      "items": [
-        {
-          "productId": "P03",
-          "quantity": 4
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "f1e0",
-      "shipmentId": "3236",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "c2b3",
-      "userId": "0001",
-      "orderDate": "04/06/2025",
-      "items": [
-        {
-          "productId": "P03",
-          "quantity": 4
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "916e",
-      "shipmentId": "a6ef",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "610a",
-      "userId": "0001",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P03",
-          "quantity": 3
-        },
-        {
-          "productId": "P05",
-          "quantity": 5
-        }
-      ],
-      "paymentId": "dd64",
-      "shipmentId": "ae4a",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "fdb6",
-      "userId": "0001",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P03",
-          "quantity": 3
-        },
-        {
-          "productId": "P05",
-          "quantity": 5
-        }
-      ],
-      "paymentId": "e107",
-      "shipmentId": "fd4a",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "a19b",
-      "userId": "0001",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P03",
-          "quantity": 3
-        },
-        {
-          "productId": "P05",
-          "quantity": 5
-        }
-      ],
-      "paymentId": "fef2",
-      "shipmentId": "ac3b",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "3fb9",
-      "userId": "0001",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P03",
-          "quantity": 3
-        },
-        {
-          "productId": "P05",
-          "quantity": 5
-        }
-      ],
-      "paymentId": "a763",
-      "shipmentId": "6860",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "3767",
-      "userId": "0001",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P03",
-          "quantity": 3
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P05",
-          "quantity": 5
-        },
-        {
-          "productId": "P04",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "7df3",
-      "shipmentId": "acf4",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "88dd",
-      "userId": "0001",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        },
-        {
-          "productId": "P05",
-          "quantity": 5
-        }
-      ],
-      "paymentId": "777f",
-      "shipmentId": "66a4",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "1874",
-      "userId": "0001",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P03",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "5408",
-      "shipmentId": "20e6",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "9724",
-      "userId": "0001",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "5527",
-      "shipmentId": "4f36",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "f78b",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "6826",
-      "shipmentId": "470f",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "bb18",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "dac7",
-      "shipmentId": "f686",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "90e2",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P03",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "f3ed",
-      "shipmentId": "6e09",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "d835",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P03",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "4995",
-      "shipmentId": "fd70",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "d765",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        },
-        {
-          "productId": "P03",
-          "quantity": 1
-        },
-        {
-          "productId": "P04",
-          "quantity": 1
         },
         {
           "productId": "P05",
           "quantity": 1
-        },
-        {
-          "productId": "P06",
-          "quantity": 1
         }
       ],
-      "paymentId": "cc01",
-      "shipmentId": "c761",
+      "paymentId": "5762",
+      "shipmentId": "f082",
       "status": "Pending",
       "cancellation": false
     },
     {
-      "id": "5841",
+      "id": "52a3",
       "userId": "2915",
       "orderDate": "05/06/2025",
       "items": [
-        {
-          "productId": "P01",
-          "quantity": 5
-        },
-        {
-          "productId": "P02",
-          "quantity": 4
-        },
-        {
-          "productId": "P03",
-          "quantity": 3
-        },
-        {
-          "productId": "P06",
-          "quantity": 3
-        },
-        {
-          "productId": "P05",
-          "quantity": 3
-        },
-        {
-          "productId": "P04",
-          "quantity": 4
-        }
-      ],
-      "paymentId": "1855",
-      "shipmentId": "7cd8",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "7b6d",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 2
-        },
         {
           "productId": "P02",
           "quantity": 1
         }
       ],
-      "paymentId": "0ee4",
-      "shipmentId": "444d",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "8119",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "33d7",
-      "shipmentId": "245f",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "7073",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        },
-        {
-          "productId": "P02",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "b6c7",
-      "shipmentId": "fa7c",
-      "status": "Pending",
-      "cancellation": false
-    },
-    {
-      "id": "5684",
-      "userId": "2915",
-      "orderDate": "05/06/2025",
-      "items": [
-        {
-          "productId": "P01",
-          "quantity": 1
-        }
-      ],
-      "paymentId": "77ee",
-      "shipmentId": "e0bd",
+      "paymentId": "97a3",
+      "shipmentId": "81ca",
       "status": "Pending",
       "cancellation": false
     }
   ],
   "payment": [
     {
-      "id": "0001",
-      "type": "cash",
-      "amount": 4997,
-      "date": "02/06/2025",
-      "status": "Completed"
+      "id": "5762",
+      "amount": 2498,
+      "date": "2025-06-05T09:54:00.526Z",
+      "status": "pending",
+      "type": "cash"
     },
     {
-      "id": "0002",
+      "id": "97a3",
+      "amount": 2509,
+      "date": "2025-06-05T09:57:04.155Z",
+      "status": "pending",
       "type": "card",
-      "amount": 4999,
-      "date": "02/06/2025",
-      "status": "Completed",
-      "cardNumber": "1234-5678-9012-3456",
-      "expiryDate": "12/26",
+      "cardNumber": "4123456789012345",
+      "expiryDate": "12/20",
       "paymentGateway": "Visa"
-    },
-    {
-      "id": "abda",
-      "amount": 7905,
-      "date": "2025-06-04T13:27:16.602Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "029c",
-      "amount": 7905,
-      "date": "2025-06-04T13:28:44.848Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "f1e0",
-      "amount": 7905,
-      "date": "2025-06-04T13:31:53.324Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "916e",
-      "amount": 7905,
-      "date": "2025-06-04T13:33:30.026Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "dd64",
-      "amount": 16041,
-      "date": "2025-06-04T14:39:17.527Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "e107",
-      "amount": 16041,
-      "date": "2025-06-04T14:40:33.025Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "fef2",
-      "amount": 16041,
-      "date": "2025-06-04T14:41:47.212Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "a763",
-      "amount": 16041,
-      "date": "2025-06-04T14:44:49.687Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "7df3",
-      "amount": 17300,
-      "date": "2025-06-04T15:16:42.740Z",
-      "status": "pending",
-      "type": "card",
-      "cardNumber": "1234123412341234",
-      "expiryDate": "2025-06-04T15:16:42.551Z",
-      "paymentGateway": "Tyro"
-    },
-    {
-      "id": "777f",
-      "amount": 10744,
-      "date": "2025-06-04T15:19:50.980Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "5408",
-      "amount": 3848,
-      "date": "2025-06-04T15:53:19.259Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "5527",
-      "amount": 1249,
-      "date": "2025-06-04T15:56:21.123Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "6826",
-      "amount": 1249,
-      "date": "2025-06-04T16:20:19.809Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "dac7",
-      "amount": 3748,
-      "date": "2025-06-04T16:25:56.522Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "f3ed",
-      "amount": 5097,
-      "date": "2025-06-04T16:28:10.930Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "4995",
-      "amount": 5097,
-      "date": "2025-06-04T16:29:36.210Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "cc01",
-      "amount": 8844,
-      "date": "2025-06-04T17:04:24.286Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "1855",
-      "amount": 32778,
-      "date": "2025-06-04T17:14:08.827Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "0ee4",
-      "amount": 4997,
-      "date": "2025-06-04T17:18:39.211Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "33d7",
-      "amount": 3748,
-      "date": "2025-06-04T17:19:55.395Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "b6c7",
-      "amount": 3748,
-      "date": "2025-06-04T17:25:39.057Z",
-      "status": "pending",
-      "type": "cash"
-    },
-    {
-      "id": "77ee",
-      "amount": 1249,
-      "date": "2025-06-04T17:32:36.240Z",
-      "status": "pending",
-      "type": "cash"
     }
   ],
   "shipment": [
     {
-      "id": "0001",
-      "type": "delivery",
-      "status": "Shipped",
+      "id": "f082",
+      "status": "Pending",
       "fee": 0,
-      "partner": "DHL",
-      "date": "10/06/2025",
-      "address": "3 Launder Street, Melbourne, VIC 3000"
+      "type": "pickup"
     },
     {
-      "id": "0002",
-      "type": "pickup",
-      "status": "Shipped",
-      "fee": 0,
-      "pickupTime": "02/06/2025 10:00"
-    },
-    {
-      "id": "7fab",
+      "id": "81ca",
       "status": "Pending",
       "fee": 10,
       "type": "delivery",
       "partner": "Australia Post",
-      "date": "2025-06-04T13:27:16.000Z",
-      "address": "3 Launder Street"
-    },
-    {
-      "id": "b164",
-      "status": "Pending",
-      "fee": 10,
-      "type": "delivery",
-      "partner": "Australia Post",
-      "date": "2025-06-04T13:28:44.000Z",
-      "address": "3 Launder Street"
-    },
-    {
-      "id": "3236",
-      "status": "Pending",
-      "fee": 10,
-      "type": "delivery",
-      "partner": "Australia Post",
-      "date": "2025-06-04T13:31:53.000Z",
-      "address": "3 Launder Street"
-    },
-    {
-      "id": "a6ef",
-      "status": "Pending",
-      "fee": 10,
-      "type": "delivery",
-      "partner": "Australia Post",
-      "date": "2025-06-04T13:33:30.000Z",
-      "address": "3 Launder Street"
-    },
-    {
-      "id": "ae4a",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "fd4a",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "ac3b",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "6860",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "acf4",
-      "status": "Pending",
-      "fee": 10,
-      "type": "delivery",
-      "partner": "Australia Post",
-      "date": "2025-06-04T15:16:42.000Z",
-      "address": "123 Oink"
-    },
-    {
-      "id": "66a4",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "20e6",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "4f36",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "470f",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "f686",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "6e09",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "fd70",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "c761",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "7cd8",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "444d",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "245f",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "fa7c",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
-    },
-    {
-      "id": "e0bd",
-      "status": "Pending",
-      "fee": 0,
-      "type": "pickup"
+      "date": "2025-06-05T09:57:04.000Z",
+      "address": "Road 3.1, Gamuda Gardens, Tran Phu, Hoang Mai, Ha Noi"
     }
   ]
 }

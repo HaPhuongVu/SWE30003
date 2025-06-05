@@ -10,14 +10,11 @@ export default function LoginView() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  // Validation error states
   const [errors, setErrors] = useState<Partial<FormValidation>>({
     email: "",
     password: ""
   });
   const [formError, setFormError] = useState<string>("");
-
-  // Clear specific error when user starts typing
   const clearError = (field: string) => {
     setErrors(prev => ({ ...prev, [field]: "" }));
     setFormError("");

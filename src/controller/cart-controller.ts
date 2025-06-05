@@ -4,6 +4,7 @@ import { Product } from "../models/product";
 import { CartRepository } from "../repository/cart-repository"
 import { ProductController } from "../controller/product-controller"
 import type { CartItem } from "../models/cart"
+import { NotificationController } from "./notification-controller";
 
 
 class CartController {
@@ -44,6 +45,9 @@ class CartController {
         await CartRepository.instance.addProduct(cart.userId, product.id, quantity);
       }
       cart.addItem(product, quantity);
+      if (cart) {
+        NotificationController.instance.update("Product added to cart!")
+      }
       return cart;
     } catch (error) {
       throw new Error(`Failed to add product to cart: ${error}`);
@@ -66,7 +70,6 @@ class CartController {
       cart.items = []
       return cart;
     } catch(error) {
-      console.error("Error while emptying cart:", error);
       throw new Error('Failed to empty cart: ' + (error instanceof Error ? error.message : error));
     }
   }

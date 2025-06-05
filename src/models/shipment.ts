@@ -13,10 +13,12 @@ abstract class Shipment {
     id: string | null;
     status: string;
     fee: number = 0;
+    type: string
 
-    constructor(id: string | null, status: string) {
+    constructor(id: string | null, status: string, type: string) {
         this.id = id;
         this.status = status;
+        this.type = type;
     }
 
     updateStatus(status: string) {
