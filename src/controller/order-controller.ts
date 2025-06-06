@@ -34,11 +34,15 @@ class OrderController {
         lines.push("===Order===")
         lines.push("")
         receipt.items.forEach((item, index) => {
-            lines.push(`${index+1}.     ${item.product.name}  x  ${item.quantity}      $${(item.price * item.quantity).toFixed(2)}`)
+            lines.push(`${index+1}.     ${item.product.name}  x  ${item.quantity}     $${(item.price * item.quantity).toFixed(2)}`)
         })
         lines.push("")
         lines.push(`Total Paid: $${receipt.total.toFixed(2)}`)
-        lines.push(`Pay through: ${receipt.payment.date}`)
+        {receipt.payment.type === 'card' ? (
+        lines.push(`Pay through: ${receipt.payment?.paymentGateway} ${receipt.payment.type} (${receipt.payment?.cardNumber})`)
+        ) : (
+            lines.push(`Pay through: ${receipt.payment?.type} `)
+        )}
         lines.push(`Shipping method: ${receipt.shipment.type}`)
         return lines.join("\n")
     }

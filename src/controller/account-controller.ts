@@ -93,7 +93,7 @@ class AccountController {
         phoneNumber: string
     ): Promise<Account> {
         const account = await AccountRepository.instance.create(fullName, email, username, password, address, phoneNumber);
-        this.notify(`Account ${account.id} created successfully.`);
+        this.notify(`Account ${account.username} created successfully.`);
         return account;
     }
 
@@ -168,7 +168,7 @@ class AccountController {
         phoneNumber: string
     ): Promise<Account> {
         const updatedAccount = await AccountRepository.instance.update(id, {fullname, email, username, password, address, phoneNumber});
-        this.notify(`Account ${id} updated successfully.`);
+        this.notify(`Account ${updatedAccount.username} updated successfully.`);
         return updatedAccount;
     }
 

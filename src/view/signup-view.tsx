@@ -79,7 +79,7 @@ export default function SignupView() {
           <FormGroup>
             <FormLabel>Email Address</FormLabel>
             <FormControl
-            type='email'
+            type='text'
             placeholder='Enter your email address'
             value={email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setEmail(e.target.value); clearError('email'); }}

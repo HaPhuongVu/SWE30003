@@ -99,23 +99,23 @@
       "id": "P01"
     },
     {
-      "availableQuantity": 5,
+      "availableQuantity": 10,
       "id": "P02"
     },
     {
-      "availableQuantity": 27,
+      "availableQuantity": 25,
       "id": "P03"
     },
     {
-      "availableQuantity": 40,
+      "availableQuantity": 38,
       "id": "P04"
     },
     {
-      "availableQuantity": 21,
+      "availableQuantity": 20,
       "id": "P05"
     },
     {
-      "availableQuantity": 50,
+      "availableQuantity": 47,
       "id": "P06"
     }
   ],
@@ -138,6 +138,15 @@
       "address": "",
       "phoneNumber": "0422525603",
       "id": "2915"
+    },
+    {
+      "fullname": "Amie Johnson",
+      "email": "amie2004@gmail.com",
+      "username": "amie2005",
+      "password": "amie123@",
+      "address": "",
+      "phoneNumber": "0449096797",
+      "id": "922f"
     }
   ],
   "cart": [
@@ -188,6 +197,44 @@
       "shipmentId": "81ca",
       "status": "Pending",
       "cancellation": false
+    },
+    {
+      "id": "ea27",
+      "userId": "4fb0",
+      "orderDate": "06/06/2025",
+      "items": [
+        {
+          "productId": "P06",
+          "quantity": 5
+        },
+        {
+          "productId": "P04",
+          "quantity": 1
+        }
+      ],
+      "paymentId": "2d73",
+      "shipmentId": "c4d9",
+      "status": "Pending",
+      "cancellation": false
+    },
+    {
+      "id": "1866",
+      "userId": "922f",
+      "orderDate": "06/06/2025",
+      "items": [
+        {
+          "productId": "P03",
+          "quantity": 1
+        },
+        {
+          "productId": "P06",
+          "quantity": 3
+        }
+      ],
+      "paymentId": "d597",
+      "shipmentId": "4f56",
+      "status": "Pending",
+      "cancellation": false
     }
   ],
   "payment": [
@@ -207,6 +254,16 @@
       "cardNumber": "4123456789012345",
       "expiryDate": "12/20",
       "paymentGateway": "Visa"
+    },
+    {
+      "id": "d597",
+      "amount": 3146,
+      "date": "2025-06-06T07:12:43.767Z",
+      "status": "pending",
+      "type": "card",
+      "cardNumber": "4123456789012345",
+      "expiryDate": "12/27",
+      "paymentGateway": "Visa"
     }
   ],
   "shipment": [
@@ -224,6 +281,15 @@
       "partner": "Australia Post",
       "date": "2025-06-05T09:57:04.000Z",
       "address": "Road 3.1, Gamuda Gardens, Tran Phu, Hoang Mai, Ha Noi"
+    },
+    {
+      "id": "4f56",
+      "status": "Pending",
+      "fee": 0,
+      "type": "delivery",
+      "partner": "Australia Post",
+      "date": "2025-06-06T07:12:43.000Z",
+      "address": "3 Launder Street"
     }
   ]
 }

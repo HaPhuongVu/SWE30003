@@ -85,9 +85,8 @@ export default function OrderDetailView() {
         <h4 className='fw-bold text-uppercase'>Customer Information</h4>
         <ul className='list-unstyled text-capitalize'>
           <li>Payment Method:
-          {orderData?.payment?.paymentGateway}
           {orderData?.payment?.type}
-          {orderData?.payment?.cardNumber ? `(${orderData?.payment?.cardNumber})` : ""}
+          {orderData?.payment?.cardNumber ? `- ${orderData?.payment?.paymentGateway} (${orderData?.payment?.cardNumber})` : ""}
           </li>
           {orderData?.shipment?.type === 'delivery' && orderData.shipment instanceof DeliveryShipment &&(
             <li>Address: {orderData.shipment.address}</li>

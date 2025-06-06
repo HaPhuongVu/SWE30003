@@ -121,6 +121,7 @@ export default function AccountView() {
         };
 
         updateAccountMutation.mutate(updatedAccount);
+        window.location.reload();
     }
 
   return (
